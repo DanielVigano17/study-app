@@ -6,7 +6,7 @@ const layoutHome = ({
     children: React.ReactNode;
   }>) => {
   return (
-    <div className="grid grid-cols-[15.2rem_1fr] min-h-screen">
+    <div className="grid grid-cols-[16.2rem_1fr] min-h-screen">
       <MainSidebar/>
       {children}
     </div>
