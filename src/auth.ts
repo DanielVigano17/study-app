@@ -10,4 +10,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         from: "onboarding@resend.dev",
     }
   )],
+  pages: {
+    signIn:"/login",
+    verifyRequest: '/login', // Redireciona para a página inicial, ou defina outra página personalizada
+  },
 })
