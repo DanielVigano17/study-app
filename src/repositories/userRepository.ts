@@ -5,10 +5,10 @@ const prisma = new PrismaClient();
 
 export class UserRepository implements IUserRepository{
     async findById(id: string) {
-        return prisma.user.findUnique({where: {id}});
+        return await prisma.user.findUnique({where: {id}});
     };
     async update(id: string, data: UpdateUserDTO){
-        return prisma.user.update({ where: { id }, data });
+        return await prisma.user.update({ where: { id }, data });
     };
 
 }
