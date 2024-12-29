@@ -1,4 +1,3 @@
-
 import { Suspense } from "react"
 import ListCards from "./_components/ListCards"
 import { listMateriasAction } from "./actions"
@@ -15,7 +14,6 @@ export default async function ImageCards() {
       <Suspense fallback={<p>Carregando...</p>}>
         <ListCards materias={materias}/>
       </Suspense>
-
     </div>
   )
 }

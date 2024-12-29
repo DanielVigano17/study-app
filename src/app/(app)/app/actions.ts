@@ -1,22 +1,33 @@
 "use server"
 
+import { Materia } from "@/domain/entities/Materia";
 import { CreateMateria } from "@/domain/useCases/materia/createMateria";
 import { ListMaterias } from "@/domain/useCases/materia/listMaterias";
 import { MateriaRepository } from "@/repositories/materiaRepository";
 import { UserRepository } from "@/repositories/userRepository";
 import { revalidatePath, revalidateTag } from "next/cache";
 
-export async function novaMateriaAction(titulo : string, userId? : string) {
-    const materiaRepository = new MateriaRepository();
-    const createMateria = new CreateMateria(materiaRepository);
+type novaMateriaData={
+  titulo : string
+  image? : string
+}
 
-    if(!userId) return false;
+export async function novaMateriaAction({titulo,image} : novaMateriaData, userId? : string) {
+    try{
+      const materiaRepository = new MateriaRepository();
+      const createMateria = new CreateMateria(materiaRepository);
+  
+      if(!userId) return false;
+  
+      const materiaCriada = await createMateria.execute({userId, titulo, image});
+  
+      revalidatePath('/app');
+      return materiaCriada;
 
-    const materiaCriada = await createMateria.execute({userId, titulo});
-
-    revalidatePath('/app');
-
-    return materiaCriada;
+    }catch(e){
+      console.log(e);
+    }
+    return false
 }
 
 export async function listMateriasAction(userId? : string) {

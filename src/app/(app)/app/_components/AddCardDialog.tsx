@@ -9,6 +9,7 @@ import { novaMateriaAction } from "../actions"
 import { Loader2 } from "lucide-react"
 import { useContext } from "react"
 import { ApplicationContext } from "@/app/_context/app.context"
+import { Materia } from "@/domain/entities/Materia"
 
 export function AddCardDialog({onAddMateria} : {onAddMateria : (materia : Materia) => void}) {
   const form = useForm();
@@ -16,7 +17,7 @@ export function AddCardDialog({onAddMateria} : {onAddMateria : (materia : Materi
   const {session} = useContext(ApplicationContext);
   
   const handleSubmit = form.handleSubmit( async (data) =>{
-    const novaMateria = await novaMateriaAction(data.titulo, session?.user?.id);
+    const novaMateria = await novaMateriaAction({titulo : data.titulo, image : data.link}, session?.user?.id);
     if(novaMateria) onAddMateria(novaMateria);
   });
   
@@ -45,7 +46,6 @@ export function AddCardDialog({onAddMateria} : {onAddMateria : (materia : Materi
               id="link"
               {...form.register("link")}
               placeholder="Digite o link da imagem"
-              required
             />
           </div>
           <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">

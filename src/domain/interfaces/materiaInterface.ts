@@ -1,6 +1,9 @@
+import { Materia } from "../entities/Materia"
+
 export interface CreateMateriaDTO {
     titulo : string
     userId:  string
+    image? : string
 }
 
 export interface UpdateMateriaDTO {

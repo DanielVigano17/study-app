@@ -1,11 +1,11 @@
 "use client"
-import { auth } from "@/auth";
+
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
-import { listMateriasAction } from "../actions";
 import { Button } from "@/components/ui/button";
 import { AddCardDialog } from "./AddCardDialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { Materia } from "@/domain/entities/Materia";
 export default function ListCards({materias} : {materias : Materia[]}) {
   const [cards, setCards] = useState<Materia[]>(materias)
   const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
@@ -40,11 +40,12 @@ export default function ListCards({materias} : {materias : Materia[]}) {
           {filteredCards.map((materia) => (
             <Card key={materia.id} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
-                {/* <img
-                  src={card.image}
-                  alt={card.title}
+                {<img
+                  src={materia.image || "/placeholder_image.svg"}
+                  alt={materia.titulo}
                   className="w-full h-48 object-cover"
-                /> */}
+                />
+                }
               </CardHeader>
               <CardContent className="p-4 flex-grow">
                 <CardTitle className="text-xl">{materia.titulo}</CardTitle>
