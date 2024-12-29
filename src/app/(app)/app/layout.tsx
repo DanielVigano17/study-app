@@ -1,4 +1,5 @@
 import { MainSidebar } from "@/app/_components/sidebar";
+import { Suspense } from "react";
 
 const layoutHome = ({
     children,
@@ -8,7 +9,9 @@ const layoutHome = ({
   return (
     <div className="grid grid-cols-[16.2rem_1fr] min-h-screen">
       <MainSidebar/>
-      {children}
+      <Suspense fallback={<p>Carregando</p>}>
+        {children}
+      </Suspense>
     </div>
   )
 }
