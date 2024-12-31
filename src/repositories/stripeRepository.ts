@@ -27,9 +27,9 @@ export class StripeRepository implements IPaymentGateway {
           return customer.id;
     }
 
-    async createSubscription(custumerId: string){
+    async createSubscription(customerId: string){
         const subscription = await this.stripe.subscriptions.create({
-            customer: custumerId,
+            customer: customerId,
             items: [
               {
                 price: 'price_1QbYMcP3utzNziQ1636UZ1Nv',
@@ -39,4 +39,12 @@ export class StripeRepository implements IPaymentGateway {
 
           return subscription.id;
     };
+    async createBillingPortal(customerId: string) : Promise<Stripe.BillingPortal.Session>{
+      const portalBilling = await this.stripe.billingPortal.sessions.create({
+        customer: customerId,
+        return_url: 'https://example.com/account',
+      });
+
+        return portalBilling;
+  };
 }

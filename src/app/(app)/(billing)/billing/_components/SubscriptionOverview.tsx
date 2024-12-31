@@ -9,7 +9,7 @@ import Stripe from "stripe"
 import { useContext } from "react"
 import { ApplicationContext } from "@/app/_context/app.context"
 
-export default function SubscriptionOverview({url}:{url : string}) {
+export default function SubscriptionOverview({url}:{url : string | undefined}) {
   // Aqui você incluiria a lógica para buscar os detalhes da assinatura do usuário
   const subscription = {
     plan: "Pro",
@@ -17,9 +17,9 @@ export default function SubscriptionOverview({url}:{url : string}) {
     renewalDate: "15/05/2024",
     price: "R$ 49,90"
   }
-  
+
   const handleClick = () =>{
-    window.location.href = url;
+    window.location.href = url!;
   }
 
   return (
@@ -58,7 +58,7 @@ export default function SubscriptionOverview({url}:{url : string}) {
         </div>
       </CardContent>
       <CardFooter>
-        <Button onClick={handleClick} className="w-full">
+        <Button disabled={!url} onClick={handleClick} className="w-full">
           Gerenciar Assinatura
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
