@@ -1,7 +1,6 @@
 import { IUserRepository, UpdateUserDTO } from "@/domain/interfaces/userInterface";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/prisma";
 
 export class UserRepository implements IUserRepository{
     async findById(id: string) {

@@ -1,7 +1,6 @@
 import { CreateMateriaDTO, IMateriaRepository, UpdateMateriaDTO } from "@/domain/interfaces/materiaInterface";
 import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/prisma";
 export class MateriaRepository implements IMateriaRepository{
     async listMaterias (userId: string) {
         return await prisma.materia.findMany({where:{userId}});

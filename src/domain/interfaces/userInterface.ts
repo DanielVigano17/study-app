@@ -1,6 +1,8 @@
 export interface UpdateUserDTO {
-    name: string
+    name?: string
     image?: string
+    customerId? : string
+    subscriptionId? : string
   }
 
   export interface IUserRepository {
