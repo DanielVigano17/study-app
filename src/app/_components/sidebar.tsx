@@ -1,6 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { HomeIcon, OptionIcon } from 'lucide-react'
+import { HomeIcon, Settings, CreditCard } from 'lucide-react'
 import { Sidebar, SidebarFooter, SidebarHeader, SidebarMain, SidebarNav, SidebarNavHeader, SidebarNavHeaderTitle, SidebarNavLink, SidebarNavMain } from '@/components/Sidebar/SidebarModel'
 
 export function MainSidebar() {
@@ -26,8 +26,15 @@ export function MainSidebar() {
               href="/settings"
               active={isActive('/settings')}
             >
-              <OptionIcon className="w-3 h-3 mr-3" />
+              <Settings className="w-3 h-3 mr-3" />
               Configurações
+            </SidebarNavLink>
+            <SidebarNavLink
+              href="/billing"
+              active={isActive('/billing')}
+            >
+              <CreditCard className="w-3 h-3 mr-3" />
+              Gerenciar Assinatura
             </SidebarNavLink>
           </SidebarNavMain>
         </SidebarNav>
