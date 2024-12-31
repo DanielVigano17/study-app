@@ -1,15 +1,25 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Check } from 'lucide-react'
+import { auth } from "@/auth"
+import Stripe from "stripe"
+import { useContext } from "react"
+import { ApplicationContext } from "@/app/_context/app.context"
 
-export default function SubscriptionOverview() {
+export default function SubscriptionOverview({url}:{url : string}) {
   // Aqui você incluiria a lógica para buscar os detalhes da assinatura do usuário
   const subscription = {
     plan: "Pro",
     status: "Ativo",
     renewalDate: "15/05/2024",
     price: "R$ 49,90"
+  }
+  
+  const handleClick = () =>{
+    window.location.href = url;
   }
 
   return (
@@ -48,7 +58,7 @@ export default function SubscriptionOverview() {
         </div>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">
+        <Button onClick={handleClick} className="w-full">
           Gerenciar Assinatura
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
