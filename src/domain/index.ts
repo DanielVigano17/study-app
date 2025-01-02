@@ -9,6 +9,8 @@ import { UpdateUserUseCase } from "./useCases/updateUser";
 import { CreateMateria } from "./useCases/materia/createMateria";
 import { MateriaRepository } from "@/repositories/materiaRepository";
 import { ListMaterias } from "./useCases/materia/listMaterias";
+import { UpdateCustomer } from "./useCases/biling/updateCustomer";
+import { UpdateSubscription } from "./useCases/biling/updateSubscription";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -21,7 +23,9 @@ export const modules = {
             createCustomer : new CreateCustomer(paymentGateway, userRepository),
             createSubscription : new CreateSubscription(paymentGateway, userRepository),
             findSubscription : new FindSubscription(paymentGateway),
-            retriveProduct : new RetriveProduct(paymentGateway)
+            retriveProduct : new RetriveProduct(paymentGateway),
+            updateCustomer : new UpdateCustomer(paymentGateway),
+            updateSubscription : new UpdateSubscription(paymentGateway)
         },
         user : {
             updateUser : new UpdateUserUseCase(userRepository)

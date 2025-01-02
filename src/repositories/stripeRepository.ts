@@ -69,5 +69,21 @@ export class StripeRepository implements IPaymentGateway {
     async retriveProduct(productId: string) : Promise<Stripe.Product>{
         const product = await this.stripe.products.retrieve(productId);
         return product;
+    };
+
+    async updateCustomer(customerId: string, customerDetails : Stripe.CustomerUpdateParams) : Promise<Stripe.Customer>{
+      const customer = await this.stripe.customers.update(
+        customerId,
+        customerDetails
+      )
+      return customer;
+    };
+
+    async updateSubscription(subscriptionId: string, subscriptionDetails : Stripe.SubscriptionUpdateParams) : Promise<Stripe.Subscription>{
+      const subscription = await this.stripe.subscriptions.update(
+        subscriptionId,
+        subscriptionDetails
+      );
+      return subscription;
   };
 }
