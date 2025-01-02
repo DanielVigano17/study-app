@@ -1,3 +1,4 @@
+import { Subscription } from "@/domain/entities/Subscription";
 import { CreateCustomerDTO, IPaymentGateway } from "@/domain/interfaces/paymentGatewayInterface";
 import Stripe from "stripe";
 
@@ -14,6 +15,18 @@ export class StripeRepository implements IPaymentGateway {
         
         this.stripe = new Stripe(secretKey)
     }
+    async findSubscription(subscriptionId: string) {
+      const subscription = await this.stripe.subscriptions.retrieve(subscriptionId);
+      console.log(subscription);
+      const subscriptionObject : Subscription = {
+        customerId : subscription.customer.toString(),
+        metadata : subscription.metadata,
+        subscriptionId : subscription.id,
+        status : subscription.status,
+        amount : (subscription.items.data[0].plan.amount || 0) / 100
+      }
+      return subscriptionObject;
+    };
 
     async createCustomer(custumer: CreateCustomerDTO){
         const customer = await this.stripe.customers.create({
@@ -28,6 +41,8 @@ export class StripeRepository implements IPaymentGateway {
     }
 
     async createSubscription(customerId: string){
+        const priceDetails = await this.stripe.prices.retrieve('price_1QbYMcP3utzNziQ1636UZ1Nv');
+
         const subscription = await this.stripe.subscriptions.create({
             customer: customerId,
             items: [
@@ -35,6 +50,9 @@ export class StripeRepository implements IPaymentGateway {
                 price: 'price_1QbYMcP3utzNziQ1636UZ1Nv',
               },
             ],
+            metadata : {
+              productId : priceDetails.product.toString()
+            }
           });
 
           return subscription.id;
@@ -46,5 +64,10 @@ export class StripeRepository implements IPaymentGateway {
       });
 
         return portalBilling;
+  };
+
+    async retriveProduct(productId: string) : Promise<Stripe.Product>{
+        const product = await this.stripe.products.retrieve(productId);
+        return product;
   };
 }
