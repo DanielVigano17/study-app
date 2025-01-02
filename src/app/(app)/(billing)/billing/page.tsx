@@ -4,22 +4,13 @@ import { auth } from "@/auth";
 import BillingHistory from "./_components/BillingHistory";
 import SubscriptionOverview from "./_components/SubscriptionOverview";
 import UsageStats from "./_components/UsageStats";
-import { StripeRepository } from "@/repositories/stripeRepository";
-import { CreateBillingPortal } from "@/domain/useCases/biling/createBillingPortal";
-import { FindSubscription } from "@/domain/useCases/biling/findSubscription";
-import { RetriveProduct } from "@/domain/useCases/biling/retriveProduct";
+import { modules } from "@/domain";
 
 export default async function Page() {
 
-    const paymentGateway = new StripeRepository();
-    const createBillingPortal = new CreateBillingPortal(paymentGateway);
-    const findSubscription = new FindSubscription(paymentGateway);
-    const retriveProduct = new RetriveProduct(paymentGateway);
-
-    const billingPortalUrl = await createBillingPortal.execute();
-    const subscription = await findSubscription.execute();
-
-    const product = await retriveProduct.execute(subscription?.metadata.productId);
+    const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
+    const subscription = await modules.useCase.billing.findSubscription.execute();
+    const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
 
     const subscriptionDetailsObject = {
       nameAssinatura : product?.name,

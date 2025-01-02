@@ -1,11 +1,8 @@
 "use server"
 
 import { Materia } from "@/domain/entities/Materia";
-import { CreateMateria } from "@/domain/useCases/materia/createMateria";
-import { ListMaterias } from "@/domain/useCases/materia/listMaterias";
-import { MateriaRepository } from "@/repositories/materiaRepository";
-import { UserRepository } from "@/repositories/userRepository";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { modules } from "@/domain";
 
 type novaMateriaData={
   titulo : string
@@ -14,12 +11,9 @@ type novaMateriaData={
 
 export async function novaMateriaAction({titulo,image} : novaMateriaData, userId? : string) {
     try{
-      const materiaRepository = new MateriaRepository();
-      const createMateria = new CreateMateria(materiaRepository);
-  
       if(!userId) return false;
   
-      const materiaCriada = await createMateria.execute({userId, titulo, image});
+      const materiaCriada = await modules.useCase.materia.createMateria.execute({userId, titulo, image});
   
       revalidatePath('/app');
       return materiaCriada;

@@ -1,3 +1,4 @@
+import { User } from "../entities/User";
 import { IUserRepository, UpdateUserDTO } from "../interfaces/userInterface";
 
 export class UpdateUserUseCase {
