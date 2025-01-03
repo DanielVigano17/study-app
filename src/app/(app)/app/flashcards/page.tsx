@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button"
 import { FlashcardList } from "./_components/FlashCardList"
-import { Plus, Play } from 'lucide-react'
+import { Plus, Play, FileText } from 'lucide-react'
+import Link from "next/link"
 
 export default function FlashcardsPage() {
   return (
@@ -17,6 +18,17 @@ export default function FlashcardsPage() {
             Add New Flashcard
           </Button>
         </div>
+      </div>
+      <div className="flex items-center gap-2 mb-8">
+        <Link href="/app/fileList">
+          <Button variant="ghost" className="text-sm text-gray-500">
+            <FileText className="w-4 h-4 mr-2" />
+            FILES
+          </Button>
+        </Link>
+        <Button variant="ghost" className="text-sm bg-secondary">
+          FLASHCARDS
+        </Button>
       </div>
       <FlashcardList />
     </div>
