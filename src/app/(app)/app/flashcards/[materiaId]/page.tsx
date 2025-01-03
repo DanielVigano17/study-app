@@ -1,9 +1,12 @@
 import { Button } from "@/components/ui/button"
-import { FlashcardList } from "./_components/FlashCardList"
+import { FlashcardList } from "../_components/FlashCardList"
 import { Plus, Play, FileText } from 'lucide-react'
 import Link from "next/link"
 
-export default function FlashcardsPage() {
+export default async function FlashcardsPage({params} : {params : Promise<{materiaId : string}>}) {
+  const materiaId = (await params).materiaId;
+  console.log(materiaId);
+
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
@@ -20,7 +23,7 @@ export default function FlashcardsPage() {
         </div>
       </div>
       <div className="flex items-center gap-2 mb-8">
-        <Link href="/app/fileList">
+        <Link href={`/app/fileList/${materiaId}`}>
           <Button variant="ghost" className="text-sm text-gray-500">
             <FileText className="w-4 h-4 mr-2" />
             FILES

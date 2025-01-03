@@ -10,14 +10,15 @@ import {
 import { ChevronDown, LayoutGrid, FileText } from 'lucide-react'
 import Link from 'next/link'
 
-export function FileFilters() {
+export function FileFilters({materiaId} : {materiaId : string}) {
+
   return (
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-4">
         <Button variant="ghost" className="text-sm bg-secondary">
           FILES
         </Button>
-        <Link href="/app/flashcards">
+        <Link href={`/app/flashcards/${materiaId}`}>
           <Button variant="ghost" className="text-sm text-gray-500">
             <FileText className="w-4 h-4 mr-2" />
             FLASHCARDS

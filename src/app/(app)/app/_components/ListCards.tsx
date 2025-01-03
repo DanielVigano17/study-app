@@ -6,6 +6,7 @@ import { AddCardDialog } from "./AddCardDialog";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { Materia } from "@/domain/entities/Materia";
+import Link from "next/link";
 export default function ListCards({materias} : {materias : Materia[]}) {
   const [cards, setCards] = useState<Materia[]>(materias)
   const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
@@ -51,12 +52,11 @@ export default function ListCards({materias} : {materias : Materia[]}) {
                 <CardTitle className="text-xl">{materia.titulo}</CardTitle>
               </CardContent>
               <CardFooter className="p-4 pt-0">
-                <Button 
-                  // onClick={() => handleCardClick(card.id)} 
-                  className="w-full"
-                >
-                  Ver mais
-                </Button>
+                <Link className="w-full" href={`/app/flashcards/${materia.id}`}>
+                  <Button className="w-full">
+                    Ver mais
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
