@@ -8,8 +8,6 @@ async function handleSubscriptionUpdated(data : Stripe.Subscription) : Promise<v
             productId : data.items.data[0].price.product as string
         }
     });
-
-    console.log(updatedCustomer);
 }
 
 export default handleSubscriptionUpdated
