@@ -35,8 +35,20 @@ model Materia{
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   perguntas   Pergunta[]
+  Files       File[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model File{
+  id          String            @id @default(cuid())
+  fileName    String
+  materiaId   String
+  url         String
+  supabaseId  String
+
+
+  materia     Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
 }
 
 model Pergunta{
