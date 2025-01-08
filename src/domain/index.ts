@@ -11,10 +11,13 @@ import { MateriaRepository } from "@/repositories/materiaRepository";
 import { ListMaterias } from "./useCases/materia/listMaterias";
 import { UpdateCustomer } from "./useCases/biling/updateCustomer";
 import { UpdateSubscription } from "./useCases/biling/updateSubscription";
+import { CreateFile } from "./useCases/file/createFile";
+import { FileRepository } from "@/repositories/fileRepository";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
 const materiaRepository = new MateriaRepository();
+const fileRepository = new FileRepository();
 
 export const modules = {
     useCase : {
@@ -33,6 +36,9 @@ export const modules = {
         materia : {
             createMateria : new CreateMateria(materiaRepository),
             listMaterias : new ListMaterias(materiaRepository, userRepository)
+        },
+        file : {
+            createFile : new CreateFile(fileRepository)
         }
     }
 }

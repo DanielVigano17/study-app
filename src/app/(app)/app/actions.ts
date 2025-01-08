@@ -3,6 +3,7 @@
 import { Materia } from "@/domain/entities/Materia";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
+import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 
 type novaMateriaData={
   titulo : string
@@ -36,5 +37,22 @@ export async function listMateriasAction(userId? : string) {
     const materias : Materia[] = await res.json();
 
     return materias;
+}
+
+export async function createFileAction(data : CreateFileDTO) {
+
+  const response = await fetch("http://localhost:3000/api/files/createFile", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+    
+  const file = await response.json();
+
+  if(!file) throw new Error("Erro ao salvar arquivo no banco de dados");
+
+  return file;
 }
 

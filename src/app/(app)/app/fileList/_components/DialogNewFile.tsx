@@ -9,10 +9,12 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 import { createClient } from '@supabase/supabase-js'
 import {CircleCheckBig} from 'lucide-react'
+import { createFileAction } from '../../actions'
+import { CreateFileDTO } from '@/domain/interfaces/fileInterface'
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB in bytes
 
-export default function FileUploadDialog() {
+export default function FileUploadDialog({materiaId} : {materiaId : string}) {
   const [isOpen, setIsOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -73,12 +75,18 @@ export default function FileUploadDialog() {
         throw error
       }
 
-      // Arquivo foi carregado com sucesso
-      console.log('Arquivo carregado:', data)
-
       const fileObject = supabase.storage.from('teste').getPublicUrl(data.path)
 
-      console.log(fileObject.data.publicUrl)
+      const createFileObject : CreateFileDTO = {
+        fileName : file.name,
+        materiaId : materiaId as string,
+        supabaseId : data.id,
+        url : fileObject.data.publicUrl
+      }
+
+      const fileSaved = await createFileAction(createFileObject);
+
+      console.log(fileSaved)
 
       setIsUploading(false)
       clearFile()
