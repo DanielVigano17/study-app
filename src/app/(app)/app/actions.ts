@@ -4,7 +4,7 @@ import { Materia } from "@/domain/entities/Materia";
 import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
-
+import { File } from "@/domain/entities/File";
 type novaMateriaData={
   titulo : string
   image? : string
@@ -39,7 +39,7 @@ export async function listMateriasAction(userId? : string) {
     return materias;
 }
 
-export async function createFileAction(data : CreateFileDTO) {
+export async function createFileAction(data : CreateFileDTO) : Promise<File> {
 
   const response = await fetch("http://localhost:3000/api/files/createFile", {
     method: 'POST',
@@ -49,10 +49,29 @@ export async function createFileAction(data : CreateFileDTO) {
     body: JSON.stringify(data),
   });
     
-  const file = await response.json();
+  const {file} = await response.json();
 
   if(!file) throw new Error("Erro ao salvar arquivo no banco de dados");
-
   return file;
+}
+
+export async function listFilesAction(materiaId : string) {
+
+  const response = await fetch("http://localhost:3000/api/files/listFiles", {
+    method: 'POST',
+    next : {
+      tags: ['listFiles']
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(materiaId),
+  });
+    
+  const {files} = await response.json();
+
+  if(!files) throw new Error("Erro ao salvar arquivo no banco de dados");
+
+  return files;
 }
 

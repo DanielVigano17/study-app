@@ -1,20 +1,22 @@
 "use client"
-
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useContext, useEffect, Dispatch, SetStateAction } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Upload, File, AlertCircle } from 'lucide-react'
+import { Upload, File as FileIcon, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
 import { createClient } from '@supabase/supabase-js'
 import {CircleCheckBig} from 'lucide-react'
 import { createFileAction } from '../../actions'
 import { CreateFileDTO } from '@/domain/interfaces/fileInterface'
+import { File as FileDomain } from '@/domain/entities/File'
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB in bytes
 
-export default function FileUploadDialog({materiaId} : {materiaId : string}) {
+export default function FileUploadDialog({materiaId, fileList, setFiles} : {materiaId : string, fileList: FileDomain [] | null,
+  setFiles : (file : FileDomain) => void
+}) {
   const [isOpen, setIsOpen] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
@@ -46,59 +48,55 @@ export default function FileUploadDialog({materiaId} : {materiaId : string}) {
     setUploadProgress(0)
   }
 
+  async function handleUpload(file : File){
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random()}.${fileExt}`
+    const filePath = file.name
+
+    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.NEXT_PUBLIC_SUPABASE_PUBLISH_API_KEY || "" )
+
+    const fileBlob = new Blob([file], { type: file.type })
+
+    const { error, data } = await supabase.storage
+      .from('teste')
+      .upload(fileName, fileBlob, {
+        cacheControl: '3600'
+      })
+
+    if (error) throw error
+
+    const fileObject = supabase.storage.from('teste').getPublicUrl(data.path)
+
+    const createFileObject : CreateFileDTO = {
+      fileName : filePath,
+      materiaId : materiaId as string,
+      supabaseId : data.id,
+      url : fileObject.data.publicUrl
+    }
+
+    const fileSaved = await createFileAction(createFileObject);
+
+   if(fileList) setFiles(fileSaved)
+
+    setIsUploading(false)
+    clearFile()
+    setIsOpen(false)
+  }
+
   const uploadFile = async () => {
     if (!file) return
-
     setIsUploading(true)
     setError(null)
-
+    simulateProgress();
     try {
-      const fileExt = file.name.split('.').pop()
-      const fileName = `${Math.random()}.${fileExt}`
-      const filePath = file.name
-
-      // Create a single supabase client for interacting with your database
-      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.NEXT_PUBLIC_SUPABASE_PUBLISH_API_KEY || "" )
-
-      // Criar um objeto Blob a partir do arquivo
-      const fileBlob = new Blob([file], { type: file.type })
-
-      // Usar o método upload do Supabase Storage
-      const { error, data } = await supabase.storage
-        .from('teste')
-        .upload(filePath, fileBlob, {
-          cacheControl: '3600',
-          upsert: true
-        })
-
-      if (error) {
-        throw error
-      }
-
-      const fileObject = supabase.storage.from('teste').getPublicUrl(data.path)
-
-      const createFileObject : CreateFileDTO = {
-        fileName : file.name,
-        materiaId : materiaId as string,
-        supabaseId : data.id,
-        url : fileObject.data.publicUrl
-      }
-
-      const fileSaved = await createFileAction(createFileObject);
-
-      console.log(fileSaved)
-
-      setIsUploading(false)
-      clearFile()
-      setIsOpen(false)
+     await handleUpload(file);
     } catch (error) {
-      console.error('Erro ao fazer upload:', error)
+      console.log('Erro ao fazer upload:', error)
       setError('Ocorreu um erro ao fazer o upload do arquivo.')
       setIsUploading(false)
     }
   }
 
-  // Função para simular o progresso do upload
   const simulateProgress = () => {
     let progress = 0
     const interval = setInterval(() => {
@@ -148,7 +146,7 @@ export default function FileUploadDialog({materiaId} : {materiaId : string}) {
             <h4 className="text-sm font-medium">Arquivo Selecionado:</h4>
             <div className="mt-2 text-sm text-gray-500 flex items-center justify-between">
               <span className="flex items-center">
-                <File className="mr-2 h-4 w-4" />
+                <FileIcon className="mr-2 h-4 w-4" />
                 {file.name}
               </span>
               <Button variant="ghost" size="sm" onClick={clearFile}>
@@ -170,10 +168,7 @@ export default function FileUploadDialog({materiaId} : {materiaId : string}) {
           </div>
         )}
         <Button 
-          onClick={() => {
-            uploadFile()
-            simulateProgress()
-          }} 
+          onClick={uploadFile} 
           className="mt-4 w-full" 
           variant="outline"
           disabled={!file || isUploading}

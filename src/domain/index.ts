@@ -13,6 +13,7 @@ import { UpdateCustomer } from "./useCases/biling/updateCustomer";
 import { UpdateSubscription } from "./useCases/biling/updateSubscription";
 import { CreateFile } from "./useCases/file/createFile";
 import { FileRepository } from "@/repositories/fileRepository";
+import { ListFiles } from "./useCases/file/listFiles";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -38,7 +39,8 @@ export const modules = {
             listMaterias : new ListMaterias(materiaRepository, userRepository)
         },
         file : {
-            createFile : new CreateFile(fileRepository)
+            createFile : new CreateFile(fileRepository),
+            listFiles : new ListFiles(fileRepository)
         }
     }
 }
