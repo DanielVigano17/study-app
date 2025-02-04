@@ -15,6 +15,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         from: "onboarding@resend.dev",
     }
   )],
+  session :{
+    maxAge : 60 * 15
+  },
   callbacks: {
     authorized: async ({ request,auth }) => {
       const url = request.nextUrl.pathname;
@@ -43,5 +46,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         console.log("Este é o erro da mensagem: ",e)
       }
     }
-  } 
+  }
 })
