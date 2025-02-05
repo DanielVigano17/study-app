@@ -16,6 +16,7 @@ import { FileRepository } from "@/repositories/fileRepository";
 import { ListFiles } from "./useCases/file/listFiles";
 import { CreatePerguntaUseCase } from "./useCases/pergunta/createPergunta";
 import { PerguntaRepository } from "@/repositories/perguntaRepository";
+import { FindManyPergunta } from "./useCases/pergunta/findManyPergunta";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -47,6 +48,7 @@ export const modules = {
         },
         pergunta : {
             createPergunta : new CreatePerguntaUseCase(perguntaRepository),
+            findMany : new FindManyPergunta(perguntaRepository)
         }
     }
 }

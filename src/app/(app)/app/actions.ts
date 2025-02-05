@@ -73,6 +73,22 @@ export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<P
   return pergunta;
 }
 
+export async function findManyPerguntasAction(materiaId : string) : Promise<Pergunta[]> {
+
+  const response = await fetch("http://localhost:3000/api/pergunta/getPerguntas", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(materiaId),
+  });
+    
+  const {perguntas} = await response.json();
+
+  if(!perguntas) throw new Error("Erro ao buscar perguntas");
+  return perguntas;
+}
+
 export async function listFilesAction(materiaId : string) {
 
   const response = await fetch("http://localhost:3000/api/files/listFiles", {

@@ -30,7 +30,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
           FLASHCARDS
         </Button>
       </div>
-      <FlashcardList />
+      <FlashcardList materiaId={materiaId}/>
     </div>
   )
 }

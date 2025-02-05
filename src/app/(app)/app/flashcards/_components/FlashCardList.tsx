@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -22,37 +22,48 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { Pergunta } from '@/domain/entities/Pergunta'
+import { findManyPerguntasAction } from '../../actions'
 
-interface Flashcard {
-  id: string
-  title: string
-  question: string
-  answer: string
-}
+// interface Flashcard {
+//   id: string
+//   title: string
+//   question: string
+//   answer: string
+// }
 
-const flashcards: Flashcard[] = [
-  {
-    id: "1",
-    title: "React Hooks",
-    question: "What is useState?",
-    answer: "useState is a Hook that lets you add React state to function components."
-  },
-  {
-    id: "2",
-    title: "JavaScript Basics",
-    question: "What is closure?",
-    answer: "A closure is the combination of a function bundled together with references to its surrounding state."
-  },
-  {
-    id: "3",
-    title: "CSS Fundamentals",
-    question: "What is the box model?",
-    answer: "The CSS box model is essentially a box that wraps around every HTML element consisting of margins, borders, padding, and the actual content."
-  }
-]
+// const flashcards: Flashcard[] = [
+//   {
+//     id: "1",
+//     title: "React Hooks",
+//     question: "What is useState?",
+//     answer: "useState is a Hook that lets you add React state to function components."
+//   },
+//   {
+//     id: "2",
+//     title: "JavaScript Basics",
+//     question: "What is closure?",
+//     answer: "A closure is the combination of a function bundled together with references to its surrounding state."
+//   },
+//   {
+//     id: "3",
+//     title: "CSS Fundamentals",
+//     question: "What is the box model?",
+//     answer: "The CSS box model is essentially a box that wraps around every HTML element consisting of margins, borders, padding, and the actual content."
+//   }
+// ]
 
-export function FlashcardList() {
+export function FlashcardList({materiaId} : {materiaId : string}) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
+  const [flashCards, setFlashCards] = useState<Pergunta[]>([])
+
+  useEffect(()=>{
+    async function getFlashCards(){
+      const lista = await findManyPerguntasAction(materiaId);
+      setFlashCards(lista);
+    }
+    getFlashCards();
+  },[])
 
   const handleDelete = (id: string) => {
     console.log('Delete flashcard:', id)
@@ -68,11 +79,11 @@ export function FlashcardList() {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {flashcards.map((flashcard) => (
+      {flashCards.map((flashcard) => (
         <Card key={flashcard.id}>
           <CardHeader>
             <div className="flex items-center justify-between">
-              <Badge variant="secondary">{flashcard.title}</Badge>
+              {/* <Badge variant="secondary">{flashcard.title}</Badge> */}
               <div className="flex gap-2">
                 <Button
                   variant="ghost"
@@ -111,7 +122,7 @@ export function FlashcardList() {
             <div className="space-y-4">
               <div>
                 <strong>Question:</strong>
-                <p className="mt-1 text-muted-foreground">{flashcard.question}</p>
+                <p className="mt-1 text-muted-foreground">{flashcard.acao}</p>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -129,7 +140,7 @@ export function FlashcardList() {
                   </Button>
                 </div>
                 <p className={`mt-1 text-muted-foreground transition-all duration-300 ${visibleAnswers[flashcard.id] ? '' : 'blur-sm'}`}>
-                  {flashcard.answer}
+                  {flashcard.resposta}
                 </p>
               </div>
             </div>
