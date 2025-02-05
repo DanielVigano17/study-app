@@ -6,7 +6,6 @@ import { FlashcardDialog } from "./_components/dialog-new-flashcard";
 
 export default async function FlashcardsPage({params} : {params : Promise<{materiaId : string}>}) {
   const materiaId = (await params).materiaId;
-  console.log(materiaId);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -17,7 +16,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
             <Play className="w-4 h-4" />
             Começar a Revisar
           </Button>
-          <FlashcardDialog/>
+          <FlashcardDialog materiaId={materiaId}/>
         </div>
       </div>
       <div className="flex items-center gap-2 mb-8">

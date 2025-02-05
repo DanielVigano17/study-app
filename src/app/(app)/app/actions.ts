@@ -5,6 +5,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
+import { CreatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
+import { Pergunta } from "@/domain/entities/Pergunta";
 type novaMateriaData={
   titulo : string
   image? : string
@@ -53,6 +55,22 @@ export async function createFileAction(data : CreateFileDTO) : Promise<File> {
 
   if(!file) throw new Error("Erro ao salvar arquivo no banco de dados");
   return file;
+}
+
+export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
+
+  const response = await fetch("http://localhost:3000/api/pergunta/create", {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+    
+  const {pergunta} = await response.json();
+
+  if(!pergunta) throw new Error("Erro ao cadastrar pergunta");
+  return pergunta;
 }
 
 export async function listFilesAction(materiaId : string) {

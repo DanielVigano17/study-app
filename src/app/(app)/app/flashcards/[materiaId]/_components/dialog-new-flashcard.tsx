@@ -18,28 +18,31 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
+import { createPerguntaAction } from "../../../actions"
 
 type FormValues = {
-  question: string
-  answer: string
+  acao: string
+  resposta: string
   badge: string
 }
 
-export function FlashcardDialog() {
+export function FlashcardDialog({materiaId} : {materiaId : string}) {
   const [badges, setBadges] = useState<string[]>([])
   const [open, setOpen] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
 
   const form = useForm<FormValues>({
     defaultValues: {
-      question: "",
-      answer: "",
+      acao: "",
+      resposta: "",
       badge: "",
     },
   })
 
-  function onSubmit(values: FormValues) {
+  async function onSubmit(values: FormValues) {
     console.log({ ...values, badges })
+    const {acao,resposta} = values;
+    await createPerguntaAction({acao,resposta,materiaId});
     setOpen(false)
     form.reset()
     setBadges([])
@@ -64,8 +67,8 @@ export function FlashcardDialog() {
     const generatedQuestion = "Qual é a capital da França?"
     const generatedAnswer = "A capital da França é Paris."
 
-    form.setValue("question", generatedQuestion, { shouldValidate: true })
-    form.setValue("answer", generatedAnswer, { shouldValidate: true })
+    form.setValue("acao", generatedQuestion, { shouldValidate: true })
+    form.setValue("resposta", generatedAnswer, { shouldValidate: true })
     setIsGenerating(false)
   }
 
@@ -89,7 +92,7 @@ export function FlashcardDialog() {
             </div>
             <FormField
               control={form.control}
-              name="question"
+              name="acao"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -101,7 +104,7 @@ export function FlashcardDialog() {
             />
             <FormField
               control={form.control}
-              name="answer"
+              name="resposta"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
