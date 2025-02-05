@@ -1,3 +1,5 @@
+import { User } from "../entities/User"
+
 export interface UpdateUserDTO {
     name?: string
     image?: string

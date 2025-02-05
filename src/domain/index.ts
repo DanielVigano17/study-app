@@ -14,11 +14,14 @@ import { UpdateSubscription } from "./useCases/biling/updateSubscription";
 import { CreateFile } from "./useCases/file/createFile";
 import { FileRepository } from "@/repositories/fileRepository";
 import { ListFiles } from "./useCases/file/listFiles";
+import { CreatePerguntaUseCase } from "./useCases/pergunta/createPergunta";
+import { PerguntaRepository } from "@/repositories/perguntaRepository";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
 const materiaRepository = new MateriaRepository();
 const fileRepository = new FileRepository();
+const perguntaRepository = new PerguntaRepository();
 
 export const modules = {
     useCase : {
@@ -41,6 +44,9 @@ export const modules = {
         file : {
             createFile : new CreateFile(fileRepository),
             listFiles : new ListFiles(fileRepository)
+        },
+        pergunta : {
+            createPergunta : new CreatePerguntaUseCase(perguntaRepository),
         }
     }
 }
