@@ -94,7 +94,7 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
             <div className="space-y-4">
               <div>
                 <strong>Pergunta:</strong>
-                <p className="mt-1 text-muted-foreground">{flashcard.acao}</p>
+                <p className="mt-1 text-muted-foreground break-words">{flashcard.acao}</p>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -111,7 +111,9 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
                     )}
                   </Button>
                 </div>
-                <p className={`mt-1 text-muted-foreground transition-all duration-300 ${visibleAnswers[flashcard.id] ? '' : 'blur-sm'}`}>
+                <p className={`mt-1 text-muted-foreground transition-all duration-300 ${visibleAnswers[flashcard.id] ? '' : 'blur-sm'}
+                break-words
+                `}>
                   {flashcard.resposta}
                 </p>
               </div>
