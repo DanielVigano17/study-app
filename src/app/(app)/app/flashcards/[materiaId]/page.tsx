@@ -23,7 +23,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
         <Link href={`/app/fileList/${materiaId}`}>
           <Button variant="ghost" className="text-sm text-gray-500">
             <FileText className="w-4 h-4 mr-2" />
-            FILES
+            Arquivos
           </Button>
         </Link>
         <Button variant="ghost" className="text-sm bg-secondary">

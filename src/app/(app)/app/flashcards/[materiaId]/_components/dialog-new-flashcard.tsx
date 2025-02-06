@@ -77,7 +77,7 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
       <DialogTrigger asChild>
         <Button className="gap-2">
                 <Plus className="w-4 h-4" />
-                Add New Flashcard
+                Adicionar Flashcard
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

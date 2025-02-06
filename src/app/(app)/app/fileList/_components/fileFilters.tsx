@@ -18,7 +18,7 @@ export function FileFilters({materiaId} : {materiaId : string}) {
     <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-4">
         <Button variant="ghost" className="text-sm bg-secondary">
-          FILES
+          Arquivos
         </Button>
         <Link href={`/app/flashcards/${materiaId}`}>
           <Button variant="ghost" className="text-sm text-gray-500">

@@ -25,34 +25,6 @@ import {
 import { Pergunta } from '@/domain/entities/Pergunta'
 import { findManyPerguntasAction } from '../../actions'
 
-// interface Flashcard {
-//   id: string
-//   title: string
-//   question: string
-//   answer: string
-// }
-
-// const flashcards: Flashcard[] = [
-//   {
-//     id: "1",
-//     title: "React Hooks",
-//     question: "What is useState?",
-//     answer: "useState is a Hook that lets you add React state to function components."
-//   },
-//   {
-//     id: "2",
-//     title: "JavaScript Basics",
-//     question: "What is closure?",
-//     answer: "A closure is the combination of a function bundled together with references to its surrounding state."
-//   },
-//   {
-//     id: "3",
-//     title: "CSS Fundamentals",
-//     question: "What is the box model?",
-//     answer: "The CSS box model is essentially a box that wraps around every HTML element consisting of margins, borders, padding, and the actual content."
-//   }
-// ]
-
 export function FlashcardList({materiaId} : {materiaId : string}) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
   const [flashCards, setFlashCards] = useState<Pergunta[]>([])
@@ -107,26 +79,26 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogCancel>Cancelar</AlertDialogCancel>
                       <AlertDialogAction onClick={() => handleDelete(flashcard.id)}>
-                        Delete
+                        Deletar
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
               </div>
             </div>
-            <CardDescription>Click the eye icon to reveal answer</CardDescription>
+            <CardDescription>Clique no ícone de olho pra visualizar a resposta</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div>
-                <strong>Question:</strong>
+                <strong>Pergunta:</strong>
                 <p className="mt-1 text-muted-foreground">{flashcard.acao}</p>
               </div>
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <strong>Answer:</strong>
+                  <strong>Resposta:</strong>
                   <Button
                     variant="ghost"
                     size="sm"
