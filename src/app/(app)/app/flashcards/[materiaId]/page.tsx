@@ -8,7 +8,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
   const materiaId = (await params).materiaId;
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto h-screen px-4 py-8 overflow-y-auto">
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-semibold">Flashcards</h1>
         <div className="flex gap-4">

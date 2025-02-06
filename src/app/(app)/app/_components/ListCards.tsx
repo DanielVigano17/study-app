@@ -32,7 +32,7 @@ export default function ListCards({materias} : {materias : Materia[]}) {
   setFilteredCards(filtrado);
   }
     return (
-       <>
+       <div className="">
         <div className="w-full flex justify-between mb-4">
                 <Input value={searchQuery} onChange={handleSearch} className="max-w-sm" type="text" placeholder="Pesquisar Matéria"/>
                 <AddCardDialog onAddMateria={handleAddCard}/>
@@ -61,6 +61,6 @@ export default function ListCards({materias} : {materias : Materia[]}) {
             </Card>
           ))}
         </div>
-      </>
+      </div>
     )
 }

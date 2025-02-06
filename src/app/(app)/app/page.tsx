@@ -10,7 +10,7 @@ export default async function ImageCards() {
   if(!materias) materias = [];
 
   return (
-    <div className="container mx-auto py-8 px-8">
+    <div className="container mx-auto py-8 px-8 h-screen overflow-y-auto">
       <Suspense fallback={<p>Carregando...</p>}>
         <ListCards materias={materias}/>
       </Suspense>
