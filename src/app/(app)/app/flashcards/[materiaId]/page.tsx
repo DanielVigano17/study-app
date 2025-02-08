@@ -12,10 +12,12 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
       <div className="flex items-center justify-between mb-8">
         <h1 className="text-2xl font-semibold">Flashcards</h1>
         <div className="flex gap-4">
-          <Button variant="outline" className="gap-2">
-            <Play className="w-4 h-4" />
-            Começar a Revisar
-          </Button>
+          <Link href={`/app/cards/${materiaId}`}>
+            <Button variant="outline" className="gap-2">
+              <Play className="w-4 h-4" />
+              Começar a Revisar
+            </Button>
+          </Link>
           <FlashcardDialog materiaId={materiaId}/>
         </div>
       </div>

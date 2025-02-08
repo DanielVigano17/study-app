@@ -4,10 +4,10 @@ import { prisma } from "@/prisma";
 
 export class PerguntaRepository implements IPerguntaRepository{
     
-    async createPergunta(data: CreatePerguntaDTO) {
+    async createPergunta(data: CreatePerguntaDTO) : Promise<Pergunta>{
         return await prisma.pergunta.create({data});
     }
-    async findManyPergunta(materiaId: string){
+    async findManyPergunta(materiaId: string) : Promise<Pergunta[]>{
         return await prisma.pergunta.findMany({where:{materiaId}});
     }
 }

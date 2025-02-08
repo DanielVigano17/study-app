@@ -4,15 +4,10 @@ import { useState } from 'react'
 import { FlashCard } from './FlashCard'
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-
-interface FlashCardData {
-  front: string
-  back: string
-  difficulty?: 'easy' | 'medium' | 'hard'
-}
+import { Pergunta } from '@/domain/entities/Pergunta'
 
 interface FlashCardDeckProps {
-  cards: FlashCardData[]
+  cards: Pergunta[]
 }
 
 export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {
@@ -46,8 +41,8 @@ export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {
   return (
     <div className="flex flex-col h-screen justify-center items-center space-y-4">
       <FlashCard 
-        front={cards[currentCardIndex].front} 
-        back={cards[currentCardIndex].back}
+        front={cards[currentCardIndex].acao} 
+        back={cards[currentCardIndex].resposta}
         isFlipped={showingAnswer}
         onClick={flipCard}
       />
