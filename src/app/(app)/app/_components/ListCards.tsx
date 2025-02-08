@@ -49,7 +49,7 @@ export default function ListCards({materias} : {materias : Materia[]}) {
                 }
               </CardHeader>
               <CardContent className="p-4 flex-grow">
-                <CardTitle className="text-xl">{materia.titulo}</CardTitle>
+                <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>
               </CardContent>
               <CardFooter className="p-4 pt-0">
                 <Link className="w-full" href={`/app/flashcards/${materia.id}`}>
