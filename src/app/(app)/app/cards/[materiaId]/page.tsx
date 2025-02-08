@@ -12,7 +12,7 @@ export default async function PageFlashCards() {
     ]
 
     return (
-        <div className="container mx-auto py-8 px-8">
+        <div className="container mx-auto py-8 px-8 h-screen overflow-y-auto">
             <Suspense fallback={<p>Carregando...</p>}>
                 <FlashCardDeck cards={flashCards} />
             </Suspense>
