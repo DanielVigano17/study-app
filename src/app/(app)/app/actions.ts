@@ -36,7 +36,7 @@ export async function listMateriasAction(userId? : string) {
         },
       });
       
-    const materias : Materia[] = await res.json();
+    const  {materias} : {materias : Materia[]} = await res.json();
 
     return materias;
 }
