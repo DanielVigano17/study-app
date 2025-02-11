@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import handleSubscriptionUpdated from "./handlesEvents/handleSubscriptionUpdated";
 
-export async function POST(req : NextRequest, res : NextResponse) {
+export async function POST(req : NextRequest) {
     const body = await req.text()
     const sig = req.headers.get('Stripe-Signature') as string
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");

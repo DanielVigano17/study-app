@@ -1,7 +1,7 @@
 import { modules } from "@/domain";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req : NextRequest, res : NextResponse){
+export async function POST(req : NextRequest){
     const materiaId = await req.json();
     console.log(materiaId);
     try{

@@ -3,7 +3,7 @@ import { headers } from 'next/headers'
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from 'stripe'
 
-export async function POST(req: NextRequest, res : NextResponse) {
+export async function POST(req: NextRequest) {
     // const { userId } = await req.json();
     try {
         if(!process.env.STRIPE_SECRET_KEY) throw new Error("Chave de API inexistente");
