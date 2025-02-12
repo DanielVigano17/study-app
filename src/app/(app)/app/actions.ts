@@ -30,7 +30,7 @@ export async function novaMateriaAction({titulo,image} : novaMateriaData, userId
 export async function listMateriasAction(userId? : string) {
     if(!userId) return false;
 
-    const res = await fetch(`http://localhost:3000/api/list-materias/${userId}`, {
+    const res = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/list-materias/${userId}`, {
         next: {
           tags: ['list-materias'],
         },
@@ -43,7 +43,7 @@ export async function listMateriasAction(userId? : string) {
 
 export async function createFileAction(data : CreateFileDTO) : Promise<File> {
 
-  const response = await fetch("http://localhost:3000/api/files/createFile", {
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/files/createFile`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -59,7 +59,7 @@ export async function createFileAction(data : CreateFileDTO) : Promise<File> {
 
 export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
 
-  const response = await fetch("http://localhost:3000/api/pergunta/create", {
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<P
 
 export async function findManyPerguntasAction(materiaId : string) : Promise<Pergunta[]> {
 
-  const response = await fetch("http://localhost:3000/api/pergunta/getPerguntas", {
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/getPerguntas`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export async function findManyPerguntasAction(materiaId : string) : Promise<Perg
 
 export async function listFilesAction(materiaId : string) {
 
-  const response = await fetch("http://localhost:3000/api/files/listFiles", {
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/files/listFiles`, {
     method: 'POST',
     next : {
       tags: ['listFiles']
