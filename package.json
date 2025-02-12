@@ -8,9 +8,10 @@
     "prisma-test:studio": "dotenv -e .env.prod -- npx prisma studio",
     "prisma-test:migrate": "dotenv -e .env.prod -- npx prisma migrate dev",
     "prisma-dev:migrate": "dotenv -e .env.dev -- npx prisma migrate dev",
-    "build": "dotenv -e .env.dev next build",
-    "start": "dotenv -e .env.dev next start",
-    "lint": "next lint"
+    "build": "npx prisma generate && next build",
+    "start": "next start",
+    "lint": "next lint",
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.4",
