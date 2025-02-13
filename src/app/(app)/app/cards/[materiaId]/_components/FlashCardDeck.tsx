@@ -48,22 +48,22 @@ export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {
       />
       <div className="flex space-x-4">
         <Button onClick={goToPreviousCard} variant="outline">
-          <ChevronLeft className="mr-2 h-4 w-4" /> Previous
+          <ChevronLeft className="mr-2 h-4 w-4" /> Anterior
         </Button>
         <Button onClick={goToNextCard} variant="outline">
-          Next <ChevronRight className="ml-2 h-4 w-4" />
+          Próximo <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
       {showingAnswer && (
         <div className="flex space-x-2">
           <Button onClick={() => rateDifficulty('easy')} variant="secondary" className="bg-green-500 hover:bg-green-600 text-white">
-            Easy
+            Fácil
           </Button>
           <Button onClick={() => rateDifficulty('medium')} variant="secondary" className="bg-yellow-500 hover:bg-yellow-600 text-white">
-            Medium
+            Médio
           </Button>
           <Button onClick={() => rateDifficulty('hard')} variant="secondary" className="bg-red-500 hover:bg-red-600 text-white">
-            Hard
+            Díficil
           </Button>
         </div>
       )}
