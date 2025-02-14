@@ -61,7 +61,7 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
                   <div className="font-medium">
                     {file.fileName}
                   </div>
-                  <div className="text-sm text-gray-500"><Link href={file.url}>Vizualizar</Link></div>
+                  <div className="text-sm text-gray-500"><a target="_blank" href={file.url}>Vizualizar</a></div>
                 </div>
               </div>
               <div className="flex items-center gap-2">

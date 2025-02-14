@@ -68,7 +68,7 @@ export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {
         </div>
       )}
       <p className="text-sm text-muted-foreground">
-        Card {currentCardIndex + 1} of {cards.length}
+        Card {currentCardIndex + 1} de {cards.length}
       </p>
     </div>
   )
