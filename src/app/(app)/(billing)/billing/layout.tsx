@@ -9,9 +9,7 @@ const layoutBilling = ({
   return (
     <div className="grid grid-cols-[16.2rem_1fr] min-h-screen">
       <MainSidebar/>
-      <Suspense fallback={<p>Carregando</p>}>
-        {children}
-      </Suspense>
+      {children}
     </div>
   )
 }

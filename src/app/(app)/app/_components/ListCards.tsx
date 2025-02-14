@@ -1,13 +1,14 @@
 "use client"
-
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card"
 import { Button } from "@/components/ui/button";
 import { AddCardDialog } from "./AddCardDialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Materia } from "@/domain/entities/Materia";
 import Link from "next/link";
-export default function ListCards({materias} : {materias : Materia[]}) {
+
+export default function ListCards({getMaterias} : {getMaterias : Promise<Materia[]>}) {
+  const materias = use(getMaterias);
   const [cards, setCards] = useState<Materia[]>(materias)
   const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
   const [searchQuery, setSearchQuery] = useState('')

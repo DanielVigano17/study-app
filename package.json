@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "dotenv -e .env.dev next dev --turbopack",
+    "dev": "next dev --turbopack",
     "prisma-dev:studio": "dotenv -e .env.dev -- npx prisma studio",
     "prisma-test:studio": "dotenv -e .env.prod -- npx prisma studio",
     "prisma-test:migrate": "dotenv -e .env.prod -- npx prisma migrate dev",

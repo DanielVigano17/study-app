@@ -10,6 +10,7 @@ import { CreateSubscription } from "./domain/useCases/biling/createSubscription"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  trustHost : true,
   providers: [Resend(
     {
         from: "onboarding@resend.dev",

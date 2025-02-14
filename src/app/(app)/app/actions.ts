@@ -19,6 +19,7 @@ export async function novaMateriaAction({titulo,image} : novaMateriaData, userId
       const materiaCriada = await modules.useCase.materia.createMateria.execute({userId, titulo, image});
   
       revalidatePath('/app');
+      revalidateTag('list-materias');
       return materiaCriada;
 
     }catch(e){
@@ -27,13 +28,12 @@ export async function novaMateriaAction({titulo,image} : novaMateriaData, userId
     return false
 }
 
-export async function listMateriasAction(userId? : string) {
-    if(!userId) return false;
-
+export async function listMateriasAction(userId : string) {
     const res = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/list-materias/${userId}`, {
         next: {
           tags: ['list-materias'],
         },
+        cache:"force-cache"
       });
       
     const  {materias} : {materias : Materia[]} = await res.json();
