@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { use, useState } from "react";
 import { Materia } from "@/domain/entities/Materia";
 import Link from "next/link";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Trash2 } from "lucide-react";
+import { deleteMateriaAction } from "../actions";
 
 export default function ListCards({getMaterias} : {getMaterias : Promise<Materia[]>}) {
   const materias = use(getMaterias);
@@ -17,6 +20,18 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
     const query = e.target.value
     setSearchQuery(query)
     filtrar(query)
+  }
+
+  const handleClickDelete = async (id : string) => {
+    const materiaExcluida = await deleteMateriaAction(id);
+
+    if(materiaExcluida){
+      const cardsSemExcluido = cards.filter(item => item.id != materiaExcluida.id);
+      setCards(cardsSemExcluido);
+      setFilteredCards(cardsSemExcluido);
+      console.log(cardsSemExcluido);
+    }
+    
   }
 
   const handleAddCard = (materia : Materia) => {
@@ -52,12 +67,33 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
               <CardContent className="p-4 flex-grow">
                 <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>
               </CardContent>
-              <CardFooter className="p-4 pt-0">
+              <CardFooter className="p-4 pt-0 flex gap-2">
                 <Link className="w-full" href={`/app/flashcards/${materia.id}`}>
                   <Button className="w-full">
                     Ver mais
                   </Button>
                 </Link>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={()=>{
+                          handleClickDelete(materia.id);
+                        }}
+                        className="border-red-500 text-red-500 hover:bg-red-50 hover:text-red-600 hover:border-red-600 transition-colors
+                        w-12"
+                        aria-label="Delete"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>Delete</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </CardFooter>
             </Card>
           ))}

@@ -17,6 +17,7 @@ import { ListFiles } from "./useCases/file/listFiles";
 import { CreatePerguntaUseCase } from "./useCases/pergunta/createPergunta";
 import { PerguntaRepository } from "@/repositories/perguntaRepository";
 import { FindManyPergunta } from "./useCases/pergunta/findManyPergunta";
+import DeleteMateriaUseCase from "./useCases/materia/delete-materia";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -40,7 +41,8 @@ export const modules = {
         },
         materia : {
             createMateria : new CreateMateria(materiaRepository),
-            listMaterias : new ListMaterias(materiaRepository, userRepository)
+            listMaterias : new ListMaterias(materiaRepository, userRepository),
+            deleteMateria : new DeleteMateriaUseCase(materiaRepository)
         },
         file : {
             createFile : new CreateFile(fileRepository),

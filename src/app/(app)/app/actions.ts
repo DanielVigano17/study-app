@@ -57,6 +57,23 @@ export async function createFileAction(data : CreateFileDTO) : Promise<File> {
   return file;
 }
 
+export async function deleteMateriaAction(materiaId : string) : Promise<Materia | null> {
+
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/materia/delete`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(materiaId),
+  });
+    
+  const {materia} = await response.json();
+
+  if(!materia) return null;
+  revalidateTag('list-materias');
+  return materia;
+}
+
 export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {

@@ -2,6 +2,9 @@ import { CreateMateriaDTO, IMateriaRepository, UpdateMateriaDTO } from "@/domain
 import { prisma } from "@/prisma";
 
 export class MateriaRepository implements IMateriaRepository{
+    async delete(materiaId: string){
+        return await prisma.materia.delete({where:{id:materiaId}})
+    };
     async listMaterias (userId: string) {
         return await prisma.materia.findMany({where:{userId}});
     };
