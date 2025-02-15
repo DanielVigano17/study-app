@@ -74,6 +74,23 @@ export async function deleteMateriaAction(materiaId : string) : Promise<Materia 
   return materia;
 }
 
+export async function deletePerguntaAction(perguntaId : string) : Promise<Pergunta | null> {
+
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/delete`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(perguntaId),
+  });
+    
+  const {pergunta} = await response.json();
+
+  if(!pergunta) return null;
+  // revalidateTag('list-materias');
+  return pergunta;
+}
+
 export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {

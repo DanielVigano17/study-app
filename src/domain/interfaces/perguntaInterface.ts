@@ -9,4 +9,5 @@ export interface CreatePerguntaDTO {
 export interface IPerguntaRepository{
     createPergunta : (data : CreatePerguntaDTO) => Promise<Pergunta>
     findManyPergunta : (materiaId : string) => Promise<Pergunta[]>
+    deletePergunta : (perguntaId : string) => Promise<Pergunta>
 }

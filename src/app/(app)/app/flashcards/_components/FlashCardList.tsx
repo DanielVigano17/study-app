@@ -23,7 +23,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Pergunta } from '@/domain/entities/Pergunta'
-import { findManyPerguntasAction } from '../../actions'
+import { deleteMateriaAction, deletePerguntaAction, findManyPerguntasAction } from '../../actions'
 
 export function FlashcardList({materiaId} : {materiaId : string}) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
@@ -37,8 +37,14 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     getFlashCards();
   },[])
 
-  const handleDelete = (id: string) => {
-    console.log('Delete flashcard:', id)
+  const handleDelete = async (id: string) => {
+    const perguntaExcluida = await deletePerguntaAction(id);
+    
+    if(perguntaExcluida){
+      const cardsSemExcluido = flashCards.filter(item => item.id != perguntaExcluida.id);
+      setFlashCards(cardsSemExcluido);
+      console.log(cardsSemExcluido);
+    }
   }
 
   const handleEdit = (id: string) => {
@@ -72,10 +78,9 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
                       <AlertDialogDescription>
-                        This action cannot be undone. This will permanently delete the
-                        flashcard.
+                        Está ação não pode ser desfeita. Deseja realmente deleter permanentemente ?
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
