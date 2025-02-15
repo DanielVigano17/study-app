@@ -8,32 +8,34 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
   const materiaId = (await params).materiaId;
 
   return (
-    <div className="container mx-auto h-screen px-4 py-8 overflow-y-auto">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold">Flashcards</h1>
-        <div className="flex gap-4">
-          <Link href={`/app/cards/${materiaId}`}>
-            <Button variant="outline" className="gap-2">
-              <Play className="w-4 h-4" />
-              Começar a Revisar
+      <div className="w-full overflow-y-auto">
+        <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-2xl font-semibold">Flashcards</h1>
+            <div className="flex gap-4">
+              <Link href={`/app/cards/${materiaId}`}>
+                <Button variant="outline" className="gap-2">
+                  <Play className="w-4 h-4" />
+                  Começar a Revisar
+                </Button>
+              </Link>
+              <FlashcardDialog materiaId={materiaId}/>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mb-8">
+            <Link href={`/app/fileList/${materiaId}`}>
+              <Button variant="ghost" className="text-sm text-gray-500">
+                <FileText className="w-4 h-4 mr-2" />
+                Arquivos
+              </Button>
+            </Link>
+            <Button variant="ghost" className="text-sm bg-secondary">
+              FLASHCARDS
             </Button>
-          </Link>
-          <FlashcardDialog materiaId={materiaId}/>
+          </div>
+          <FlashcardList materiaId={materiaId}/>
         </div>
       </div>
-      <div className="flex items-center gap-2 mb-8">
-        <Link href={`/app/fileList/${materiaId}`}>
-          <Button variant="ghost" className="text-sm text-gray-500">
-            <FileText className="w-4 h-4 mr-2" />
-            Arquivos
-          </Button>
-        </Link>
-        <Button variant="ghost" className="text-sm bg-secondary">
-          FLASHCARDS
-        </Button>
-      </div>
-      <FlashcardList materiaId={materiaId}/>
-    </div>
   )
 }
 

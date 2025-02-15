@@ -8,10 +8,12 @@ export default async function ImageCards() {
   let materias = listMateriasAction(user?.user?.id!);
 
   return (
-    <div className="container mx-auto py-8 px-8 h-screen overflow-y-auto">
-      <Suspense fallback={<p>Carregando...</p>}>
-        <ListCards getMaterias={materias}/>
-      </Suspense>
+    <div className="w-full overflow-y-auto">
+      <div className="container mx-auto py-8 px-8 h-screen overflow-y-visible">
+        <Suspense fallback={<p>Carregando...</p>}>
+          <ListCards getMaterias={materias}/>
+        </Suspense>
+      </div>
     </div>
   )
 }
