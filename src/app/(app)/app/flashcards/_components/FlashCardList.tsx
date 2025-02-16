@@ -56,9 +56,9 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
   }
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-4 pb-24 md:grid-cols-2 md:pb-2 lg:grid-cols-3">
       {flashCards.map((flashcard) => (
-        <Card key={flashcard.id}>
+        <Card className='min-w-0' key={flashcard.id}>
           <CardHeader>
             <div className="flex items-center justify-between">
               {/* <Badge variant="secondary">{flashcard.title}</Badge> */}

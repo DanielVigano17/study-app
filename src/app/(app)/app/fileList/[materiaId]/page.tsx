@@ -65,11 +65,11 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
                 </div>
               </div>
               <div className="flex items-center gap-2">
-              <Button variant="destructive" size="sm" className="gap-2">
+              <Button variant="destructive" size="sm" className="gap-2 hidden md:flex">
                 <Share className="w-4 h-4" />
                 SHARE
               </Button>
-              <Button size="sm" className="gap-2">
+              <Button size="sm" className="gap-2 hidden md:flex">
                 <Download className="w-4 h-4" />
                 DOWNLOAD
               </Button>

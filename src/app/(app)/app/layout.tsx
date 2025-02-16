@@ -1,7 +1,5 @@
-import { BottomNavigation } from "@/app/_components/bottom-navigation";
 import { MainSidebar } from "@/app/_components/sidebar";
 import { auth } from "@/auth";
-import { Suspense } from "react";
 
 const layoutHome = async ({
     children,
@@ -13,7 +11,7 @@ const layoutHome = async ({
   if (!session) return <div>Not authenticated</div>
 
   return (
-    <div className="w-full md:grid grid-cols-[16.2rem_1fr] min-h-screen">
+    <div className="w-screen md:grid grid-cols-[16.2rem_1fr] min-h-screen">
       <MainSidebar/>
         {children}
     </div>
