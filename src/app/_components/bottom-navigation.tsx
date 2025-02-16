@@ -1,18 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { Home, Search, Heart, User } from "lucide-react"
+import { Home, Search, Heart, User, Settings, CreditCard } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { usePathname } from "next/navigation"
+import Link from "next/link"
 
 const menuItems = [
-  { icon: Home, label: "Home" },
-  { icon: Search, label: "Search" },
-  { icon: Heart, label: "Favorites" },
-  { icon: User, label: "Account" },
+  { icon: Home, label: "Home", url:"/app" },
+  { icon: Settings, label: "Configurações", url:"/settings" },
+  { icon: CreditCard, label: "Assinatura", url:"/billing" },
 ]
 
 export function BottomNavigation() {
-  const [active, setActive] = useState("Home")
+  const pathname = usePathname()
+
+  const isActive = (path: string, name : string) => {
+    return pathname === path
+  }
+
+  const [active, setActive] = useState("/app")
 
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 md:hidden">
@@ -21,10 +28,10 @@ export function BottomNavigation() {
           {menuItems.map((item) => (
             <NavItem
               key={item.label}
+              url={item.url}
               icon={item.icon}
               label={item.label}
-              isActive={active === item.label}
-              onClick={() => setActive(item.label)}
+              isActive={isActive(item.url, item.label)}
             />
           ))}
         </div>
@@ -37,16 +44,16 @@ function NavItem({
   icon: Icon,
   label,
   isActive,
-  onClick,
+  url,
 }: {
   icon: any
   label: string
+  url : string
   isActive: boolean
-  onClick: () => void
 }) {
   return (
-    <button
-      onClick={onClick}
+    <Link
+      href={url}
       className={cn(
         "flex flex-col items-center justify-center transition-all",
         isActive ? "text-white scale-110" : "text-white/60 hover:text-white",
@@ -58,7 +65,7 @@ function NavItem({
         <Icon className="h-5 w-5" />
       </div>
       <span className="text-xs">{label}</span>
-    </button>
+    </Link>
   )
 }
 
