@@ -57,6 +57,21 @@ export async function createFileAction(data : CreateFileDTO) : Promise<File> {
   return file;
 }
 
+export async function deleteFileAction(fileId : string, filePath : string) : Promise<File> {
+
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/files/removeFile`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({fileId, filePath}),
+  });
+    
+  const {file} = await response.json();
+
+  if(!file) throw new Error("Erro ao salvar arquivo no banco de dados");
+  return file;
+}
 export async function deleteMateriaAction(materiaId : string) : Promise<Materia | null> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/materia/delete`, {

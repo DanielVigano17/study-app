@@ -54,7 +54,6 @@ export default class FileService {
             file : null,
             errorMessage : error.message
         }
-        console.log(data);
         return {
             success : true,
             file : {

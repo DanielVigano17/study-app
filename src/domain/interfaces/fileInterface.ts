@@ -11,4 +11,5 @@ export interface CreateFileDTO {
 export interface IFilesRepository{
     createFile : (data : CreateFileDTO) => Promise<File>
     getFilesMateria : (materiaId : string) => Promise<File[]>
+    removeFile : (fileId : string) => Promise<File>
 }

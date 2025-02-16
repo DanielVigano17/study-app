@@ -1,21 +1,42 @@
 "use client"
 
 import { use, useEffect, useState } from "react";
-import { FileList } from "../_components/fileList"
-import { listFilesAction } from "../../actions";
+import { deleteFileAction, listFilesAction } from "../../actions";
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { Share, Download, MoreVertical } from 'lucide-react'
+import { Share, Download, MoreVertical, Trash } from 'lucide-react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { File as FileIcon } from 'lucide-react'
-import Link from 'next/link'
 
 export default function FilesPages({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
   
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
+
+  function getFilePathFromUrl(fileUrl : string) {
+    const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL + '/storage/v1/object/public/teste/';
+    return fileUrl.replace(baseUrl, '');
+  }
+
+  const handleDelete = async (fileId : string, filePath : string) => {
+      const fileRemoved = await deleteFileAction(fileId,filePath);
+      
+      if(fileRemoved){
+        const filesSemExcluido = files?.filter(item => item.id != fileRemoved.id);
+        setFiles(filesSemExcluido);
+        console.log(filesSemExcluido);
+      }
+  }
  
   useEffect(() => {
     async function fetchFiles() {
@@ -64,17 +85,26 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
                 </div>
               </div>
               <div className="flex items-center gap-2">
-              <Button variant="destructive" size="sm" className="gap-2 hidden md:flex">
-                <Share className="w-4 h-4" />
-                SHARE
+              <Button onClick={() => handleDelete(file.id, getFilePathFromUrl(file.url))} variant="destructive" size="sm" className="gap-2 hidden md:flex">
+                <Trash className="w-4 h-4" />
+                EXCLUIR
               </Button>
-              <Button size="sm" className="gap-2 hidden md:flex">
-                <Download className="w-4 h-4" />
-                DOWNLOAD
-              </Button>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="w-4 h-4" />
-              </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                      <MoreVertical className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">Download</DropdownMenuItem>
+                  <DropdownMenuSeparator className="flex md:hidden"/>
+                  <DropdownMenuItem onClick={() => handleDelete(file.id, getFilePathFromUrl(file.url))} className="flex cursor-pointer md:hidden">Excluir</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
         </div>
         ))}
