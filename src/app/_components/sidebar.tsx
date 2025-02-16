@@ -2,6 +2,7 @@
 import { usePathname } from 'next/navigation'
 import { HomeIcon, Settings, CreditCard } from 'lucide-react'
 import { Sidebar, SidebarFooter, SidebarHeader, SidebarMain, SidebarNav, SidebarNavHeader, SidebarNavHeaderTitle, SidebarNavLink, SidebarNavMain } from '@/components/Sidebar/SidebarModel'
+import { BottomNavigation } from './bottom-navigation'
 
 export function MainSidebar() {
   const pathname = usePathname()
@@ -11,7 +12,8 @@ export function MainSidebar() {
   }
 
   return (
-    <Sidebar>
+    <div className='h-full'>
+      <Sidebar className='h-full'>
       <SidebarHeader>
         StudyApp
       </SidebarHeader>
@@ -57,5 +59,7 @@ export function MainSidebar() {
         <span>TesteFooter</span>
       </SidebarFooter>
     </Sidebar>
+    <BottomNavigation/>
+    </div>
   )
 }

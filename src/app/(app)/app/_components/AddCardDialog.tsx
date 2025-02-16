@@ -24,7 +24,7 @@ export function AddCardDialog({onAddMateria} : {onAddMateria : (materia : Materi
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="default">Adicionar Card</Button>
+        <Button className="py-0 px-2 text-xs" variant="default">Adicionar Card</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

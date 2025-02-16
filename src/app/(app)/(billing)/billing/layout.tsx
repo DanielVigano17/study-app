@@ -7,7 +7,7 @@ const layoutBilling = ({
     children: React.ReactNode;
   }>) => {
   return (
-    <div className="grid grid-cols-[16.2rem_1fr] min-h-screen">
+    <div className="w-full md:grid grid-cols-[16.2rem_1fr] min-h-screen">
       <MainSidebar/>
       {children}
     </div>

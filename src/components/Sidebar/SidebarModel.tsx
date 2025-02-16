@@ -13,7 +13,7 @@ export function Sidebar({
   return (
     <aside
       className={cn([
-        'border-r border-border flex flex-col space-y-6 bg-secondary/5',
+        'hidden md:flex border-r border-border flex-col space-y-6 bg-secondary/5',
         className,
       ])}
     >

@@ -49,11 +49,11 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
   }
     return (
        <div className="">
-        <div className="w-full flex justify-between mb-4">
+        <div className="w-full flex justify-between gap-3 mb-4">
                 <Input value={searchQuery} onChange={handleSearch} className="max-w-sm" type="text" placeholder="Pesquisar Matéria"/>
                 <AddCardDialog onAddMateria={handleAddCard}/>
               </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 pb-24 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCards.map((materia) => (
             <Card key={materia.id} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
