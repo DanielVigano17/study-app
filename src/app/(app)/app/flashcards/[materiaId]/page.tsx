@@ -10,13 +10,13 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
   return (
       <div className="w-full overflow-y-auto">
         <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
-          <div className="flex flex-col items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
+          <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
             <h1 className="text-2xl font-semibold mb-2 md:mb-0">Flashcards</h1>
             <div className="flex gap-4 flex-wrap">
               <Link href={`/app/cards/${materiaId}`}>
                 <Button variant="outline" className="gap-2">
                   <Play className="w-4 h-4" />
-                  Começar a Revisar
+                  <p className="hidden md:flex">Começar a Revisar</p>
                 </Button>
               </Link>
               <FlashcardDialog materiaId={materiaId}/>
