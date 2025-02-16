@@ -1,6 +1,7 @@
 import { MainSidebar } from "@/app/_components/sidebar";
 import { auth } from "@/auth";
-
+import { Redirect } from "next";
+import Link from "next/link";
 const layoutHome = async ({
     children,
   }: Readonly<{
@@ -8,7 +9,7 @@ const layoutHome = async ({
   }>) => {
     
   const session = await auth()
-  if (!session) return <div>Not authenticated</div>
+  if (!session) return <div><Link href={"/login"}>Fazer login</Link></div>
 
   return (
     <div className="w-screen md:grid grid-cols-[16.2rem_1fr] min-h-screen">
