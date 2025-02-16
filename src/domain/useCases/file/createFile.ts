@@ -7,7 +7,6 @@ export class CreateFile {
 
     async execute(data : CreateFileDTO){
         const file = await this.fileRepository.createFile(data);
-
         return file;
     }
 }

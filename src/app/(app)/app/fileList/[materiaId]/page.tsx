@@ -16,7 +16,6 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
   
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
-  console.log(files);
  
   useEffect(() => {
     async function fetchFiles() {

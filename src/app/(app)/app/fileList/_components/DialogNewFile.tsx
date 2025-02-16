@@ -6,11 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Upload, File as FileIcon, AlertCircle } from 'lucide-react'
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Progress } from "@/components/ui/progress"
-import { createClient } from '@supabase/supabase-js'
+import supabase from '@/lib/supabase-client'
 import {CircleCheckBig} from 'lucide-react'
 import { createFileAction } from '../../actions'
 import { CreateFileDTO } from '@/domain/interfaces/fileInterface'
 import { File as FileDomain } from '@/domain/entities/File'
+import FileService from '@/services/upload-service'
 
 const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB in bytes
 
@@ -53,24 +54,18 @@ export default function FileUploadDialog({materiaId, fileList, setFiles} : {mate
     const fileName = `${Math.random()}.${fileExt}`
     const filePath = file.name
 
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || "", process.env.NEXT_PUBLIC_SUPABASE_PUBLISH_API_KEY || "" )
-
     const fileBlob = new Blob([file], { type: file.type })
 
-    const { error, data } = await supabase.storage
-      .from('teste')
-      .upload(fileName, fileBlob, {
-        cacheControl: '3600'
-      })
+    const result = await FileService.uploadFile({fileBlob,fileName});
 
-    if (error) throw error
+    if(!result.success) throw new Error(result.errorMessage);
 
-    const fileObject = supabase.storage.from('teste').getPublicUrl(data.path)
+    const fileObject = supabase.storage.from('teste').getPublicUrl(result.file!.url)
 
     const createFileObject : CreateFileDTO = {
       fileName : filePath,
       materiaId : materiaId as string,
-      supabaseId : data.id,
+      supabaseId : result.file!.id,
       url : fileObject.data.publicUrl
     }
 

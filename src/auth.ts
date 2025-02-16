@@ -17,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }
   )],
   session :{
-    maxAge : 60 * 60
+    maxAge : 60 * 60 * 6
   },
   callbacks: {
     authorized: async ({ request,auth }) => {
