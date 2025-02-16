@@ -39,7 +39,7 @@ export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {
   }
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center space-y-4">
+    <div className="flex flex-col h-screen mt-12 md:mt-24 items-center space-y-4">
       <FlashCard 
         front={cards[currentCardIndex].acao} 
         back={cards[currentCardIndex].resposta}

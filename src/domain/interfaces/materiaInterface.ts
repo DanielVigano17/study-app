@@ -15,4 +15,5 @@ export interface IMateriaRepository{
     listMaterias : (userId : string) => Promise<Materia[]>
     create : (data : CreateMateriaDTO) => Promise<Materia>
     delete : (materiaId : string) => Promise<Materia>
+    find : (materiaId : string) => Promise<Materia | null>;
 }

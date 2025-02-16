@@ -1,7 +1,11 @@
+import { Materia } from "@/domain/entities/Materia";
 import { CreateMateriaDTO, IMateriaRepository, UpdateMateriaDTO } from "@/domain/interfaces/materiaInterface";
 import { prisma } from "@/prisma";
 
 export class MateriaRepository implements IMateriaRepository{
+    async find(materiaId: string) {
+        return await prisma.materia.findUnique({where:{id:materiaId}});
+    }
     async delete(materiaId: string){
         return await prisma.materia.delete({where:{id:materiaId}})
     };
