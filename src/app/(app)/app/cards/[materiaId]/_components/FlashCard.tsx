@@ -19,7 +19,7 @@ export function FlashCard({ front, back, isFlipped, onClick }: FlashCardProps) {
           <p className="text-2xl font-semibold text-center overflow-auto max-h-full break-words">{front}</p>
         </div>
         <div className={`${styles.flashcardBack} absolute w-full h-full flex items-center justify-center p-6`}>
-          <p className="text-2xl font-semibold text-center overflow-auto max-h-full break-words">{back}</p>
+          <p className="text-2xl font-semibold text-center overflow-auto max-h-full break-words whitespace-pre-line">{back}</p>
         </div>
       </div>
     </div>

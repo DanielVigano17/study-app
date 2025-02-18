@@ -116,7 +116,7 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
                     )}
                   </Button>
                 </div>
-                <p className={`mt-1 text-muted-foreground transition-all duration-300 ${visibleAnswers[flashcard.id] ? '' : 'blur-sm'}
+                <p className={`mt-1 text-muted-foreground transition-all duration-300 whitespace-pre-line ${visibleAnswers[flashcard.id] ? '' : 'blur-sm'}
                 break-words
                 `}>
                   {flashcard.resposta}

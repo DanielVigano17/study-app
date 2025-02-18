@@ -68,6 +68,10 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
         )}
 
         <div className="space-y-2 h-96">
+          {/* {files.length > 0 && <iframe src={files[0].url} width="100%" height="600px">
+
+          </iframe>
+          } */}
           {files && files.map((file) => (
             <div
               key={file.id}
