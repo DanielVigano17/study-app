@@ -5,7 +5,7 @@ import { deleteFileAction, listFilesAction } from "../../actions";
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { Share, Download, MoreVertical, Trash } from 'lucide-react'
+import { Share, Download, MoreVertical, Trash, MoveLeft } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { File as FileIcon } from 'lucide-react'
+import Link from "next/link";
 
 export default function FilesPages({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
@@ -58,7 +59,10 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
   return (
       <div className="container mx-auto px-4 py-8 h-screen overflow-y-auto">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-semibold">Arquivos</h1>
+          <div className="flex items-center gap-4">
+            <Link href={`/app/`}><MoveLeft className="w-5 h-5"/></Link >
+            <h1 className="text-2xl font-semibold">Arquivos</h1>
+          </div>
           <DialogNewFile materiaId={materiaId} setFiles={handleSetState} fileList={files}/>
         </div>
         <FileFilters materiaId={materiaId} />

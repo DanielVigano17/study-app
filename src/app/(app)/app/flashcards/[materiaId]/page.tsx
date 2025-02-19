@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { FlashcardList } from "../_components/FlashCardList"
-import { Plus, Play, FileText } from 'lucide-react'
+import { Plus, Play, FileText, MoveLeft } from 'lucide-react'
 import Link from "next/link"
 import { FlashcardDialog } from "./_components/dialog-new-flashcard";
 
@@ -11,7 +11,11 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
       <div className="w-full overflow-y-auto">
         <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
           <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
+          <div className="flex items-center gap-4">
+            <Link href={`/app/`}><MoveLeft className="w-5 h-5"/></Link >
             <h1 className="text-2xl font-semibold mb-2 md:mb-0">Flashcards</h1>
+          </div>
+            
             <div className="flex gap-4 flex-wrap">
               <Link href={`/app/cards/${materiaId}`}>
                 <Button variant="outline" className="gap-2">
