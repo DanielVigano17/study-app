@@ -14,9 +14,9 @@ export async function calcularProximaRevisao(flashcard: Pergunta, nota: number):
   flashcard.facilidade = flashcard.facilidade + (0.1 - (5 - nota) * (0.08 + (5 - nota) * 0.02));
   if (flashcard.facilidade < 1.3) flashcard.facilidade = 1.3; // O valor de EF não pode ser inferior a 1.3
 
-  // Verifica se o usuário errou (nota menor que 3) e reseta o intervalo para 1 dia
+  // Verifica se o usuário errou (nota menor que 5) e reseta o intervalo para 1 dia
   if (nota < 5) {
-    flashcard.diasProximaRevisao = 1; // Redefine o intervalo para 1 dia
+    flashcard.diasProximaRevisao = 0; // Redefine o intervalo para revisar hoje
   } else {
     // Calcula o próximo intervalo (número de dias até a próxima revisão)
     if (flashcard.diasProximaRevisao === 0) {

@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { FlashCardDeck } from "./_components/FlashCardDeck";
 import { modules } from "@/domain";
-import { Button } from "@/components/ui/button";
 import { MoveLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -9,7 +8,7 @@ import Link from "next/link";
 export default async function PageFlashCards({params} : {params : Promise<{materiaId : string}>}) {
     const materiaId = (await params).materiaId;
 
-    const flashcards = await modules.useCase.pergunta.findMany.execute(materiaId);
+    const flashcards = await modules.useCase.pergunta.findPerguntasRevisao.execute(materiaId);
     const materia = await modules.useCase.materia.findMateria.execute(materiaId);
     console.log(flashcards)
     return (
@@ -21,7 +20,7 @@ export default async function PageFlashCards({params} : {params : Promise<{mater
                     {materia && <h1 className="text-2xl font-semibold">{materia.titulo}</h1>}
                 </div>
                 {flashcards && <FlashCardDeck cards={flashcards} />}
-                {!flashcards && <p>Nenhum flashcard cadastrado</p>}
+                {!flashcards && <p className="text-center mt-24">Nenhum flashcard para ser revisado</p>}
             </Suspense>
            </div>
         </div>
