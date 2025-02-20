@@ -56,6 +56,9 @@ model Pergunta{
   acao           String
   resposta       String
   materiaId      String
+  facilidade     Float              @default(0)
+  diasProximaRevisao  Int         @default(0)
+  dtUltimaRevisao  DateTime?             
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

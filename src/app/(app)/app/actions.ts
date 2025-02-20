@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
-import { CreatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreatePerguntaDTO, UpdatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
 import { Pergunta } from "@/domain/entities/Pergunta";
 type novaMateriaData={
   titulo : string
@@ -119,6 +119,22 @@ export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<P
   const {pergunta} = await response.json();
 
   if(!pergunta) throw new Error("Erro ao cadastrar pergunta");
+  return pergunta;
+}
+
+export async function updatePerguntaAction(data : UpdatePerguntaDTO, id : string) : Promise<Pergunta> {
+
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/update`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({object : data, id : id}),
+  });
+    
+  const {pergunta} = await response.json();
+
+  if(!pergunta) throw new Error("Erro ao fazer update de pergunta");
   return pergunta;
 }
 
