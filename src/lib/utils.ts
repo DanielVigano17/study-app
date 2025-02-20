@@ -22,7 +22,7 @@ export async function calcularProximaRevisao(flashcard: Pergunta, nota: number):
     if (flashcard.diasProximaRevisao === 0) {
       flashcard.diasProximaRevisao = 1; // Primeira revisão após 1 dia
     } else if (flashcard.diasProximaRevisao === 1) {
-      flashcard.diasProximaRevisao = 6; // Segunda revisão após 6 dias
+      flashcard.diasProximaRevisao = 3; // Segunda revisão após 3 dias
     } else {
       flashcard.diasProximaRevisao = Math.round(flashcard.diasProximaRevisao * flashcard.facilidade); // Multiplica o intervalo pela facilidade
     }
