@@ -20,17 +20,19 @@ export default async function Page() {
     }
 
     return (
-      <div className="container mx-auto px-4 pt-8 pb-24 h-screen overflow-y-auto">
-        <h1 className="text-3xl font-bold mb-8">Gerenciamento de Assinatura</h1>
-        <div className="flex flex-col">
-          <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
-            <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl}/>
-            <UsageStats />
-          </div>
-          <div className="lg:col-span-2">
-            <BillingHistory />
-          </div>
-        </div>
+      <div className="overflow-y-auto">
+              <div className="container mx-auto px-4 pt-8 h-screen overflow-y-visible">
+                <h1 className="text-3xl font-bold mb-8">Gerenciamento de Assinatura</h1>
+                <div className="flex flex-col pb-24">
+                  <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
+                    <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl}/>
+                    <UsageStats />
+                  </div>
+                  <div className="lg:col-span-2">
+                    <BillingHistory />
+                  </div>
+                </div>
+              </div>
       </div>
     )
 }
