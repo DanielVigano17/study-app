@@ -25,8 +25,12 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
   const [fetched, setFetched] = useState<boolean>(false)
 
   function getFilePathFromUrl(fileUrl : string) {
-    const baseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL + '/storage/v1/object/public/teste/';
-    return fileUrl.replace(baseUrl, '');
+    const urlObj = new URL(fileUrl);
+    const pathParts = urlObj.pathname.split('/');
+
+    const filename = pathParts[pathParts.length - 1];
+
+    return `${filename}`;
   }
 
   const handleDelete = async (fileId : string, filePath : string) => {

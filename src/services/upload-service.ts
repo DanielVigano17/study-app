@@ -57,8 +57,8 @@ export default class FileService {
         return {
             success : true,
             file : {
-                id : data[0].id,
-                fileName : data[0].name
+                id : "",
+                fileName : ""
             }
         }
 
