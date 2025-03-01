@@ -145,7 +145,7 @@ export async function findManyPerguntasAction(materiaId : string) : Promise<Perg
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(materiaId),
+    body: JSON.stringify({materiaId : materiaId}),
   });
     
   const {perguntas} = await response.json();
