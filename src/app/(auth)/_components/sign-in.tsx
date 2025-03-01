@@ -8,6 +8,7 @@ import actionLogin from "../login/actions"
 import { Loader2 } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { ToastAction } from "@/components/ui/toast"
+import ParallaxBackground from "@/components/backgrounds/parallax-background"
 
 export function AuthForm() {
   const form = useForm();
@@ -26,7 +27,8 @@ export function AuthForm() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md">
+      <ParallaxBackground dotColor="#929395" dotSize={2} dotCount={200} speed={0.15} />
+      <Card className="w-full z-40 max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
           <CardDescription>Digite seu email para receber o link de login</CardDescription>
