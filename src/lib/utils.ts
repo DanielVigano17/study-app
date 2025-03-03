@@ -40,3 +40,10 @@ export async function calcularProximaRevisao(flashcard: Pergunta, nota: number):
   
   return flashcard;
 }
+
+
+export function diferencaDias(data1 : Date, data2 : Date) {
+  const umDia = 1000 * 60 * 60 * 24; // Milissegundos em um dia
+  const diffEmMs = Math.abs(data2.getTime() - data1.getTime()); // Diferença em ms
+  return Math.floor(diffEmMs / umDia); // Converter para dias
+}

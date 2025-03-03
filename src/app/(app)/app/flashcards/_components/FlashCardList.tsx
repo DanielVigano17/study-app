@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Pergunta } from '@/domain/entities/Pergunta'
 import { deletePerguntaAction, findManyPerguntasAction } from '../../actions'
+import { diferencaDias } from '@/lib/utils'
 
 export function FlashcardList({materiaId} : {materiaId : string}) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
@@ -46,10 +47,24 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     const dataProximaRevisao = new Date(dataUltimaRevisao);
     dataProximaRevisao.setDate(dataProximaRevisao.getDate() + flashcard.diasProximaRevisao);
 
-    console.log(dataProximaRevisao);
+    console.log(diferencaDias(dataProximaRevisao, new Date()));
 
     // Compara com a data atual
     return dataProximaRevisao <= new Date() ? "pendente" : "revisado";
+  }
+
+  const getDiasAteRevisao = (flashcard : Pergunta) =>{
+    const dataUltimaRevisao = flashcard.dtUltimaRevisao ? new Date(flashcard.dtUltimaRevisao) : null;
+        
+    if (!dataUltimaRevisao) return 0;
+
+    // Adiciona os dias da próxima revisão à data da última revisão
+    const dataProximaRevisao = new Date(dataUltimaRevisao);
+    dataProximaRevisao.setDate(dataProximaRevisao.getDate() + flashcard.diasProximaRevisao);
+
+    if(dataProximaRevisao <= new Date()) return 0;
+    
+    return diferencaDias(dataProximaRevisao, new Date()) + 1;
   }
 
   const statusColors = {
@@ -115,7 +130,7 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
                   </AlertDialog>
                 </div>
               </div>
-              <CardDescription>Clique no ícone de olho pra visualizar a resposta</CardDescription>
+              <CardDescription>{`${getDiasAteRevisao(flashcard)} dia(s) até a próxima revisão`}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
