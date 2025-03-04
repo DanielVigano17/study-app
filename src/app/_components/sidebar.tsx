@@ -1,6 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { HomeIcon, Settings, CreditCard } from 'lucide-react'
+import { HomeIcon, Settings, CreditCard, BookText } from 'lucide-react'
 import { Sidebar, SidebarFooter, SidebarHeader, SidebarMain, SidebarNav, SidebarNavHeader, SidebarNavHeaderTitle, SidebarNavLink, SidebarNavMain } from '@/components/Sidebar/SidebarModel'
 import { BottomNavigation } from './bottom-navigation'
 
@@ -20,24 +20,36 @@ export function MainSidebar() {
       <SidebarMain className="flex flex-col flex-grow">
         <SidebarNav>
           <SidebarNavMain>
+
             <SidebarNavLink href="/app" active={isActive('/app')}>
-              <HomeIcon className="w-3 h-3 mr-3" />
+              <HomeIcon className="w-4 h-4 mr-3" />
               Home
             </SidebarNavLink>
+
             <SidebarNavLink
               href="/settings"
               active={isActive('/settings')}
             >
-              <Settings className="w-3 h-3 mr-3" />
+              <Settings className="w-4 h-4 mr-3" />
               Configurações
             </SidebarNavLink>
+
             <SidebarNavLink
               href="/billing"
               active={isActive('/billing')}
             >
-              <CreditCard className="w-3 h-3 mr-3" />
+              <CreditCard className="w-4 h-4 mr-3" />
               Gerenciar Assinatura
             </SidebarNavLink>
+
+            <SidebarNavLink
+              href="/quiz"
+              active={isActive('/quiz')}
+            >
+              <BookText className="w-4 h-4 mr-3"/>
+              Questionários
+            </SidebarNavLink>
+
           </SidebarNavMain>
         </SidebarNav>
 
