@@ -26,6 +26,7 @@ import { FindFlashcardsRevisao } from "./useCases/flashcard/find-flashcards-revi
 import { CreateQuestionarioUseCase } from "./useCases/questionario/create-questionario";
 import { QuestionarioRepository } from "@/repositories/questionarioRepository";
 import { ListQuestionariosUseCase } from "./useCases/questionario/list-questionarios";
+import { GetQuestionarioUseCase } from "./useCases/questionario/get-questionario";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -68,7 +69,8 @@ export const modules = {
         },
         questionario :{
             create : new CreateQuestionarioUseCase(questionarioRepository),
-            list : new ListQuestionariosUseCase(questionarioRepository)
+            list : new ListQuestionariosUseCase(questionarioRepository),
+            getById : new GetQuestionarioUseCase(questionarioRepository)
         }
     }
 }

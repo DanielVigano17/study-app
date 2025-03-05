@@ -7,4 +7,5 @@ export interface Questionario {
     dtUltimaRevisao : Date | null
     createdAt : Date
     updatedAt : Date
+    materiaId : string
 }

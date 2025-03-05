@@ -23,7 +23,8 @@ export class QuestionarioRepository implements IQuestionarioRepository{
                     id: questionario.id,
                     nome: data.perguntas.nome,
                     perguntas : data.perguntas,
-                    updatedAt : questionario.updatedAt
+                    updatedAt : questionario.updatedAt,
+                    materiaId : questionario.materiaId
                 }
                 return objectResponse;
             }
@@ -51,7 +52,28 @@ export class QuestionarioRepository implements IQuestionarioRepository{
             perguntas: questionario.perguntas as ListaPerguntas,
             dtUltimaRevisao: questionario.dtUltimaRevisao,
             createdAt: questionario.createdAt,
-            updatedAt: questionario.updatedAt
+            updatedAt: questionario.updatedAt,
+            materiaId: questionario.materiaId
         }));
+    }
+
+    async getById(id: string): Promise<Questionario | null> {
+        const questionario = await prisma.questionario.findUnique({
+            where: {
+                id: id
+            }
+        });
+
+        if (!questionario) return null;
+
+        return {
+            id: questionario.id,
+            nome: questionario.nome,
+            perguntas: questionario.perguntas as ListaPerguntas,
+            dtUltimaRevisao: questionario.dtUltimaRevisao,
+            createdAt: questionario.createdAt,
+            updatedAt: questionario.updatedAt,
+            materiaId: questionario.materiaId
+        };
     }
 }

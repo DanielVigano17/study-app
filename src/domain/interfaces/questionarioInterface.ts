@@ -11,4 +11,5 @@ export interface CreateQuestionarioDTO {
 export interface IQuestionarioRepository{
     createQuestionario : (data : CreateQuestionarioDTO) => Promise<Questionario>
     listQuestionariosByMateriaId : (materiaId : string) => Promise<Questionario[]>
+    getById: (id: string) => Promise<Questionario | null>
 }
