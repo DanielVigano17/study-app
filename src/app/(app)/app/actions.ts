@@ -7,6 +7,7 @@ import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
 import { CreatePerguntaDTO, UpdatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
 import { Pergunta } from "@/domain/entities/Pergunta";
+import { ListaPerguntas } from "@/services/ai-service";
 type novaMateriaData={
   titulo : string
   image? : string
@@ -106,7 +107,7 @@ export async function deletePerguntaAction(perguntaId : string) : Promise<Pergun
   return pergunta;
 }
 
-export async function createPerguntaAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
+export async function createFlashcardAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {
     method: 'POST',
@@ -174,3 +175,19 @@ export async function listFilesAction(materiaId : string) {
   return files;
 }
 
+
+export async function createPerguntasAction(prompt : string) : Promise<ListaPerguntas> {
+
+  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/ia/gerar-perguntas`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(prompt),
+  });
+    
+  const {perguntas} = await response.json();
+
+  if(!perguntas) throw new Error("Erro ao cadastrar pergunta");
+  return perguntas;
+}

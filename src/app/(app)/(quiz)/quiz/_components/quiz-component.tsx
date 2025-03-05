@@ -1,45 +1,31 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ArrowLeft } from "lucide-react"
 import { QuizGenerator } from "./quiz-generator"
 import { QuizForm } from "./quiz-form"
-
-// Definição das matérias disponíveis
-export const subjects = [
-  {
-    id: "geografia",
-    name: "Geografia",
-    description: "Teste seus conhecimentos sobre países, capitais e geografia mundial.",
-  },
-  {
-    id: "ciencias",
-    name: "Ciências",
-    description: "Perguntas sobre biologia, química e física para testar seu conhecimento científico.",
-  },
-  {
-    id: "matematica",
-    name: "Matemática",
-    description: "Desafie-se com questões de matemática, álgebra e geometria.",
-  },
-  {
-    id: "historia",
-    name: "História",
-    description: "Teste seus conhecimentos sobre eventos históricos importantes.",
-  },
-  {
-    id: "conhecimentos-gerais",
-    name: "Conhecimentos Gerais",
-    description: "Um mix de perguntas sobre diversos assuntos para testar sua cultura geral.",
-  },
-]
+import { listMateriasAction } from "@/app/(app)/app/actions"
+import { ApplicationContext } from "@/app/_context/app.context"
+import { Materia } from "@/domain/entities/Materia"
 
 export function QuizApp() {
   const [generatedQuestions, setGeneratedQuestions] = useState<any[] | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [materias, setMaterias] = useState<Materia[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
+
+  const appContext = useContext(ApplicationContext);
+
+  useEffect(()=>{
+    async function getMaterias(){
+      const materiasList = await listMateriasAction(appContext.session?.user.id!)
+      setMaterias(materiasList);
+    }
+    
+    getMaterias();
+  },[])
 
   const handleQuestionsGenerated = (questions: any[], subjectId: string) => {
     setGeneratedQuestions(questions)
@@ -94,7 +80,7 @@ export function QuizApp() {
               onQuestionsGenerated={handleQuestionsGenerated}
               isGenerating={isGenerating}
               onStartGenerating={handleStartGenerating}
-              subjects={subjects}
+              subjects={materias}
             />
           </motion.div>
         )}

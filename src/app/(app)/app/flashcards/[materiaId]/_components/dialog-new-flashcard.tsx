@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { createPerguntaAction } from "../../../actions"
+import { createFlashcardAction } from "../../../actions"
 
 type FormValues = {
   acao: string
@@ -42,7 +42,7 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
   async function onSubmit(values: FormValues) {
     console.log({ ...values, badges })
     const {acao,resposta} = values;
-    await createPerguntaAction({acao,resposta,materiaId});
+    await createFlashcardAction({acao,resposta,materiaId});
     setOpen(false)
     form.reset()
     setBadges([])
