@@ -1,4 +1,4 @@
-export interface Pergunta {
+export interface Flashcard {
     id : string
     acao : string
     resposta: string

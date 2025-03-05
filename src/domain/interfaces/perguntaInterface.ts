@@ -1,12 +1,12 @@
-import { Pergunta } from "../entities/Pergunta";
+import { Flashcard } from "../entities/Flashcard";
 
-export interface CreatePerguntaDTO {
+export interface CreateFlashcardDTO {
     acao : string
     resposta : string
     materiaId : string
 }
 
-export interface UpdatePerguntaDTO {
+export interface UpdateFlashcardDTO {
     acao? : string
     resposta? : string
     materiaId? : string
@@ -15,9 +15,9 @@ export interface UpdatePerguntaDTO {
     dtUltimaRevisao : Date | null
 }
 
-export interface IPerguntaRepository{
-    createPergunta : (data : CreatePerguntaDTO) => Promise<Pergunta>
-    findManyPergunta : (materiaId : string) => Promise<Pergunta[]>
-    deletePergunta : (perguntaId : string) => Promise<Pergunta>
-    update : (data : UpdatePerguntaDTO, id : string) => Promise<Pergunta>
+export interface IFlashcardRepository{
+    createFlashcard : (data : CreateFlashcardDTO) => Promise<Flashcard>
+    findManyFlashcard : (materiaId : string) => Promise<Flashcard[]>
+    deleteFlashcard : (perguntaId : string) => Promise<Flashcard>
+    update : (data : UpdateFlashcardDTO, id : string) => Promise<Flashcard>
 }

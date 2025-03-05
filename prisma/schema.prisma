@@ -34,7 +34,7 @@ model Materia{
   image       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  perguntas   Pergunta[]
+  flashcards   Flashcard[]
   Files       File[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -51,7 +51,7 @@ model File{
   materia     Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
 }
 
-model Pergunta{
+model Flashcard{
   id             String            @id @default(cuid())
   acao           String
   resposta       String

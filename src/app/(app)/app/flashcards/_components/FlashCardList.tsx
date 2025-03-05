@@ -22,13 +22,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
-import { Pergunta } from '@/domain/entities/Pergunta'
+import { Flashcard } from '@/domain/entities/Flashcard'
 import { deletePerguntaAction, findManyPerguntasAction } from '../../actions'
 import { diferencaDias } from '@/lib/utils'
 
 export function FlashcardList({materiaId} : {materiaId : string}) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
-  const [flashCards, setFlashCards] = useState<Pergunta[]>([])
+  const [flashCards, setFlashCards] = useState<Flashcard[]>([])
 
   useEffect(()=>{
     async function getFlashCards(){
@@ -38,7 +38,7 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     getFlashCards();
   },[])
 
-  const getStatus = (flashcard : Pergunta) : "pendente" | "revisado" => {
+  const getStatus = (flashcard : Flashcard) : "pendente" | "revisado" => {
     const dataUltimaRevisao = flashcard.dtUltimaRevisao ? new Date(flashcard.dtUltimaRevisao) : null;
         
     if (!dataUltimaRevisao) return "pendente";
@@ -53,7 +53,7 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     return dataProximaRevisao <= new Date() ? "pendente" : "revisado";
   }
 
-  const getDiasAteRevisao = (flashcard : Pergunta) =>{
+  const getDiasAteRevisao = (flashcard : Flashcard) =>{
     const dataUltimaRevisao = flashcard.dtUltimaRevisao ? new Date(flashcard.dtUltimaRevisao) : null;
         
     if (!dataUltimaRevisao) return 0;

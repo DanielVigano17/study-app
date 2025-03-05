@@ -5,8 +5,8 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
-import { CreatePerguntaDTO, UpdatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
-import { Pergunta } from "@/domain/entities/Pergunta";
+import { CreateFlashcardDTO, UpdateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
+import { Flashcard } from "@/domain/entities/Flashcard";
 import { ListaPerguntas } from "@/services/ai-service";
 type novaMateriaData={
   titulo : string
@@ -90,7 +90,7 @@ export async function deleteMateriaAction(materiaId : string) : Promise<Materia 
   return materia;
 }
 
-export async function deletePerguntaAction(perguntaId : string) : Promise<Pergunta | null> {
+export async function deletePerguntaAction(perguntaId : string) : Promise<Flashcard | null> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/delete`, {
     method: 'POST',
@@ -107,7 +107,7 @@ export async function deletePerguntaAction(perguntaId : string) : Promise<Pergun
   return pergunta;
 }
 
-export async function createFlashcardAction(data : CreatePerguntaDTO) : Promise<Pergunta> {
+export async function createFlashcardAction(data : CreateFlashcardDTO) : Promise<Flashcard> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {
     method: 'POST',
@@ -123,7 +123,7 @@ export async function createFlashcardAction(data : CreatePerguntaDTO) : Promise<
   return pergunta;
 }
 
-export async function updatePerguntaAction(data : UpdatePerguntaDTO, id : string) : Promise<Pergunta> {
+export async function updatePerguntaAction(data : UpdateFlashcardDTO, id : string) : Promise<Flashcard> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/update`, {
     method: 'POST',
@@ -139,7 +139,7 @@ export async function updatePerguntaAction(data : UpdatePerguntaDTO, id : string
   return pergunta;
 }
 
-export async function findManyPerguntasAction(materiaId : string) : Promise<Pergunta[]> {
+export async function findManyPerguntasAction(materiaId : string) : Promise<Flashcard[]> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/getPerguntas`, {
     method: 'POST',

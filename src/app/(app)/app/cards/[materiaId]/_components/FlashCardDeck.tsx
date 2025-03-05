@@ -4,11 +4,11 @@ import { useState } from 'react'
 import { FlashCard } from './FlashCard'
 import { Button } from "@/components/ui/button"
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { Pergunta } from '@/domain/entities/Pergunta'
+import { Flashcard } from '@/domain/entities/Flashcard'
 import { calcularProximaRevisao } from '@/lib/utils'
 
 interface FlashCardDeckProps {
-  cards: Pergunta[]
+  cards: Flashcard[]
 }
 
 export function FlashCardDeck({ cards: initialCards }: FlashCardDeckProps) {

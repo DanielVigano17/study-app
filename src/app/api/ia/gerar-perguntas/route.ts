@@ -1,5 +1,5 @@
 import { modules } from "@/domain";
-import { CreatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
 import AiService from "@/services/ai-service";
 import { NextRequest, NextResponse } from "next/server";
 

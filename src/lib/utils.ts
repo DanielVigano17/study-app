@@ -1,6 +1,6 @@
 import { updatePerguntaAction } from "@/app/(app)/app/actions";
 import { modules } from "@/domain";
-import { Pergunta } from "@/domain/entities/Pergunta";
+import { Flashcard } from "@/domain/entities/Flashcard";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export async function calcularProximaRevisao(flashcard: Pergunta, nota: number): Promise<Pergunta> {
+export async function calcularProximaRevisao(flashcard: Flashcard, nota: number): Promise<Flashcard> {
 
   // Atualiza a facilidade (EF) com base na nota do usuário
   flashcard.facilidade = flashcard.facilidade + (0.1 - (5 - nota) * (0.08 + (5 - nota) * 0.02));

@@ -8,7 +8,7 @@ import Link from "next/link";
 export default async function PageFlashCards({params} : {params : Promise<{materiaId : string}>}) {
     const materiaId = (await params).materiaId;
 
-    const flashcards = await modules.useCase.pergunta.findPerguntasRevisao.execute(materiaId);
+    const flashcards = await modules.useCase.flashcard.findflashcardRevisao.execute(materiaId);
     const materia = await modules.useCase.materia.findMateria.execute(materiaId);
     console.log(flashcards)
     return (

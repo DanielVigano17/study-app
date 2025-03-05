@@ -1,11 +1,11 @@
 import { modules } from "@/domain";
-import { CreatePerguntaDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req : NextRequest){
-    const data : CreatePerguntaDTO = await req.json();
+    const data : CreateFlashcardDTO = await req.json();
     try{
-        const perguntaCreated = await modules.useCase.pergunta.createPergunta.execute(data);
+        const perguntaCreated = await modules.useCase.flashcard.createFlashcard.execute(data);
 
         return NextResponse.json({status : 200, pergunta : perguntaCreated});
     }catch(e){

@@ -14,21 +14,21 @@ import { UpdateSubscription } from "./useCases/biling/updateSubscription";
 import { CreateFile } from "./useCases/file/createFile";
 import { FileRepository } from "@/repositories/fileRepository";
 import { ListFiles } from "./useCases/file/listFiles";
-import { CreatePerguntaUseCase } from "./useCases/pergunta/createPergunta";
-import { PerguntaRepository } from "@/repositories/perguntaRepository";
-import { FindManyPergunta } from "./useCases/pergunta/findManyPergunta";
+import { CreateFlashcardUseCase } from "./useCases/flashcard/createFlashcard";
+import { FlashcardRepository } from "@/repositories/perguntaRepository";
+import { FindManyFlashcard } from "./useCases/flashcard/findManyFlashcard";
 import DeleteMateriaUseCase from "./useCases/materia/delete-materia";
-import DeletePerguntaUseCase from "./useCases/pergunta/delete-pergunta";
+import DeleteFlashcardUseCase from "./useCases/flashcard/delete-flashcard";
 import DeleteFileUseCase from "./useCases/file/delete-file";
 import { FindMateriaUseCase } from "./useCases/materia/find-materia";
-import { UpdatePerguntaUseCase } from "./useCases/pergunta/update-pergunta";
-import { FindPerguntasRevisao } from "./useCases/pergunta/find-perguntas-revisao";
+import { UpdateFlashcardUseCase } from "./useCases/flashcard/update-flashcard";
+import { FindFlashcardsRevisao } from "./useCases/flashcard/find-flashcards-revisao";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
 const materiaRepository = new MateriaRepository();
 const fileRepository = new FileRepository();
-const perguntaRepository = new PerguntaRepository();
+const flashcardRepository = new FlashcardRepository();
 
 export const modules = {
     useCase : {
@@ -55,12 +55,12 @@ export const modules = {
             listFiles : new ListFiles(fileRepository),
             deleteFile : new DeleteFileUseCase(fileRepository),
         },
-        pergunta : {
-            createPergunta : new CreatePerguntaUseCase(perguntaRepository),
-            findMany : new FindManyPergunta(perguntaRepository),
-            deletePergunta : new DeletePerguntaUseCase(perguntaRepository),
-            update : new UpdatePerguntaUseCase(perguntaRepository),
-            findPerguntasRevisao : new FindPerguntasRevisao(perguntaRepository),
+        flashcard : {
+            createFlashcard : new CreateFlashcardUseCase(flashcardRepository),
+            findMany : new FindManyFlashcard(flashcardRepository),
+            deleteFlashcard : new DeleteFlashcardUseCase(flashcardRepository),
+            update : new UpdateFlashcardUseCase(flashcardRepository),
+            findflashcardRevisao : new FindFlashcardsRevisao(flashcardRepository),
         }
     }
 }
