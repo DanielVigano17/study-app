@@ -23,7 +23,8 @@ export class StripeRepository implements IPaymentGateway {
         metadata : subscription.metadata,
         subscriptionId : subscription.id,
         status : subscription.status,
-        amount : (subscription.items.data[0].plan.amount || 0) / 100
+        amount : (subscription.items.data[0].plan.amount || 0) / 100,
+        nextBillingDate: new Date(subscription.current_period_end * 1000)
       }
       return subscriptionObject;
     };

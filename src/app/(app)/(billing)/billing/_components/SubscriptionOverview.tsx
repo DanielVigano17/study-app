@@ -16,9 +16,46 @@ interface SubscriptionOverviewProps {
     nameAssinatura? : string,
     metadata? : Stripe.Metadata,
     status : string,
-    amount : number
+    amount : number,
+    nextBillingDate?: Date
   }
 }
+
+// Mapeamento de status para português e suas cores
+const subscriptionStatusConfig = {
+  'incomplete': {
+    label: 'Incompleta',
+    className: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-100'
+  },
+  'incomplete_expired': {
+    label: 'Expirada',
+    className: 'bg-red-100 text-red-800 hover:bg-red-100'
+  },
+  'trialing': {
+    label: 'Período de Teste',
+    className: 'bg-blue-100 text-blue-800 hover:bg-blue-100'
+  },
+  'active': {
+    label: 'Ativa',
+    className: 'bg-green-100 text-green-800 hover:bg-green-100'
+  },
+  'past_due': {
+    label: 'Pagamento Atrasado',
+    className: 'bg-orange-100 text-orange-800 hover:bg-orange-100'
+  },
+  'canceled': {
+    label: 'Cancelada',
+    className: 'bg-red-100 text-red-800 hover:bg-red-100'
+  },
+  'unpaid': {
+    label: 'Não Paga',
+    className: 'bg-red-100 text-red-800 hover:bg-red-100'
+  },
+  'paused': {
+    label: 'Pausada',
+    className: 'bg-gray-100 text-gray-800 hover:bg-gray-100'
+  }
+} as const;
 
 export default function SubscriptionOverview({url,subscriptionDetails}:SubscriptionOverviewProps) {
   // Aqui você incluiria a lógica para buscar os detalhes da assinatura do usuário
@@ -37,21 +74,32 @@ export default function SubscriptionOverview({url,subscriptionDetails}:Subscript
     window.location.href = url!;
   }
 
+  const statusConfig = subscriptionStatusConfig[subscriptionDetails.status as keyof typeof subscriptionStatusConfig] || {
+    label: subscriptionDetails.status,
+    className: 'bg-gray-100 text-gray-800 hover:bg-gray-100'
+  };
+
+  // Função para formatar a data
+  const formatDate = (date?: Date) => {
+    if (!date) return '-';
+    return new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }).format(date);
+  };
+
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between items-center">
           <CardTitle>Visão Geral da Assinatura</CardTitle>
-          {/* <Badge variant="outline">{subscription.status}</Badge> */}
           <Badge 
-                    variant={subscriptionDetails.status === "active" ? "default" : "destructive"}
-                    className={
-                      subscriptionDetails.status === "active" 
-                        ? "bg-green-100 text-green-800 hover:bg-green-100" 
-                        : "bg-red-100 text-red-800 hover:bg-red-100"
-                    }
-          >{subscriptionDetails.status}</Badge>
-          
+            variant="outline"
+            className={statusConfig.className}
+          >
+            {statusConfig.label}
+          </Badge>
         </div>
       </CardHeader>
       <CardContent>
@@ -66,7 +114,7 @@ export default function SubscriptionOverview({url,subscriptionDetails}:Subscript
           </div>
           <div>
             <p className="text-sm text-muted-foreground">Próxima Renovação</p>
-            <p className="text-lg">{subscription.renewalDate}</p>
+            <p className="text-lg">{formatDate(subscriptionDetails.nextBillingDate)}</p>
           </div>
         </div>
         <div className="mt-6">

@@ -27,6 +27,7 @@ import { CreateQuestionarioUseCase } from "./useCases/questionario/create-questi
 import { QuestionarioRepository } from "@/repositories/questionarioRepository";
 import { ListQuestionariosUseCase } from "./useCases/questionario/list-questionarios";
 import { GetQuestionarioUseCase } from "./useCases/questionario/get-questionario";
+import { CheckSubscriptionStatus } from "./useCases/biling/checkSubscriptionStatus";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -44,7 +45,8 @@ export const modules = {
             findSubscription : new FindSubscription(paymentGateway),
             retriveProduct : new RetriveProduct(paymentGateway),
             updateCustomer : new UpdateCustomer(paymentGateway),
-            updateSubscription : new UpdateSubscription(paymentGateway)
+            updateSubscription : new UpdateSubscription(paymentGateway),
+            checkSubscriptionStatus: new CheckSubscriptionStatus(new StripeRepository())
         },
         user : {
             updateUser : new UpdateUserUseCase(userRepository)
