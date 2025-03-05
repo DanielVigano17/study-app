@@ -1,5 +1,5 @@
 import { modules } from "@/domain";
-import { CreateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req : NextRequest){

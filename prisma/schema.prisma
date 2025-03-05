@@ -36,6 +36,7 @@ model Materia{
   updatedAt   DateTime @updatedAt
   flashcards   Flashcard[]
   Files       File[]
+  Questionarios  Questionario[]
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
@@ -59,6 +60,17 @@ model Flashcard{
   facilidade     Float              @default(0)
   diasProximaRevisao  Int         @default(0)
   dtUltimaRevisao  DateTime?             
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  materia Materia @relation(fields: [materiaId], references: [id], onDelete: Cascade)
+}
+
+model Questionario{
+  id             String            @id @default(cuid())
+  perguntas      Json
+  dtUltimaRevisao  DateTime?  
+  materiaId      String           
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 

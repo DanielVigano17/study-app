@@ -80,7 +80,7 @@ export function QuizApp() {
               onQuestionsGenerated={handleQuestionsGenerated}
               isGenerating={isGenerating}
               onStartGenerating={handleStartGenerating}
-              subjects={materias}
+              materias={materias}
             />
           </motion.div>
         )}

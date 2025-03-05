@@ -1,5 +1,5 @@
 import { Flashcard } from "@/domain/entities/Flashcard";
-import { CreateFlashcardDTO, IFlashcardRepository, UpdateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO, IFlashcardRepository, UpdateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { prisma } from "@/prisma";
 
 export class FlashcardRepository implements IFlashcardRepository{

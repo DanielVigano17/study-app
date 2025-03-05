@@ -5,7 +5,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
-import { CreateFlashcardDTO, UpdateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO, UpdateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { Flashcard } from "@/domain/entities/Flashcard";
 import { ListaPerguntas } from "@/services/ai-service";
 type novaMateriaData={
@@ -176,14 +176,19 @@ export async function listFilesAction(materiaId : string) {
 }
 
 
-export async function createPerguntasAction(prompt : string) : Promise<ListaPerguntas> {
+export async function createPerguntasAction(prompt : string, materiaId : string, quntidadePerguntas : number, dificuldade : string) : Promise<ListaPerguntas> {
 
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/ia/gerar-perguntas`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(prompt),
+    body: JSON.stringify({
+      prompt : prompt,
+      materiaId : materiaId,
+      quntidadePerguntas : quntidadePerguntas,
+      dificuldade : dificuldade
+    }),
   });
     
   const {perguntas} = await response.json();

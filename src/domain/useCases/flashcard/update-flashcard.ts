@@ -1,4 +1,4 @@
-import { CreateFlashcardDTO, IFlashcardRepository, UpdateFlashcardDTO } from "@/domain/interfaces/perguntaInterface";
+import { CreateFlashcardDTO, IFlashcardRepository, UpdateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { Flashcard } from "@/domain/entities/Flashcard";
 
 export class UpdateFlashcardUseCase {

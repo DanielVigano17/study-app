@@ -4,6 +4,8 @@ import { zodResponseFormat } from "openai/helpers/zod";
 
 interface PerguntaParams {
     prompt : string
+    dificuldade : string
+    quantidade : number
 }
 
 export const OptionSchema = z.object({
@@ -32,7 +34,8 @@ export default class AiService {
         const completion = await clientOpenAi.beta.chat.completions.parse({
             model: "gpt-4o-mini",
             messages: [
-                { role: "system", content: "Você é um assistende de estudos que foca em gerar questionários de temas determinado pelos usuários. O questionários não pode ter alternativas iguais" },
+                { role: "system", content: `Você é um assistende de estudos que foca em gerar questionários de temas determinado pelos usuários. O questionários não pode ter alternativas iguais e
+                    deve ter somente ${paramsPergunta.quantidade} perguntas. Além disso as perguntas devem ser ${paramsPergunta.dificuldade}` },
                 {
                     role: "user",
                     content: paramsPergunta.prompt,

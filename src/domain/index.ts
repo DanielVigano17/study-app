@@ -23,12 +23,15 @@ import DeleteFileUseCase from "./useCases/file/delete-file";
 import { FindMateriaUseCase } from "./useCases/materia/find-materia";
 import { UpdateFlashcardUseCase } from "./useCases/flashcard/update-flashcard";
 import { FindFlashcardsRevisao } from "./useCases/flashcard/find-flashcards-revisao";
+import { CreateQuestionarioUseCase } from "./useCases/questionario/create-questionario";
+import { QuestionarioRepository } from "@/repositories/questionarioRepository";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
 const materiaRepository = new MateriaRepository();
 const fileRepository = new FileRepository();
 const flashcardRepository = new FlashcardRepository();
+const questionarioRepository = new QuestionarioRepository();
 
 export const modules = {
     useCase : {
@@ -61,6 +64,9 @@ export const modules = {
             deleteFlashcard : new DeleteFlashcardUseCase(flashcardRepository),
             update : new UpdateFlashcardUseCase(flashcardRepository),
             findflashcardRevisao : new FindFlashcardsRevisao(flashcardRepository),
+        },
+        questionario :{
+            create : new CreateQuestionarioUseCase(questionarioRepository),
         }
     }
 }
