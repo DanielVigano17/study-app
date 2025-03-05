@@ -1,16 +1,7 @@
 "use client"
-
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { ChevronDown, LayoutGrid, FileText } from 'lucide-react'
+import { LayoutGrid, FileText } from 'lucide-react'
 import Link from 'next/link'
-import DialogNewFile from "./DialogNewFile"
-import { File } from '@/domain/entities/File'
 
 export function FileFilters({materiaId} : {materiaId : string}) {
 

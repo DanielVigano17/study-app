@@ -21,6 +21,7 @@ export function QuizApp() {
   useEffect(()=>{
     async function getMaterias(){
       const materiasList = await listMateriasAction(appContext.session?.user.id!)
+      console.log(materiasList);
       setMaterias(materiasList);
     }
     

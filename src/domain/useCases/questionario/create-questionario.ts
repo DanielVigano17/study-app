@@ -8,7 +8,8 @@ export class CreateQuestionarioUseCase {
 
   async execute(data : CreateQuestionarioDTO): Promise<Questionario | null> {
     try{
-        return await this.questionarioRepository.createQuestionario(data);
+        const questionario = await this.questionarioRepository.createQuestionario(data);
+        return questionario;
     }catch(error){
         console.log(error);
         return null;

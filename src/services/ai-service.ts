@@ -11,7 +11,7 @@ interface PerguntaParams {
 export const OptionSchema = z.object({
     id: z.string(),
     text: z.string(),
-    correct: z.boolean().optional(), // Opcional, pois nem todas as opções terão essa propriedade
+    correct: z.boolean()
   });
   
   export const QuestionSchema = z.object({
@@ -21,6 +21,7 @@ export const OptionSchema = z.object({
   });
 
   export const QuestionListSchema = z.object({
+    nome : z.string(),
     questions : z.array(QuestionSchema)
   });
 
@@ -47,12 +48,14 @@ export default class AiService {
         const response = completion.choices[0].message.parsed
 
         return response ? response : {
+            nome : "",
             questions : []
         };
 
     }catch(e){
         console.log(e);
         return {
+            nome : "",
             questions : []
         };
     }

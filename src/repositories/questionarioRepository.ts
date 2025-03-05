@@ -5,25 +5,34 @@ import { ListaPerguntas } from "@/services/ai-service";
 
 export class QuestionarioRepository implements IQuestionarioRepository{
     async createQuestionario(data: CreateQuestionarioDTO) : Promise<Questionario>{
-        const questionario = await prisma.questionario.create({
-            data : {
-                perguntas : data.perguntas,
-                materiaId : data.materiaId
+        try {
+            
+            const questionarioData = {
+                perguntas: data.perguntas,
+                materiaId: data.materiaId || "",
+                nome: data.perguntas.nome || ""
+            };
+            const questionario = await prisma.questionario.create({
+                data: questionarioData
+            });
+
+            if(questionario.perguntas){
+                const objectResponse : Questionario = {
+                    createdAt : questionario.createdAt,
+                    dtUltimaRevisao : questionario.dtUltimaRevisao,
+                    id: questionario.id,
+                    nome: data.perguntas.nome,
+                    perguntas : data.perguntas,
+                    updatedAt : questionario.updatedAt
+                }
+                return objectResponse;
             }
-        });
-        if(questionario.perguntas){
-            const objectResponse : Questionario = {
-                createdAt : questionario.createdAt,
-                dtUltimaRevisao : questionario.dtUltimaRevisao,
-                id: questionario.id,
-                perguntas : data.perguntas,
-                updatedAt : questionario.updatedAt
-            }
-            return objectResponse;
+        } catch (error) {
+            console.error("Erro ao criar questionário:", error);
+            throw error;
         }
 
         throw new Error("Perguntas não cadastradas no questionario")
-
     }
 
     async listQuestionariosByMateriaId(materiaId: string): Promise<Questionario[]> {
@@ -38,6 +47,7 @@ export class QuestionarioRepository implements IQuestionarioRepository{
 
         return questionarios.map(questionario => ({
             id: questionario.id,
+            nome: questionario.nome,
             perguntas: questionario.perguntas as ListaPerguntas,
             dtUltimaRevisao: questionario.dtUltimaRevisao,
             createdAt: questionario.createdAt,

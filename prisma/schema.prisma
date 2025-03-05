@@ -70,6 +70,7 @@ model Questionario{
   id             String            @id @default(cuid())
   perguntas      Json
   dtUltimaRevisao  DateTime?  
+  nome           String            @default("Questionário sem nome")
   materiaId      String           
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

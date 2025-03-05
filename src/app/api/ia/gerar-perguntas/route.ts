@@ -5,13 +5,24 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req : NextRequest){
     const {prompt,materiaId, quntidadePerguntas, dificuldade} = await req.json();
     try{
-        const perguntasGeradas = await AiService.gerarPergunta({prompt : prompt, dificuldade : dificuldade, quantidade : quntidadePerguntas});
-        const questionarioCriado =  await modules.useCase.questionario.create.execute({perguntas : perguntasGeradas, materiaId : materiaId});
-        console.log(questionarioCriado);
-        return NextResponse.json({status : 200, perguntas : perguntasGeradas});
+        const questionarioGerado = await AiService.gerarPergunta({prompt : prompt, dificuldade : dificuldade, quantidade : quntidadePerguntas});
+        
+        if (!questionarioGerado || !questionarioGerado.questions || questionarioGerado.questions.length === 0) {
+            return NextResponse.json({status : 400, message: "Não foi possível gerar as perguntas"});
+        }
+
+        const questionarioCriado = await modules.useCase.questionario.create.execute({
+            perguntas: questionarioGerado,
+            materiaId: materiaId
+        });
+
+        if (!questionarioCriado) {
+            return NextResponse.json({status : 400, message: "Erro ao criar o questionário"});
+        }
+
+        return NextResponse.json({status : 200, perguntas : questionarioGerado});
     }catch(e){
         console.log(e);
-
-        return NextResponse.json({status : 400})
+        return NextResponse.json({status : 400, message: "Erro ao processar a solicitação"})
     }
 }

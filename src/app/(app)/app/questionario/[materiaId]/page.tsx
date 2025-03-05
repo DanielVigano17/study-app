@@ -8,7 +8,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
   const materiaId = (await params).materiaId;
   
   const questionarios = await modules.useCase.questionario.list.execute(materiaId);
-
+  console.log(questionarios);
   return (
     <div className="w-full overflow-y-auto">
       <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
@@ -47,7 +47,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
           {questionarios.map((questionario) => (
             <Card key={questionario.id} className="hover:shadow-lg transition-shadow">
               <CardHeader>
-                <CardTitle className="text-lg">Questionário {questionario.id}</CardTitle>
+                <CardTitle className="text-lg">{questionario.nome}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-gray-500 mb-4">
