@@ -25,6 +25,7 @@ import { UpdateFlashcardUseCase } from "./useCases/flashcard/update-flashcard";
 import { FindFlashcardsRevisao } from "./useCases/flashcard/find-flashcards-revisao";
 import { CreateQuestionarioUseCase } from "./useCases/questionario/create-questionario";
 import { QuestionarioRepository } from "@/repositories/questionarioRepository";
+import { ListQuestionariosUseCase } from "./useCases/questionario/list-questionarios";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -67,6 +68,7 @@ export const modules = {
         },
         questionario :{
             create : new CreateQuestionarioUseCase(questionarioRepository),
+            list : new ListQuestionariosUseCase(questionarioRepository)
         }
     }
 }

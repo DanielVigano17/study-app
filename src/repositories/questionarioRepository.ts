@@ -11,7 +11,6 @@ export class QuestionarioRepository implements IQuestionarioRepository{
                 materiaId : data.materiaId
             }
         });
-
         if(questionario.perguntas){
             const objectResponse : Questionario = {
                 createdAt : questionario.createdAt,
@@ -27,4 +26,22 @@ export class QuestionarioRepository implements IQuestionarioRepository{
 
     }
 
+    async listQuestionariosByMateriaId(materiaId: string): Promise<Questionario[]> {
+        const questionarios = await prisma.questionario.findMany({
+            where: {
+                materiaId: materiaId
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
+        });
+
+        return questionarios.map(questionario => ({
+            id: questionario.id,
+            perguntas: questionario.perguntas as ListaPerguntas,
+            dtUltimaRevisao: questionario.dtUltimaRevisao,
+            createdAt: questionario.createdAt,
+            updatedAt: questionario.updatedAt
+        }));
+    }
 }

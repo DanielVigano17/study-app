@@ -25,16 +25,22 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
               <FlashcardDialog materiaId={materiaId}/>
             </div>
           </div>
-          <div className="flex items-center gap-2 mb-8">
+          <div className="flex items-center gap-2 mb-8 overflow-x-auto">
             <Link href={`/app/fileList/${materiaId}`}>
-              <Button variant="ghost" className="text-sm text-gray-500">
+              <Button variant="ghost" className="text-sm text-gray-500 whitespace-nowrap">
                 <FileText className="w-4 h-4 mr-2" />
                 Arquivos
               </Button>
             </Link>
-            <Button variant="ghost" className="text-sm bg-secondary">
+            <Button variant="ghost" className="text-sm bg-secondary whitespace-nowrap">
               FLASHCARDS
             </Button>
+            <Link href={`/app/questionario/${materiaId}`}>
+              <Button variant="ghost" className="text-sm text-gray-500 whitespace-nowrap">
+                <FileText className="w-4 h-4 mr-2" />
+                QUESTIONÁRIOS
+              </Button>
+            </Link>
           </div>
           <FlashcardList materiaId={materiaId}/>
         </div>

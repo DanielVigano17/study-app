@@ -16,14 +16,20 @@ export function FileFilters({materiaId} : {materiaId : string}) {
 
   return (
     <div className="flex items-center justify-between py-4">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" className="text-sm bg-secondary">
+      <div className="flex items-center gap-4 overflow-x-auto">
+        <Button variant="ghost" className="text-sm bg-secondary whitespace-nowrap">
           Arquivos
         </Button>
         <Link href={`/app/flashcards/${materiaId}`}>
-          <Button variant="ghost" className="text-sm text-gray-500">
+          <Button variant="ghost" className="text-sm text-gray-500 whitespace-nowrap">
             <FileText className="w-4 h-4 mr-2" />
             FLASHCARDS
+          </Button>
+        </Link>
+        <Link href={`/app/questionario/${materiaId}`}>
+          <Button variant="ghost" className="text-sm text-gray-500 whitespace-nowrap">
+            <FileText className="w-4 h-4 mr-2" />
+            QUESTIONÁRIOS
           </Button>
         </Link>
       </div>
