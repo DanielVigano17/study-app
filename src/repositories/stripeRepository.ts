@@ -2,6 +2,15 @@ import { Subscription } from "@/domain/entities/Subscription";
 import { CreateCustomerDTO, IPaymentGateway } from "@/domain/interfaces/paymentGatewayInterface";
 import Stripe from "stripe";
 
+interface Invoice {
+    id: string;
+    date: Date;
+    status: 'paid' | 'open' | 'uncollectible' | 'void';
+    amount: number;
+    plan: string;
+    pdfUrl?: string;
+}
+
 export class StripeRepository implements IPaymentGateway {
     
     private stripe: Stripe;
@@ -87,4 +96,21 @@ export class StripeRepository implements IPaymentGateway {
       );
       return subscription;
   };
+
+  async listInvoices(customerId: string): Promise<Invoice[]> {
+    const invoices = await this.stripe.invoices.list({
+        customer: customerId,
+        limit: 10,
+        expand: ['data.subscription']
+    });
+
+    return invoices.data.map(invoice => ({
+        id: invoice.number || invoice.id,
+        date: new Date(invoice.created * 1000),
+        status: (invoice.status || 'void') as 'paid' | 'open' | 'uncollectible' | 'void',
+        amount: invoice.amount_paid ? invoice.amount_paid / 100 : 0,
+        plan: (invoice.subscription as Stripe.Subscription)?.items.data[0]?.price.nickname || 'Plano',
+        pdfUrl: invoice.invoice_pdf || undefined
+    }));
+  }
 }
