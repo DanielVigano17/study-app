@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import actionSalvarNome from "../actions";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type MyComponentProps = {
     id : string | undefined
@@ -12,10 +14,18 @@ type MyComponentProps = {
 
 const UpdateUserForm = ({id} : MyComponentProps) => {
     const form = useForm();
+    const router = useRouter();
   
     const handleSubmit = form.handleSubmit(async (data) =>{
-      await actionSalvarNome(id, data.nome);
+      const response = await actionSalvarNome(id, data.nome);
+
+      if(response.success) {
+        router.push("/app");
+      } else {
+        toast.error(response.error);
+      }
     });
+    
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
           <Card className="w-full max-w-md">

@@ -2,11 +2,28 @@
 
 import { modules } from "@/domain";
 
-const actionSalvarNome = async (id:string | undefined, name : string) => {
-
-    if(!id) throw new Error("Id inválido");
-
-    const user = await modules.useCase.user.updateUser.execute(id, {name});
+export type ActionResponse = {
+  error?: string;
+  success?: boolean;
 }
 
-export default actionSalvarNome;
+export default async function actionSalvarNome(id: string | undefined, name: string): Promise<ActionResponse> {
+  try {
+    if(!id) {
+      return {
+        error: "ID do usuário não fornecido",
+        success: false
+      }
+    }
+    
+    await modules.useCase.user.updateUser.execute(id, {name});
+    return {
+      success: true
+    }
+  } catch (error) {
+    return {
+      error: "Erro ao salvar nome do usuário",
+      success: false
+    }
+  }
+}

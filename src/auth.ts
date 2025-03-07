@@ -13,7 +13,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost : true,
   providers: [Resend(
     {
-        from: "onboarding@resend.dev",
+        from: "noreply@smartstudy.me",
     }
   )],
   session :{
