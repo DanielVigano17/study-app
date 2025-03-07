@@ -41,19 +41,25 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
   }
   
   const filtrar = (query : string) =>{
-  const filtrado = cards.filter( card => {
-    return card.titulo.toLowerCase().includes(query.toLowerCase());
-  });
+    const filtrado = cards.filter( card => {
+      return card.titulo.toLowerCase().includes(query.toLowerCase());
+    });
 
-  setFilteredCards(filtrado);
+    setFilteredCards(filtrado);
   }
-    return (
-       <div className="">
-        <div className="w-full flex justify-between gap-3 mb-4">
-                <Input value={searchQuery} onChange={handleSearch} className="max-w-sm" type="text" placeholder="Pesquisar Matéria"/>
-                <AddCardDialog onAddMateria={handleAddCard}/>
-              </div>
-          <div className="grid grid-cols-1 pb-24 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  
+  return (
+    <div className="">
+      <div className="w-full flex justify-between gap-3 mb-4">
+        <Input value={searchQuery} onChange={handleSearch} className="max-w-sm" type="text" placeholder="Pesquisar Matéria"/>
+        <AddCardDialog onAddMateria={handleAddCard}/>
+      </div>
+      {filteredCards.length === 0 ? (
+        <div className="flex items-center justify-center h-[calc(100vh-200px)]">
+          <p className="text-gray-500 text-lg text-center">Nenhuma matéria encontrada. Adicione uma nova matéria clicando no botão acima.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 pb-24 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredCards.map((materia) => (
             <Card key={materia.id} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
@@ -98,6 +104,7 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
             </Card>
           ))}
         </div>
-      </div>
-    )
+      )}
+    </div>
+  )
 }
