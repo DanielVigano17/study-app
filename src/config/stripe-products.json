@@ -1,0 +1,94 @@
+{
+  "products": [
+    {
+      "id": "basic",
+      "name": "Plano Básico",
+      "description": "Acesso básico à plataforma",
+      "features": [
+        {
+          "lookup_key": "flashcards",
+          "name": "Flashcards",
+          "feature_presentation": "100 flashcards",
+          "value": "100"
+        },
+        {
+          "lookup_key": "quizzes",
+          "name": "Questionários",
+          "feature_presentation": "20 questionários",
+          "value": "20"
+        },
+        {
+          "lookup_key": "materias",
+          "name": "Materias",
+          "feature_presentation": "15 materias",
+          "value": "15"
+        }
+      ],
+      "prices": [
+        {
+          "id": "price_1R04BRP3utzNziQ1oJ1T83CB",
+          "type": "recurring",
+          "recurring": {
+            "interval": "month"
+          },
+          "currency": "brl",
+          "unit_amount": 2990
+        },
+        {
+          "id": "price_1R04BSP3utzNziQ1mPWHca4S",
+          "type": "recurring",
+          "recurring": {
+            "interval": "year"
+          },
+          "currency": "brl",
+          "unit_amount": 29900
+        }
+      ]
+    },
+    {
+      "id": "pro",
+      "name": "Plano Pro",
+      "description": "Acesso completo à plataforma",
+      "features": [
+        {
+          "lookup_key": "flashcards",
+          "name": "Flashcards",
+          "feature_presentation": "500 flashcards",
+          "value": "500"
+        },
+        {
+          "lookup_key": "quizzes",
+          "name": "Questionários",
+          "feature_presentation": "40 questionários",
+          "value": "40"
+        },
+        {
+          "lookup_key": "materias",
+          "name": "Materias",
+          "feature_presentation": "30 materias",
+          "value": "30"
+        }
+      ],
+      "prices": [
+        {
+          "id": "price_1R04BTP3utzNziQ17bDLmAJB",
+          "type": "recurring",
+          "recurring": {
+            "interval": "month"
+          },
+          "currency": "brl",
+          "unit_amount": 4990
+        },
+        {
+          "id": "price_1R04BTP3utzNziQ1uaE0jauy",
+          "type": "recurring",
+          "recurring": {
+            "interval": "year"
+          },
+          "currency": "brl",
+          "unit_amount": 49900
+        }
+      ]
+    }
+  ]
+}

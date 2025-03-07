@@ -70,11 +70,11 @@ export class StripeRepository implements IPaymentGateway {
     async createBillingPortal(customerId: string) : Promise<Stripe.BillingPortal.Session>{
       const portalBilling = await this.stripe.billingPortal.sessions.create({
         customer: customerId,
-        return_url: 'https://example.com/account',
+        return_url: process.env.NEXT_PUBLIC_APP_URL,
       });
 
         return portalBilling;
-  };
+    };
 
     async retriveProduct(productId: string) : Promise<Stripe.Product>{
         const product = await this.stripe.products.retrieve(productId);
@@ -113,4 +113,56 @@ export class StripeRepository implements IPaymentGateway {
         pdfUrl: invoice.invoice_pdf || undefined
     }));
   }
+
+  // Métodos públicos para produtos e preços
+  async getProduct(productId: string) {
+    return this.stripe.products.retrieve(productId);
+  }
+
+  async createProduct(params: Stripe.ProductCreateParams) {
+    return this.stripe.products.create(params);
+  }
+
+  async updateProduct(productId: string, params: Stripe.ProductUpdateParams) {
+    return this.stripe.products.update(productId, params);
+  }
+
+  async getPrice(priceId: string) {
+    return this.stripe.prices.retrieve(priceId);
+  }
+
+  async createPrice(params: Stripe.PriceCreateParams) {
+    return this.stripe.prices.create(params);
+  }
+
+  async createFeature(params: Stripe.Entitlements.FeatureCreateParams) {
+    const feature = await this.stripe.entitlements.features.create(params);
+    return feature;
+  }
+
+  async updateFeature(featureId: string, params: Stripe.Entitlements.FeatureUpdateParams) {
+    const feature = await this.stripe.entitlements.features.update(featureId, params);
+    return feature;
+  }
+
+  async getFeature(lookupKey: string) {
+    const feature = await this.stripe.entitlements.features.list({
+      lookup_key : lookupKey
+    });
+
+    return feature;
+  }
+
+  async createProductFeature(productId : string, params: Stripe.ProductCreateFeatureParams) {
+    const productFeature = await this.stripe.products.createFeature(
+      productId,
+      params
+    );
+    return productFeature;
+  }
+
+  async updatePrice(priceId: string, params: Stripe.PriceUpdateParams) {
+    return this.stripe.prices.update(priceId, params);
+  }
+
 }
