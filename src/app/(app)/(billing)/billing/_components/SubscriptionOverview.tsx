@@ -10,14 +10,23 @@ import { useContext } from "react"
 import { ApplicationContext } from "@/app/_context/app.context"
 import { Subscription } from "@/domain/entities/Subscription"
 
+interface Feature {
+  lookup_key: string;
+  name: string;
+  feature_presentation: string;
+  value: string;
+}
+
 interface SubscriptionOverviewProps {
-  url : string | undefined
-  subscriptionDetails : {
-    nameAssinatura? : string,
-    metadata? : Stripe.Metadata,
-    status : string,
-    amount : number,
-    nextBillingDate?: Date
+  url: string | undefined;
+  subscriptionDetails: {
+    nameAssinatura?: string;
+    metadata?: {
+      features?: string; // Agora é um JSON string das features
+    };
+    status: string;
+    amount: number;
+    nextBillingDate?: Date;
   }
 }
 
@@ -57,18 +66,10 @@ const subscriptionStatusConfig = {
   }
 } as const;
 
-export default function SubscriptionOverview({url,subscriptionDetails}:SubscriptionOverviewProps) {
-  // Aqui você incluiria a lógica para buscar os detalhes da assinatura do usuário
-  const subscription = {
-    plan: "Pro",
-    status: "Ativo",
-    renewalDate: "15/05/2024",
-    price: "R$ 49,90"
-  }
-
-  const listaFeatures = (subscriptionDetails.metadata?.FEATURES || "").split(",")
-
-  console.log(listaFeatures);
+export default function SubscriptionOverview({url, subscriptionDetails}: SubscriptionOverviewProps) {
+  const features: Feature[] = subscriptionDetails.metadata?.features 
+    ? JSON.parse(subscriptionDetails.metadata.features)
+    : [];
 
   const handleClick = () =>{
     window.location.href = url!;
@@ -120,17 +121,10 @@ export default function SubscriptionOverview({url,subscriptionDetails}:Subscript
         <div className="mt-6">
           <h3 className="text-lg font-semibold mb-2">Recursos Incluídos:</h3>
           <ul className="space-y-2">
-          {/* {Object.keys(subscriptionDetails.metadata).map((value, index) => (
-            <li key={index} className="flex items-center">
+            {features.map((feature) => (
+              <li key={feature.lookup_key} className="flex items-center">
                 <Check className="mr-2 h-4 w-4 text-green-600" />
-                {subscriptionDetails.metadata[value] + " " + value}
-              </li>
-            ))
-          } */}
-            {listaFeatures.map((feature, index) => (
-              <li key={index} className="flex items-center">
-                <Check className="mr-2 h-4 w-4 text-green-600" />
-                {feature}
+                {feature.feature_presentation}
               </li>
             ))}
           </ul>

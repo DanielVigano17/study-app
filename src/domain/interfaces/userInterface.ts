@@ -10,4 +10,9 @@ export interface UpdateUserDTO {
   export interface IUserRepository {
     update : (id : string, data : UpdateUserDTO) => Promise<User>
     findById : (id:string) => Promise<User | null>;
+    calculateFeatureUsage(userId: string): Promise<FeatureUsage>;
+  }
+
+  export interface FeatureUsage {
+    [key: string]: number;
   }

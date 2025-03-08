@@ -16,9 +16,11 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
     const params = await searchParams;
+    const session = await auth();
     const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
     const subscription = await modules.useCase.billing.findSubscription.execute();
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
+    const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(session?.user?.id!);
 
     const subscriptionDetailsObject = {
         nameAssinatura: product?.name,
@@ -47,7 +49,10 @@ export default async function Page({ searchParams }: PageProps) {
                 <div className="flex flex-col pb-24">
                     <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
                         <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl} />
-                        <UsageStats />
+                        <UsageStats 
+                            featuresJson={product?.metadata?.features} 
+                            currentUsage={featureUsage}
+                        />
                     </div>
                     <div className="lg:col-span-2">
                         <BillingHistory />

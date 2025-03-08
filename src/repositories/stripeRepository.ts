@@ -26,7 +26,7 @@ export class StripeRepository implements IPaymentGateway {
     }
     async findSubscription(subscriptionId: string) {
       const subscription = await this.stripe.subscriptions.retrieve(subscriptionId);
-      console.log(subscription);
+
       const subscriptionObject : Subscription = {
         customerId : subscription.customer.toString(),
         metadata : subscription.metadata,
@@ -51,15 +51,16 @@ export class StripeRepository implements IPaymentGateway {
     }
 
     async createSubscription(customerId: string){
-        const priceDetails = await this.stripe.prices.retrieve('price_1QbYMcP3utzNziQ1636UZ1Nv');
+        const priceDetails = await this.stripe.prices.retrieve('price_1R04BRP3utzNziQ1oJ1T83CB');
 
         const subscription = await this.stripe.subscriptions.create({
             customer: customerId,
             items: [
               {
-                price: 'price_1QbYMcP3utzNziQ1636UZ1Nv',
+                price: 'price_1R04BRP3utzNziQ1oJ1T83CB',
               },
             ],
+            trial_period_days : 15,
             metadata : {
               productId : priceDetails.product.toString()
             }
@@ -68,6 +69,8 @@ export class StripeRepository implements IPaymentGateway {
           return subscription.id;
     };
     async createBillingPortal(customerId: string) : Promise<Stripe.BillingPortal.Session>{
+
+      //Os produtos que estão disponíveis para o cliente são adicionados no Site da Stripe
       const portalBilling = await this.stripe.billingPortal.sessions.create({
         customer: customerId,
         return_url: process.env.NEXT_PUBLIC_APP_URL,
