@@ -1,9 +1,16 @@
 import { modules } from "@/domain";
+import { checkFeatureLimits } from "@/middleware/checkFeatureLimits";
 import AiService from "@/services/ai-service";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req : NextRequest){
-    const {prompt,materiaId, quntidadePerguntas, dificuldade} = await req.json();
+    const {prompt,materiaId, quntidadePerguntas, dificuldade, userId, subscriptionId} = await req.json();
+
+    const limitCheck = await checkFeatureLimits(req, 'quizzes', userId, subscriptionId);
+    if (limitCheck.status !== 200) {
+      return limitCheck;
+    }
+    
     try{
         const questionarioGerado = await AiService.gerarPergunta({prompt : prompt, dificuldade : dificuldade, quantidade : quntidadePerguntas});
         

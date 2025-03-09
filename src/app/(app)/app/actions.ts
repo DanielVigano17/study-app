@@ -8,6 +8,7 @@ import { File } from "@/domain/entities/File";
 import { CreateFlashcardDTO, UpdateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { Flashcard } from "@/domain/entities/Flashcard";
 import { ListaPerguntas } from "@/services/ai-service";
+
 type novaMateriaData={
   titulo : string
   image? : string
@@ -107,20 +108,37 @@ export async function deletePerguntaAction(perguntaId : string) : Promise<Flashc
   return pergunta;
 }
 
-export async function createFlashcardAction(data : CreateFlashcardDTO) : Promise<Flashcard> {
+interface ErrorResponse {
+  error: string;
+  message: string;
+  feature: string;
+  current: number;
+  limit: number;
+}
 
-  const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/create`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-    
-  const {pergunta} = await response.json();
+export async function createFlashcardAction(data: CreateFlashcardDTO, userId: string, subscriptionId: string): Promise<{ flashcard?: Flashcard; error?: ErrorResponse }> {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + `/api/pergunta/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ data, userId, subscriptionId }),
+    });
 
-  if(!pergunta) throw new Error("Erro ao cadastrar pergunta");
-  return pergunta;
+    if (!response.ok) {
+      if (response.status === 403) {
+        const errorData: ErrorResponse = JSON.parse(response.statusText);
+        return { error: errorData };
+      }
+      throw new Error("Erro ao cadastrar pergunta");
+    }
+
+    const { pergunta } = await response.json();
+    return { flashcard: pergunta };
+  } catch (error) {
+    throw new Error("Erro ao cadastrar pergunta");
+  }
 }
 
 export async function updatePerguntaAction(data : UpdateFlashcardDTO, id : string) : Promise<Flashcard> {
@@ -175,24 +193,31 @@ export async function listFilesAction(materiaId : string) {
   return files;
 }
 
-
-export async function createPerguntasAction(prompt : string, materiaId : string, quntidadePerguntas : number, dificuldade : string) : Promise<ListaPerguntas> {
-
+export async function createPerguntasAction(prompt: string, materiaId: string, quntidadePerguntas: number, dificuldade: string, userId: string, subscriptionId: string): Promise<{ questions?: any[], error?: { message: string } }> {
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/ia/gerar-perguntas`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      prompt : prompt,
-      materiaId : materiaId,
-      quntidadePerguntas : quntidadePerguntas,
-      dificuldade : dificuldade
+      prompt,
+      materiaId,
+      quntidadePerguntas,
+      dificuldade,
+      userId,
+      subscriptionId
     }),
   });
+
+  if (!response.ok) {
+    if (response.status === 403) {
+      const errorData = JSON.parse(response.statusText);
+      return { error: errorData };
+    }
+    throw new Error("Erro ao gerar perguntas");
+  }
     
   const {perguntas} = await response.json();
-
-  if(!perguntas) throw new Error("Erro ao cadastrar pergunta");
-  return perguntas;
+  if(!perguntas) throw new Error("Erro ao gerar perguntas");
+  return { questions: perguntas.questions };
 }

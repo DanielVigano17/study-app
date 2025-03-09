@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Textarea } from "@/components/ui/textarea"
@@ -12,6 +12,8 @@ import { motion } from "framer-motion"
 import { Materia } from "@/domain/entities/Materia"
 import AiService from "@/services/ai-service"
 import { createPerguntasAction } from "@/app/(app)/app/actions"
+import { ApplicationContext } from "@/app/_context/app.context"
+import { useToast } from "@/hooks/use-toast"
 
 // Função que simula a geração de perguntas com IA
 const generateQuestionsWithAI = async (
@@ -19,10 +21,17 @@ const generateQuestionsWithAI = async (
   materia: string,
   difficulty: number,
   numberOfQuestions: number,
+  userId: string,
+  subscriptionId: string
 ) => {
-  const perguntasGeradas = await createPerguntasAction(description, materia, numberOfQuestions, getDifficultyLabel(difficulty));
-  console.log("Passei: ",perguntasGeradas.questions);
-  return perguntasGeradas.questions;
+  return await createPerguntasAction(
+    description, 
+    materia, 
+    numberOfQuestions, 
+    getDifficultyLabel(difficulty),
+    userId,
+    subscriptionId
+  );
 }
 
 const getDifficultyLabel = (value: number) => {
@@ -45,7 +54,7 @@ const getDifficultyLabel = (value: number) => {
 interface QuizGeneratorProps {
   onQuestionsGenerated: (questions: any[], materiaId: string) => void
   isGenerating: boolean
-  onStartGenerating: () => void
+  onStartGenerating: (value: boolean) => void
   materias: Materia[]
 }
 
@@ -55,18 +64,44 @@ export function QuizGenerator({ onQuestionsGenerated, isGenerating, onStartGener
   const [numberOfQuestions, setNumberQuestions] = useState([5]) // Padrão: 5 perguntas
   const [selectedMateria, setSelectedMateria] = useState("")
 
+  const {session} = useContext(ApplicationContext);
+  const { toast } = useToast()
+
   const handleGenerateQuestions = async () => {
     if (!selectedMateria) return
 
-    onStartGenerating()
+    onStartGenerating(true)
 
     try {
-      const questions = await generateQuestionsWithAI(description, selectedMateria, difficulty[0], numberOfQuestions[0])
+      const result = await generateQuestionsWithAI(
+        description, 
+        selectedMateria, 
+        difficulty[0], 
+        numberOfQuestions[0], 
+        session?.user.id!, 
+        session?.user.subscriptionId!
+      )
 
-      onQuestionsGenerated(questions, selectedMateria)
+      if (result.error) {
+        toast({
+          variant: "destructive",
+          title: "Limite Atingido",
+          description: result.error.message,
+        });
+        return;
+      }
+
+      if (result.questions) {
+        onQuestionsGenerated(result.questions, selectedMateria)
+      }
     } catch (error) {
-      console.error("Erro ao gerar perguntas:", error)
-      // Aqui você poderia mostrar uma mensagem de erro para o usuário
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao gerar perguntas",
+      });
+    } finally {
+      onStartGenerating(false); // Desativa o estado de loading
     }
   }
 

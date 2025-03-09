@@ -64,6 +64,10 @@ export function QuizApp() {
     setIsGenerating(true)
   }
 
+  const handleSetIsGenerating = (value: boolean) => {
+    setIsGenerating(value)
+  }
+
   const handleBackToGenerator = () => {
     setGeneratedQuestions(null)
     setSelectedSubject(null)
@@ -116,7 +120,7 @@ export function QuizApp() {
             <QuizGenerator
               onQuestionsGenerated={handleQuestionsGenerated}
               isGenerating={isGenerating}
-              onStartGenerating={handleStartGenerating}
+              onStartGenerating={handleSetIsGenerating}
               materias={materias}
             />
           </motion.div>

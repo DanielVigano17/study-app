@@ -18,7 +18,7 @@ export default async function Page({ searchParams }: PageProps) {
     const params = await searchParams;
     const session = await auth();
     const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
-    const subscription = await modules.useCase.billing.findSubscription.execute();
+    const subscription = await modules.useCase.billing.findSubscription.execute(session?.user?.subscriptionId!);
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
     const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(session?.user?.id!);
 

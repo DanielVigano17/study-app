@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { useForm } from "react-hook-form"
 import { Plus, X, Wand2 } from "lucide-react"
 
@@ -19,6 +19,10 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
 import { createFlashcardAction } from "../../../actions"
+import { ApplicationContext } from "@/app/_context/app.context"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { AlertTriangle } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
 
 type FormValues = {
   acao: string
@@ -30,6 +34,10 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
   const [badges, setBadges] = useState<string[]>([])
   const [open, setOpen] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const { toast } = useToast()
+
+  const {session} = useContext(ApplicationContext);
 
   const form = useForm<FormValues>({
     defaultValues: {
@@ -40,12 +48,40 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
   })
 
   async function onSubmit(values: FormValues) {
-    console.log({ ...values, badges })
-    const {acao,resposta} = values;
-    await createFlashcardAction({acao,resposta,materiaId});
-    setOpen(false)
-    form.reset()
-    setBadges([])
+    try {
+      const {acao, resposta} = values;
+      const result = await createFlashcardAction(
+        {acao, resposta, materiaId}, 
+        session?.user?.id!, 
+        session?.user?.subscriptionId!
+      );
+
+      if (result.error) {
+        setError(result.error.message);
+        toast({
+          variant: "destructive",
+          title: "Limite Atingido",
+          description: result.error.message,
+        });
+        return;
+      }
+
+      setOpen(false);
+      form.reset();
+      setBadges([]);
+      setError(null);
+      toast({
+        variant: "default",
+        title: "Sucesso",
+        description: "Flashcard criado com sucesso!",
+      });
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao criar flashcard",
+      });
+    }
   }
 
   function addBadge() {
@@ -76,8 +112,8 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="gap-2">
-                <Plus className="w-4 h-4" />
-                <p className="hidden md:flex">Adicionar Flashcard</p>
+          <Plus className="w-4 h-4" />
+          <p className="hidden md:flex">Adicionar Flashcard</p>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
