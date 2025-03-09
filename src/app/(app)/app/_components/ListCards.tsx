@@ -9,12 +9,15 @@ import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Trash2 } from "lucide-react";
 import { deleteMateriaAction } from "../actions";
+import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 export default function ListCards({getMaterias} : {getMaterias : Promise<Materia[]>}) {
   const materias = use(getMaterias);
   const [cards, setCards] = useState<Materia[]>(materias)
   const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
   const [searchQuery, setSearchQuery] = useState('')
+  const { theme } = useTheme()
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -63,12 +66,14 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
           {filteredCards.map((materia) => (
             <Card key={materia.id} className="overflow-hidden flex flex-col">
               <CardHeader className="p-0">
-                {<img
+                <img
                   src={materia.image || "/placeholder_image.svg"}
                   alt={materia.titulo}
-                  className="w-full h-48 object-cover"
+                  className={cn(
+                    "w-full h-48 object-cover transition-all",
+                    theme === "dark" && "brightness-[0.8] contrast-[1.2]"
+                  )}
                 />
-                }
               </CardHeader>
               <CardContent className="p-4 flex-grow">
                 <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>

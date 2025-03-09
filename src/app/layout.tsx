@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { SessionProvider } from "next-auth/react";
 import { ApplicationProvider } from "./_context/app.context";
 import { auth } from "@/auth";
+import { ThemeProvider } from "./_context/theme-context";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -29,15 +30,21 @@ export default async function RootLayout({
 }>) {
   const session = await auth();
   return (
-    <html lang="pt-br">
-      <ApplicationProvider session={session}>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Toaster />
-        {children}
+    <html lang="pt-br" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="study-app-theme"
+        >
+          <ApplicationProvider session={session}>
+            <Toaster />
+            {children}
+          </ApplicationProvider>
+        </ThemeProvider>
       </body>
-      </ApplicationProvider>
     </html>
   );
 }

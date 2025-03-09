@@ -13,7 +13,7 @@ export function MainSidebar() {
 
   return (
     <div className='h-full'>
-      <Sidebar className='h-full'>
+      <Sidebar className='h-full bg-sidebar'>
       <SidebarHeader>
         StudyApp
       </SidebarHeader>

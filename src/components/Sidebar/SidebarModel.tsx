@@ -13,7 +13,7 @@ export function Sidebar({
   return (
     <aside
       className={cn([
-        'hidden md:flex border-r border-border flex-col space-y-6 bg-secondary/5',
+        'hidden md:flex border-r border-border flex-col space-y-6',
         className,
       ])}
     >
@@ -86,7 +86,7 @@ export function SidebarNavMain({
   className,
   children,
 }: SidebarGenericProps) {
-  return <main className={cn(['flex flex-col', className])}>{children}</main>
+  return <main className={cn(['flex flex-col gap-1', className])}>{children}</main>
 }
 
 type SidebarNavLinkProps = {
@@ -104,8 +104,10 @@ export function SidebarNavLink({
     <Link
       href={href}
       className={cn([
-        'flex items-center text-[1rem] px-3 py-2 rounded-md',
-        active && 'bg-secondary',
+        'flex items-center text-[1rem] px-3 py-2 rounded-md transition-colors',
+        'text-muted-foreground hover:text-primary hover:bg-primary/10',
+        'hover:[&_svg]:text-primary',
+        active && 'bg-primary/10 text-primary [&_svg]:text-primary',
         className,
       ])}
     >
