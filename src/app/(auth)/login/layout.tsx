@@ -1,22 +1,20 @@
 import { auth } from "@/auth";
-import { Toaster } from "@/components/ui/toaster"
+import { PageContainer } from "@/components/layout/page-container";
+import { Toaster } from "@/components/ui/toaster";
 import { redirect } from "next/navigation";
 
-const layoutSettings = async ({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) => {
-
-  const session = await auth()
+export default async function LoginLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  const session = await auth();
   if (session) redirect("/app");
 
   return (
-    <div className="">
-        <Toaster />
-        {children}
-    </div>
-  )
+    <PageContainer showSidebar={false}>
+      <Toaster />
+      {children}
+    </PageContainer>
+  );
 }
-
-export default layoutSettings;

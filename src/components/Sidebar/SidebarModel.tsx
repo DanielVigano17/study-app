@@ -13,7 +13,7 @@ export function Sidebar({
   return (
     <aside
       className={cn([
-        'hidden md:flex border-r border-border flex-col space-y-6',
+        'hidden md:flex border-r border-border flex-col ',
         className,
       ])}
     >
@@ -29,7 +29,7 @@ export function SidebarHeader({
   return (
     <header
       className={cn([
-        'px-6 h-12 flex items-center border-b border-border',
+        'px-3 min-h-12 pt-[2rem] pb-[1rem] flex items-center border-border',
         className,
       ])}
     >
@@ -49,7 +49,7 @@ export function SidebarMain({
   className,
   children,
 }: SidebarGenericProps) {
-  return <main className={cn(['px-3', className])}>{children}</main>
+  return <main className={cn(['px-3 my-2', className])}>{children}</main>
 }
 
 export function SidebarNav({

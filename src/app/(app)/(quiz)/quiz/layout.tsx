@@ -1,17 +1,13 @@
-import { MainSidebar } from "@/app/_components/sidebar";
-import { Suspense } from "react";
+import { PageContainer } from "@/components/layout/page-container";
 
-const layoutQuiz = ({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) => {
+export default function QuizLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="w-full md:grid grid-cols-[16.2rem_1fr] min-h-screen">
-      <MainSidebar/>
+    <PageContainer>
       {children}
-    </div>
-  )
+    </PageContainer>
+  );
 }
-
-export default layoutQuiz;

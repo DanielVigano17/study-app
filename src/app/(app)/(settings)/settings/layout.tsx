@@ -1,16 +1,13 @@
-import { MainSidebar } from "@/app/_components/sidebar";
+import { PageContainer } from "@/components/layout/page-container";
 
-const layoutSettings = ({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) => {
+export default function SettingsLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="grid grid-cols-[15.2rem_1fr] min-h-screen">
-      <MainSidebar/>
+    <PageContainer>
       {children}
-    </div>
-  )
+    </PageContainer>
+  );
 }
-
-export default layoutSettings;

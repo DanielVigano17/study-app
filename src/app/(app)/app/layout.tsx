@@ -1,22 +1,13 @@
-import { MainSidebar } from "@/app/_components/sidebar";
-import { auth } from "@/auth";
-import Link from "next/link";
+import { PageContainer } from "@/components/layout/page-container"
 
-const layoutHome = async ({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) => {
-    
-  const session = await auth()
-  if (!session) return <div><Link href={"/login"}>Fazer login</Link></div>
-
+export default function AppLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <div className="w-screen md:grid grid-cols-[16.2rem_1fr] min-h-screen">
-      <MainSidebar/>
+    <PageContainer>
       {children}
-    </div>
+    </PageContainer>
   )
 }
-
-export default layoutHome;

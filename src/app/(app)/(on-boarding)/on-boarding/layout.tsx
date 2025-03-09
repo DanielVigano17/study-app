@@ -1,16 +1,15 @@
-import { Toaster } from "@/components/ui/toaster"
+import { PageContainer } from "@/components/layout/page-container";
+import { Toaster } from "@/components/ui/toaster";
 
-const layoutSettings = ({
-    children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) => {
+export default function OnboardingLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <div className="">
-        <Toaster />
-        {children}
-    </div>
-  )
+    <PageContainer showSidebar={false}>
+      <Toaster />
+      {children}
+    </PageContainer>
+  );
 }
-
-export default layoutSettings;
