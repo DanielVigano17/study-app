@@ -10,7 +10,6 @@ export class RetriveProduct {
         if(!productId) return null;
 
         const product = await this.stripeRepository.retriveProduct(productId);
-        // console.log(product);
         return product;
     }
 }

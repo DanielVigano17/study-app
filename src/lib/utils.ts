@@ -35,8 +35,6 @@ export async function calcularProximaRevisao(flashcard: Flashcard, nota: number)
   // await modules.useCase.pergunta.update.execute(flashcard, flashcard.id);
 
   await updatePerguntaAction(flashcard, flashcard.id);
-
-  console.log(flashcard);
   
   return flashcard;
 }

@@ -10,7 +10,7 @@ export default async function PageFlashCards({params} : {params : Promise<{mater
 
     const flashcards = await modules.useCase.flashcard.findflashcardRevisao.execute(materiaId);
     const materia = await modules.useCase.materia.findMateria.execute(materiaId);
-    console.log(flashcards)
+
     return (
         <div className="overflow-y-scroll">
            <div className="container mx-auto py-8 px-8 h-screen overflow-y-visible">

@@ -9,7 +9,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
   const materiaId = (await params).materiaId;
   
   const questionarios = await modules.useCase.questionario.list.execute(materiaId);
-  console.log(questionarios);
+
   return (
     <div className="w-full overflow-y-auto">
       <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">

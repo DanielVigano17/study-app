@@ -33,8 +33,6 @@ export class CheckSubscriptionStatus {
 
             const isActive = subscription.status === "active" || subscription.status === "trialing";
 
-            console.log(subscription);
-
             return {
                 isActive,
                 subscription

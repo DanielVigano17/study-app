@@ -1,16 +1,9 @@
 import { StripeRepository } from "@/repositories/stripeRepository";
 import stripeProducts from "@/config/stripe-products.json";
 import Stripe from "stripe";
-import fs from 'fs';
-import path from 'path';
 
 export class StripeSyncService {
     constructor(private stripeRepo: StripeRepository) {}
-
-    private updateConfigFile(products: any) {
-        const configPath = path.join(process.cwd(), 'src/config/stripe-products.json');
-        fs.writeFileSync(configPath, JSON.stringify({ products }, null, 2));
-    }
 
     async syncProducts() {
         const results = {
@@ -77,11 +70,6 @@ export class StripeSyncService {
             } catch (error) {
                 results.errors.push(`Erro ao sincronizar produto ${product.id}: ${error}`);
             }
-        }
-
-        // Atualiza o arquivo de configuração se houver mudanças
-        if (configUpdated) {
-            this.updateConfigFile(productsToSync);
         }
 
         return results;

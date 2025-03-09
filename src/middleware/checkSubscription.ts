@@ -5,7 +5,7 @@ import { modules } from "@/domain";
 export async function checkSubscription(request: NextRequest) {
     try {
         const { isActive, subscription, error } = await modules.useCase.billing.checkSubscriptionStatus.execute();
-        console.log(isActive, subscription, error);
+
         if (!isActive) {
             // Adiciona parâmetros na URL para mostrar mensagem apropriada
             const redirectUrl = new URL("/billing", request.url);

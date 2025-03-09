@@ -3,7 +3,6 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req : NextRequest){
     const materiaId = await req.json();
-    console.log(materiaId);
     try{
         const fileCreated = await modules.useCase.file.listFiles.execute(materiaId);
 

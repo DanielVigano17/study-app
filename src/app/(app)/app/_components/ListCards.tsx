@@ -32,7 +32,6 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
       const cardsSemExcluido = cards.filter(item => item.id != materiaExcluida.id);
       setCards(cardsSemExcluido);
       setFilteredCards(cardsSemExcluido);
-      console.log(cardsSemExcluido);
     }
     
   }

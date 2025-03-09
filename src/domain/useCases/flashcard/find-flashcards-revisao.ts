@@ -16,8 +16,6 @@ export class FindFlashcardsRevisao {
             // Adiciona os dias da próxima revisão à data da última revisão
             const dataProximaRevisao = new Date(dataUltimaRevisao);
             dataProximaRevisao.setDate(dataProximaRevisao.getDate() + flashcard.diasProximaRevisao);
-
-            console.log(dataProximaRevisao);
         
             // Compara com a data atual
             return dataProximaRevisao <= new Date();

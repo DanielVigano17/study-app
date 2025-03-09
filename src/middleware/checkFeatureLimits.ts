@@ -18,8 +18,6 @@ export async function checkFeatureLimits(
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
     const usage = await modules.useCase.user.calculateFeatureUsage.execute(userId);
 
-    console.log("subscription.metadata.features", product?.metadata.features);
-
     if (!product?.metadata?.features) {
       return new NextResponse('No feature limits defined', { status: 400 });
     }

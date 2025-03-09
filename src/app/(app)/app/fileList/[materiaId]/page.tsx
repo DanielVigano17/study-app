@@ -39,7 +39,6 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
       if(fileRemoved){
         const filesSemExcluido = files?.filter(item => item.id != fileRemoved.id);
         setFiles(filesSemExcluido);
-        console.log(filesSemExcluido);
       }
   }
  

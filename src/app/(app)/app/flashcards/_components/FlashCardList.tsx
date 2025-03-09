@@ -47,8 +47,6 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     const dataProximaRevisao = new Date(dataUltimaRevisao);
     dataProximaRevisao.setDate(dataProximaRevisao.getDate() + flashcard.diasProximaRevisao);
 
-    console.log(diferencaDias(dataProximaRevisao, new Date()));
-
     // Compara com a data atual
     return dataProximaRevisao <= new Date() ? "pendente" : "revisado";
   }
@@ -78,7 +76,6 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
     if(perguntaExcluida){
       const cardsSemExcluido = flashCards.filter(item => item.id != perguntaExcluida.id);
       setFlashCards(cardsSemExcluido);
-      console.log(cardsSemExcluido);
     }
   }
 
