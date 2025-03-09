@@ -14,20 +14,44 @@ type novaMateriaData={
   image? : string
 }
 
-export async function novaMateriaAction({titulo,image} : novaMateriaData, userId? : string) {
-    try{
-      if(!userId) return false;
-  
-      const materiaCriada = await modules.useCase.materia.createMateria.execute({userId, titulo, image});
-  
-      revalidatePath('/app');
-      revalidateTag('list-materias');
-      return materiaCriada;
+interface ErrorResponse {
+  error: string;
+  message: string;
+  feature: string;
+  current: number;
+  limit: number;
+}
 
-    }catch(e){
-      console.log(e);
+export async function novaMateriaAction({titulo,image} : novaMateriaData, userId? : string, subscriptionId?: string): Promise<{ materia?: Materia; error?: ErrorResponse }> {
+  try {
+    if (!userId) return { error: { error: "Erro", message: "Usuário não fornecido", feature: "subjects", current: 0, limit: 0 } };
+
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + `/api/materia/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ titulo, image, userId, subscriptionId }),
+    });
+
+    if (!response.ok) {
+      if (response.status === 403) {
+        const errorData = JSON.parse(response.statusText);
+        return { error: errorData };
+      }
+      throw new Error("Erro ao criar matéria");
     }
-    return false
+
+    const { materia } = await response.json();
+
+    revalidatePath('/app');
+    revalidateTag('list-materias');
+    return { materia };
+
+  } catch (e) {
+    console.error(e);
+    return { error: { error: "Erro", message: "Erro ao criar matéria", feature: "subjects", current: 0, limit: 0 } };
+  }
 }
 
 export async function listMateriasAction(userId : string) {
@@ -106,14 +130,6 @@ export async function deletePerguntaAction(perguntaId : string) : Promise<Flashc
   if(!pergunta) return null;
   // revalidateTag('list-materias');
   return pergunta;
-}
-
-interface ErrorResponse {
-  error: string;
-  message: string;
-  feature: string;
-  current: number;
-  limit: number;
 }
 
 export async function createFlashcardAction(data: CreateFlashcardDTO, userId: string, subscriptionId: string): Promise<{ flashcard?: Flashcard; error?: ErrorResponse }> {
