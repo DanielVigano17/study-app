@@ -34,7 +34,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="ligth"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
           storageKey="study-app-theme"
