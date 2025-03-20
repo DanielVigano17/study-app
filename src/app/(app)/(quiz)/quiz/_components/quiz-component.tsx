@@ -84,7 +84,7 @@ export function QuizApp() {
   }
 
   return (
-    <div className="container max-h-screen h-full overflow-y-auto mx-auto py-8 px-4">
+    <div className="container max-h-screen h-full overflow-y-auto mx-auto pb-24 py-8 px-4">
       <AnimatePresence mode="wait">
         {generatedQuestions ? (
           // Tela do formulário de perguntas gerado
