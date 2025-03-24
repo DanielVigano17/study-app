@@ -27,7 +27,7 @@ export function AuthForm() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <ParallaxBackground dotColor="#929395" dotSize={2} dotCount={200} speed={0.15} />
+      <ParallaxBackground dotColor="#d1d1d1" dotSize={2} dotCount={200} speed={0.15} />
       <Card className="w-full z-40 max-w-md">
         <CardHeader>
           <CardTitle className="text-2xl font-bold">Login</CardTitle>
