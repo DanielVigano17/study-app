@@ -111,7 +111,7 @@ export default function FileUploadDialog({materiaId, fileList, setFiles} : {mate
             Upload de Arquivo
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[100%] w-fit">
         <DialogHeader>
           <DialogTitle>Upload de Arquivo</DialogTitle>
         </DialogHeader>
