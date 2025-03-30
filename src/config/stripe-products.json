@@ -8,20 +8,20 @@
         {
           "lookup_key": "flashcards",
           "name": "Flashcards",
-          "feature_presentation": "5 flashcards",
-          "value": "5"
+          "feature_presentation": "60 flashcards",
+          "value": "60"
         },
         {
           "lookup_key": "quizzes",
           "name": "Questionários",
-          "feature_presentation": "5 questionários",
-          "value": "5"
+          "feature_presentation": "15 questionários",
+          "value": "15"
         },
         {
           "lookup_key": "materias",
           "name": "Materias",
-          "feature_presentation": "5 materias",
-          "value": "5"
+          "feature_presentation": "15 materias",
+          "value": "15"
         }
       ],
       "prices": [
@@ -53,20 +53,20 @@
         {
           "lookup_key": "flashcards",
           "name": "Flashcards",
-          "feature_presentation": "5 flashcards",
-          "value": "5"
+          "feature_presentation": "60 flashcards",
+          "value": "60"
         },
         {
           "lookup_key": "quizzes",
           "name": "Questionários",
-          "feature_presentation": "5 questionários",
-          "value": "5"
+          "feature_presentation": "15 questionários",
+          "value": "15"
         },
         {
           "lookup_key": "materias",
           "name": "Materias",
-          "feature_presentation": "5 materias",
-          "value": "5"
+          "feature_presentation": "15 materias",
+          "value": "15"
         }
       ],
       "prices": [
