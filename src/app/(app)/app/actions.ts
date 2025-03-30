@@ -237,3 +237,25 @@ export async function createPerguntasAction(prompt: string, materiaId: string, q
   if(!perguntas) throw new Error("Erro ao gerar perguntas");
   return { questions: perguntas.questions };
 }
+
+export async function generateFlashcardAnswerAction(question: string) {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + '/api/flashcard/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ question }),
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      return { error: { message: error.error || 'Erro ao gerar resposta' } }
+    }
+
+    const data = await response.json()
+    return { answer: data.answer }
+  } catch (error) {
+    return { error: { message: 'Erro ao gerar resposta' } }
+  }
+}

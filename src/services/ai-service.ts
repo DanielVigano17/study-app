@@ -8,6 +8,10 @@ interface PerguntaParams {
     quantidade : number
 }
 
+interface FlashcardAnswerParams {
+    question: string
+}
+
 export const OptionSchema = z.object({
     id: z.string(),
     text: z.string(),
@@ -61,4 +65,30 @@ export default class AiService {
     }
    }
 
+   static async gerarRespostaFlashcard(params: FlashcardAnswerParams): Promise<{ answer: string }> {
+    try {
+      const completion = await clientOpenAi.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: "Você é um assistente especializado em criar respostas concisas e objetivas para flashcards. Mantenha as respostas curtas e diretas."
+          },
+          {
+            role: "user",
+            content: `Crie uma resposta objetiva para o seguinte flashcard: ${params.question}`
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 150,
+      });
+
+      const answer = completion.choices[0].message.content;
+
+      return { answer: answer || "" };
+    } catch (error) {
+      console.error("Erro ao gerar resposta:", error);
+      throw new Error("Erro ao gerar resposta");
+    }
+   }
 }

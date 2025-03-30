@@ -18,7 +18,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { createFlashcardAction } from "../../../actions"
+import { createFlashcardAction, generateFlashcardAnswerAction } from "../../../actions"
 import { ApplicationContext } from "@/app/_context/app.context"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertTriangle } from "lucide-react"
@@ -97,15 +97,46 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
   }
 
   async function generateWithAI() {
-    setIsGenerating(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      setIsGenerating(true)
+      const question = form.getValues("acao")
 
-    const generatedQuestion = "Qual é a capital da França?"
-    const generatedAnswer = "A capital da França é Paris."
+      if (!question) {
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: "Digite uma pergunta primeiro",
+        })
+        return
+      }
 
-    form.setValue("acao", generatedQuestion, { shouldValidate: true })
-    form.setValue("resposta", generatedAnswer, { shouldValidate: true })
-    setIsGenerating(false)
+      const result = await generateFlashcardAnswerAction(question)
+
+      if (result.error) {
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: result.error.message,
+        })
+        return
+      }
+
+      form.setValue("resposta", result.answer, { shouldValidate: true })
+      toast({
+        variant: "default",
+        title: "Sucesso",
+        description: "Resposta gerada com sucesso!",
+      })
+    } catch (error) {
+      
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Erro ao gerar resposta",
+      })
+    } finally {
+      setIsGenerating(false)
+    }
   }
 
   return (
