@@ -259,3 +259,23 @@ export async function generateFlashcardAnswerAction(question: string) {
     return { error: { message: 'Erro ao gerar resposta' } }
   }
 }
+
+export async function deleteQuestionarioAction(id: string): Promise<{ success?: boolean; error?: { message: string } }> {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + `/api/questionario/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { error: { message: error.message || 'Erro ao deletar questionário' } };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { error: { message: 'Erro ao deletar questionário' } };
+  }
+}

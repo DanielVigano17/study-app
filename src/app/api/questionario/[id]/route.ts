@@ -24,4 +24,29 @@ export async function GET(
             { status: 500 }
         );
     }
+}
+
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    try {
+        const { id } = await params;
+        const questionario = await modules.useCase.questionario.delete.execute(id);
+        
+        if (!questionario) {
+            return NextResponse.json(
+                { status: 404, message: "Questionário não encontrado" },
+                { status: 404 }
+            );
+        }
+
+        return NextResponse.json({ status: 200, message: "Questionário deletado com sucesso" });
+    } catch (error) {
+        console.error("Erro ao deletar questionário:", error);
+        return NextResponse.json(
+            { status: 500, message: "Erro ao deletar questionário" },
+            { status: 500 }
+        );
+    }
 } 

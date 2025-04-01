@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { modules } from "@/domain"
 import { QuizForm } from "@/app/(app)/(quiz)/quiz/_components/quiz-form"
+import { QuestionarioCard } from "../_components/questinario-card"
 
 export default async function QuestionariosPage({params} : {params : Promise<{materiaId : string}>}) {
   const materiaId = (await params).materiaId;
@@ -46,24 +47,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {questionarios.map((questionario) => (
-            <Card key={questionario.id} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle className="text-lg">{questionario.nome}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-500 mb-4">
-                  Última revisão: {questionario.dtUltimaRevisao ? new Date(questionario.dtUltimaRevisao).toLocaleDateString() : 'Nunca'}
-                </p>
-                <div className="flex justify-end">
-                  <Link href={`/quiz?questionarioId=${questionario.id}`}>
-                    <Button variant="outline" size="sm" className="gap-2">
-                      <Play className="w-4 h-4" />
-                      Iniciar
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
+            <QuestionarioCard key={questionario.id} questionario={questionario} />
           ))}
         </div>
       </div>

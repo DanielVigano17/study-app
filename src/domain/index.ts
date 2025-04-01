@@ -31,6 +31,7 @@ import { CheckSubscriptionStatus } from "./useCases/biling/checkSubscriptionStat
 import { ListInvoices } from "./useCases/biling/listInvoices";
 import { StripeSyncService } from "@/services/stripeSyncService";
 import { CalculateFeatureUsage } from "./useCases/user/calculateFeatureUsage";
+import { DeleteQuestionarioUseCase } from "./useCases/questionario/delete-questionario";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -78,7 +79,8 @@ export const modules = {
         questionario :{
             create : new CreateQuestionarioUseCase(questionarioRepository),
             list : new ListQuestionariosUseCase(questionarioRepository),
-            getById : new GetQuestionarioUseCase(questionarioRepository)
+            getById : new GetQuestionarioUseCase(questionarioRepository),
+            delete : new DeleteQuestionarioUseCase(questionarioRepository)
         }
     }
 }

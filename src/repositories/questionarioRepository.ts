@@ -76,4 +76,29 @@ export class QuestionarioRepository implements IQuestionarioRepository{
             materiaId: questionario.materiaId
         };
     }
+
+    async deleteQuestionario(id: string): Promise<Questionario | null> {
+        try {
+            const questionario = await prisma.questionario.delete({
+                where: {
+                    id: id
+                }
+            });
+
+            if (!questionario) return null;
+
+            return {
+                id: questionario.id,
+                nome: questionario.nome,
+                perguntas: questionario.perguntas as ListaPerguntas,
+                dtUltimaRevisao: questionario.dtUltimaRevisao,
+                createdAt: questionario.createdAt,
+                updatedAt: questionario.updatedAt,
+                materiaId: questionario.materiaId
+            };
+        } catch (error) {
+            console.error("Erro ao deletar questionário:", error);
+            return null;
+        }
+    }
 }
