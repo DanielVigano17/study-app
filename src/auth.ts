@@ -7,44 +7,50 @@ import { CreateCustomer } from "./domain/useCases/biling/createCustomer"
 import { StripeRepository } from "./repositories/stripeRepository"
 import { UserRepository } from "./repositories/userRepository"
 import { CreateSubscription } from "./domain/useCases/biling/createSubscription"
+import Google from "next-auth/providers/google"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
-  trustHost : true,
-  providers: [Resend(
-    {
-        from: "noreply@smartstudy.me",
-    }
-  )],
-  session :{
-    maxAge : 60 * 60 * 48
+  trustHost: true,
+  providers: [
+    Google({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      allowDangerousEmailAccountLinking: true,
+    }),
+    Resend({
+      from: "noreply@smartstudy.me",
+    })
+  ],
+  session: {
+    maxAge: 60 * 60 * 48
   },
   callbacks: {
-    authorized: async ({ request,auth }) => {
+    authorized: async ({ request, auth }) => {
       const url = request.nextUrl.pathname;
-      if(!!auth && url == "/login") return NextResponse.redirect(new URL("/app",request.url));
+      if (!!auth && url == "/login") return NextResponse.redirect(new URL("/app", request.url));
       return !!auth
     },
   },
   pages: {
-    signIn:"/login",
+    signIn: "/login",
     verifyRequest: '/login',
-    newUser : '/on-boarding',
+    newUser: '/on-boarding',
   },
-  events : {
-    createUser : async (event) => {
-      const {email,id} = event.user;
+  events: {
+    createUser: async (event) => {
+      const { email, id } = event.user;
       const userRepository = new UserRepository();
       const stripeRepository = new StripeRepository();
-      const createCustumer = new CreateCustomer(stripeRepository,userRepository);
-      const createSubscription = new CreateSubscription(stripeRepository,userRepository);
+      const createCustumer = new CreateCustomer(stripeRepository, userRepository);
+      const createSubscription = new CreateSubscription(stripeRepository, userRepository);
 
-      try{
-        if(!email || !id) throw new Error("Erro ao recuperar usuário criado")
-        const user = await createCustumer.execute({userId : id, email : email});
-        const updatedUser = await createSubscription.execute(user.customerId!,user.id);
-      }catch(e){
-        console.log("Este é o erro da mensagem: ",e)
+      try {
+        if (!email || !id) throw new Error("Erro ao recuperar usuário criado")
+        const user = await createCustumer.execute({ userId: id, email: email });
+        const updatedUser = await createSubscription.execute(user.customerId!, user.id);
+      } catch (e) {
+        console.log("Este é o erro da mensagem: ", e)
       }
     }
   }
