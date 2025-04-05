@@ -9,8 +9,8 @@ export class MateriaRepository implements IMateriaRepository{
     async delete(materiaId: string){
         return await prisma.materia.delete({where:{id:materiaId}})
     };
-    async listMaterias (userId: string) {
-        return await prisma.materia.findMany({where:{userId}});
+    async listMaterias (userId: string) : Promise<Materia[]>{
+        return await prisma.materia.findMany({where:{userId},include:{flashcards:true}});
     };
     async update(id: string, data: UpdateMateriaDTO){
         return await prisma.materia.update({where:{id},data});

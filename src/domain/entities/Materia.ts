@@ -1,3 +1,5 @@
+import { Flashcard } from "./Flashcard"
+
 export interface Materia{
     id: string
     titulo:string
@@ -5,4 +7,5 @@ export interface Materia{
     createdAt: Date
     image : string | null
     updatedAt: Date
+    flashcards?: Flashcard[]
 }

@@ -8,32 +8,39 @@ import { Materia } from "@/domain/entities/Materia";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Trash2, AlertCircle } from "lucide-react";
-import { deleteMateriaAction, verificarFlashcardsPendentesAction } from "../actions";
+import { deleteMateriaAction } from "../actions";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { Flashcard } from "@/domain/entities/Flashcard";
+type MateriaWithPendente = Materia & {
+  flashcardPendente?: boolean;
+};
 
-export default function ListCards({getMaterias} : {getMaterias : Promise<Materia[]>}) {
+const checkIsPendente = (flashcard : Flashcard) : boolean => {
+  const dataUltimaRevisao = flashcard.dtUltimaRevisao ? new Date(flashcard.dtUltimaRevisao) : null;
+      
+  if (!dataUltimaRevisao) return true;
+
+  // Adiciona os dias da próxima revisão à data da última revisão
+  const dataProximaRevisao = new Date(dataUltimaRevisao);
+  dataProximaRevisao.setDate(dataProximaRevisao.getDate() + flashcard.diasProximaRevisao);
+
+  // Compara com a data atual
+  return dataProximaRevisao <= new Date() ? true : false;
+}
+
+export default function ListCards({getMaterias} : {getMaterias : Promise<MateriaWithPendente[]>}) {
   const materias = use(getMaterias);
-  const [cards, setCards] = useState<Materia[]>(materias)
-  const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
+
+  const materiasWithStatus = materias.map(materia => ({
+    ...materia,
+    flashcardPendente: materia.flashcards?.some(flashcard => checkIsPendente(flashcard)),
+  }));
+
+  const [cards, setCards] = useState<MateriaWithPendente[]>(materiasWithStatus)
+  const [filteredCards, setFilteredCards] = useState<MateriaWithPendente[]>(cards)
   const [searchQuery, setSearchQuery] = useState('')
-  const [materiasComPendentes, setMateriasComPendentes] = useState<Set<string>>(new Set())
   const { theme } = useTheme()
-
-  useEffect(() => {
-    const verificarPendentes = async () => {
-      const pendentes = new Set<string>();
-      for (const materia of cards) {
-        const temPendentes = await verificarFlashcardsPendentesAction(materia.id);
-        if (temPendentes) {
-          pendentes.add(materia.id);
-        }
-      }
-      setMateriasComPendentes(pendentes);
-    };
-
-    verificarPendentes();
-  }, [cards]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -93,7 +100,7 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
               <CardContent className="p-4 flex-grow">
                 <div className="flex items-center">
                   <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>
-                  {materiasComPendentes.has(materia.id) && (
+                  {materia.flashcardPendente && (
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>

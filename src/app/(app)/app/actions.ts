@@ -128,7 +128,7 @@ export async function deletePerguntaAction(perguntaId : string) : Promise<Flashc
   const {pergunta} = await response.json();
 
   if(!pergunta) return null;
-  // revalidateTag('list-materias');
+  revalidateTag('list-materias');
   return pergunta;
 }
 
@@ -151,6 +151,7 @@ export async function createFlashcardAction(data: CreateFlashcardDTO, userId: st
     }
 
     const { pergunta } = await response.json();
+    revalidateTag('list-materias');
     return { flashcard: pergunta };
   } catch (error) {
     throw new Error("Erro ao cadastrar pergunta");
@@ -170,6 +171,7 @@ export async function updatePerguntaAction(data : UpdateFlashcardDTO, id : strin
   const {pergunta} = await response.json();
 
   if(!pergunta) throw new Error("Erro ao fazer update de pergunta");
+  revalidateTag('list-materias');
   return pergunta;
 }
 
@@ -277,23 +279,5 @@ export async function deleteQuestionarioAction(id: string): Promise<{ success?: 
     return { success: true };
   } catch (error) {
     return { error: { message: 'Erro ao deletar questionário' } };
-  }
-}
-
-export async function verificarFlashcardsPendentesAction(materiaId: string): Promise<boolean> {
-  try {
-    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL +`/api/flashcard/pendentes/${materiaId}`, {
-      method: 'GET',
-    });
-
-    if (!response.ok) {
-      throw new Error('Erro ao verificar flashcards pendentes');
-    }
-
-    const data = await response.json();
-    return data.temPendentes;
-  } catch (error) {
-    console.error('Erro ao verificar flashcards pendentes:', error);
-    return false;
   }
 }
