@@ -15,4 +15,11 @@ export class FlashcardRepository implements IFlashcardRepository{
     async findManyFlashcard(materiaId: string) : Promise<Flashcard[]>{
         return await prisma.flashcard.findMany({where:{materiaId}});
     }
+    async getFlashcardsByMateriaId(materiaId: string): Promise<Flashcard[]> {
+        return await prisma.flashcard.findMany({
+            where: {
+                materiaId: materiaId
+            }
+        });
+    }
 }

@@ -279,3 +279,21 @@ export async function deleteQuestionarioAction(id: string): Promise<{ success?: 
     return { error: { message: 'Erro ao deletar questionário' } };
   }
 }
+
+export async function verificarFlashcardsPendentesAction(materiaId: string): Promise<boolean> {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL +`/api/flashcard/pendentes/${materiaId}`, {
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao verificar flashcards pendentes');
+    }
+
+    const data = await response.json();
+    return data.temPendentes;
+  } catch (error) {
+    console.error('Erro ao verificar flashcards pendentes:', error);
+    return false;
+  }
+}

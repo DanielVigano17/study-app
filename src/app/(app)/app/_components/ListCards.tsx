@@ -3,12 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/componen
 import { Button } from "@/components/ui/button";
 import { AddCardDialog } from "./AddCardDialog";
 import { Input } from "@/components/ui/input";
-import { use, useState } from "react";
+import { use, useState, useEffect } from "react";
 import { Materia } from "@/domain/entities/Materia";
 import Link from "next/link";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { Trash2 } from "lucide-react";
-import { deleteMateriaAction } from "../actions";
+import { Trash2, AlertCircle } from "lucide-react";
+import { deleteMateriaAction, verificarFlashcardsPendentesAction } from "../actions";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,23 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
   const [cards, setCards] = useState<Materia[]>(materias)
   const [filteredCards, setFilteredCards] = useState<Materia[]>(cards)
   const [searchQuery, setSearchQuery] = useState('')
+  const [materiasComPendentes, setMateriasComPendentes] = useState<Set<string>>(new Set())
   const { theme } = useTheme()
+
+  useEffect(() => {
+    const verificarPendentes = async () => {
+      const pendentes = new Set<string>();
+      for (const materia of cards) {
+        const temPendentes = await verificarFlashcardsPendentesAction(materia.id);
+        if (temPendentes) {
+          pendentes.add(materia.id);
+        }
+      }
+      setMateriasComPendentes(pendentes);
+    };
+
+    verificarPendentes();
+  }, [cards]);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value
@@ -75,7 +91,21 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
                 />
               </CardHeader>
               <CardContent className="p-4 flex-grow">
-                <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>
+                <div className="flex items-center">
+                  <CardTitle className="text-xl break-words">{materia.titulo}</CardTitle>
+                  {materiasComPendentes.has(materia.id) && (
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <AlertCircle className="w-5 h-5 text-red-500 animate-pulse ml-2 flex-shrink-0" />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Existem flashcards pendentes para revisão</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )}
+                </div>
               </CardContent>
               <CardFooter className="p-4 pt-0 flex gap-2">
                 <Link className="w-full" href={`/app/flashcards/${materia.id}`}>
