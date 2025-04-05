@@ -6,6 +6,7 @@ import SubscriptionOverview from "./_components/SubscriptionOverview";
 import UsageStats from "./_components/UsageStats";
 import { modules } from "@/domain";
 import { redirect } from "next/navigation";
+import { AnimatedPage } from "@/components/ui/animated-page";
 
 interface PageProps {
     searchParams: Promise<{
@@ -36,29 +37,31 @@ export default async function Page({ searchParams }: PageProps) {
     }
 
     return (
-        <div className="overflow-y-auto">
-            <div className="container mx-auto px-4 pt-8 h-screen overflow-y-visible">
-                <h1 className="text-3xl font-bold mb-8">Gerenciamento de Assinatura</h1>
-                
-                {params.error && (
-                    <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                        <p className="text-red-700">{params.error}</p>
-                    </div>
-                )}
+        <AnimatedPage pageKey="billing-page">
+            <div className="overflow-y-auto">
+                <div className="container mx-auto px-4 pt-8 h-screen overflow-y-visible">
+                    <h1 className="text-3xl font-bold mb-8">Gerenciamento de Assinatura</h1>
+                    
+                    {params.error && (
+                        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                            <p className="text-red-700">{params.error}</p>
+                        </div>
+                    )}
 
-                <div className="flex flex-col pb-24">
-                    <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
-                        <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl} />
-                        <UsageStats 
-                            featuresJson={product?.metadata?.features} 
-                            currentUsage={featureUsage}
-                        />
-                    </div>
-                    <div className="lg:col-span-2">
-                        <BillingHistory />
+                    <div className="flex flex-col pb-24">
+                        <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
+                            <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl} />
+                            <UsageStats 
+                                featuresJson={product?.metadata?.features} 
+                                currentUsage={featureUsage}
+                            />
+                        </div>
+                        <div className="lg:col-span-2">
+                            <BillingHistory />
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </AnimatedPage>
     )
 }
