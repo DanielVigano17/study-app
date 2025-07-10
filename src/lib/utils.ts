@@ -28,6 +28,10 @@ export async function calcularProximaRevisao(flashcard: Flashcard, nota: number)
     }
   }
 
+  if(flashcard.diasProximaRevisao > 50) {
+    flashcard.diasProximaRevisao = 50;
+  }
+
   // Atualiza a data da última revisão
   const hoje = new Date();
   flashcard.dtUltimaRevisao = hoje;
