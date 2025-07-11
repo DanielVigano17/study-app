@@ -4,9 +4,11 @@ import { auth } from "@/auth";
 import BillingHistory from "./_components/BillingHistory";
 import SubscriptionOverview from "./_components/SubscriptionOverview";
 import UsageStats from "./_components/UsageStats";
+import PlansWrapper from "./_components/PlansWrapper";
 import { modules } from "@/domain";
 import { redirect } from "next/navigation";
 import { AnimatedPage } from "@/components/ui/animated-page";
+import { PlansService } from "@/services/plansService";
 
 interface PageProps {
     searchParams: Promise<{
@@ -19,9 +21,11 @@ export default async function Page({ searchParams }: PageProps) {
     const params = await searchParams;
     const session = await auth();
     const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
+    const checkoutSessionUrl = await modules.useCase.billing.createCheckoutSession.execute();
     const subscription = await modules.useCase.billing.findSubscription.execute(session?.user?.subscriptionId!);
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
     const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(session?.user?.id!);
+    const plans = PlansService.getPlans();
 
     const subscriptionDetailsObject = {
         nameAssinatura: product?.name,
@@ -49,16 +53,24 @@ export default async function Page({ searchParams }: PageProps) {
                     )}
 
                     <div className="flex flex-col pb-24">
-                        <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
-                            <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl} />
-                            <UsageStats 
-                                featuresJson={product?.metadata?.features} 
-                                currentUsage={featureUsage}
+                        {subscription?.status === "canceled" ? (
+                            <PlansWrapper 
+                                plans={plans} 
                             />
-                        </div>
-                        <div className="lg:col-span-2">
-                            <BillingHistory />
-                        </div>
+                        ) : (
+                            <>
+                                <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
+                                    <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl as string} />
+                                    <UsageStats 
+                                        featuresJson={product?.metadata?.features} 
+                                        currentUsage={featureUsage}
+                                    />
+                                </div>
+                                <div className="lg:col-span-2">
+                                    <BillingHistory />
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

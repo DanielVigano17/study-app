@@ -32,6 +32,8 @@ import { ListInvoices } from "./useCases/biling/listInvoices";
 import { StripeSyncService } from "@/services/stripeSyncService";
 import { CalculateFeatureUsage } from "./useCases/user/calculateFeatureUsage";
 import { DeleteQuestionarioUseCase } from "./useCases/questionario/delete-questionario";
+import { CreateCheckoutSession } from "./useCases/biling/create-checkout-session";
+import { UpdateUserByCustomerIdUseCase } from "./useCases/user/update-user-by-customer-id";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -53,10 +55,12 @@ export const modules = {
             checkSubscriptionStatus: new CheckSubscriptionStatus(new StripeRepository()),
             listInvoices: new ListInvoices(paymentGateway),
             syncProducts: new StripeSyncService(paymentGateway),
+            createCheckoutSession: new CreateCheckoutSession(paymentGateway),
         },
         user : {
             updateUser : new UpdateUserUseCase(userRepository),
-            calculateFeatureUsage: new CalculateFeatureUsage(userRepository)
+            calculateFeatureUsage: new CalculateFeatureUsage(userRepository),
+            updateUserByCustomerId: new UpdateUserByCustomerIdUseCase(userRepository)
         },
         materia : {
             createMateria : new CreateMateria(materiaRepository),

@@ -10,6 +10,10 @@ export class UserRepository implements IUserRepository {
     async findById(id: string) {
         return await prisma.user.findUnique({where: {id}});
     };
+
+    async findByCustomerId(customerId: string) {
+        return await prisma.user.findFirst({where: {customerId}});
+    };  
     
     async update(id: string, data: UpdateUserDTO){
         return await prisma.user.update({ where: { id }, data });

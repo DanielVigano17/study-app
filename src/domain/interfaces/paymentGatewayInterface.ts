@@ -20,4 +20,5 @@ export interface IPaymentGateway {
     createSubscription : (custumerId : string) => Promise<string>
     findSubscription : (customerId : string) => Promise<Subscription>
     listInvoices : (customerId : string) => Promise<Invoice[]>
+    createCheckoutSession : (customerId : string, priceId?: string) => Promise<any>
 }

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import handleSubscriptionUpdated from "./handlesEvents/handleSubscriptionUpdated";
+import handleSubscriptionCreated from "./handlesEvents/handleSubscriptionCreated";
 
 export async function POST(req : NextRequest) {
     const body = await req.text()
@@ -21,11 +22,12 @@ export async function POST(req : NextRequest) {
         case 'customer.subscription.updated':
           handleSubscriptionUpdated(event.data.object)
           break
+        case 'customer.subscription.created':
+          handleSubscriptionCreated(event.data.object)
+          break
         default:
           console.log(`Unhandled event type ${event.type}`)
       }
-
-    console.log(event.type);
 
     return NextResponse.json({ success: true }, { status: 200 });
 }
