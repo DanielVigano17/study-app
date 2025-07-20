@@ -7,8 +7,8 @@ import UsageStats from "./_components/UsageStats";
 import PlansWrapper from "./_components/PlansWrapper";
 import { modules } from "@/domain";
 import { redirect } from "next/navigation";
-import { AnimatedPage } from "@/components/ui/animated-page";
 import { PlansService } from "@/services/plansService";
+import { ApplicationPage, ApplicationPageTitle } from "@/components/page-content/ApplicationPage";
 
 interface PageProps {
     searchParams: Promise<{
@@ -21,7 +21,6 @@ export default async function Page({ searchParams }: PageProps) {
     const params = await searchParams;
     const session = await auth();
     const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
-    const checkoutSessionUrl = await modules.useCase.billing.createCheckoutSession.execute();
     const subscription = await modules.useCase.billing.findSubscription.execute(session?.user?.subscriptionId!);
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
     const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(session?.user?.id!);
@@ -41,39 +40,36 @@ export default async function Page({ searchParams }: PageProps) {
     }
 
     return (
-        <AnimatedPage pageKey="billing-page">
-            <div className="overflow-y-auto">
-                <div className="container mx-auto px-4 pt-8 h-screen overflow-y-visible">
-                    <h1 className="text-3xl font-bold mb-8">Gerenciamento de Assinatura</h1>
-                    
-                    {params.error && (
-                        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                            <p className="text-red-700">{params.error}</p>
-                        </div>
-                    )}
-
-                    <div className="flex flex-col pb-24">
-                        {subscription?.status === "canceled" ? (
-                            <PlansWrapper 
-                                plans={plans} 
-                            />
-                        ) : (
-                            <>
-                                <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
-                                    <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl as string} />
-                                    <UsageStats 
-                                        featuresJson={product?.metadata?.features} 
-                                        currentUsage={featureUsage}
-                                    />
-                                </div>
-                                <div className="lg:col-span-2">
-                                    <BillingHistory />
-                                </div>
-                            </>
-                        )}
-                    </div>
+        <ApplicationPage pageKey="billing-page">
+            <ApplicationPageTitle>
+                Gerenciamento de Assinatura
+            </ApplicationPageTitle>
+            {params.error && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700">{params.error}</p>
                 </div>
+            )}
+
+            <div className="flex flex-col pb-24">
+                {subscription?.status === "canceled" ? (
+                    <PlansWrapper 
+                        plans={plans} 
+                    />
+                ) : (
+                    <>
+                        <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
+                            <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl as string} />
+                            <UsageStats 
+                                featuresJson={product?.metadata?.features} 
+                                currentUsage={featureUsage}
+                            />
+                        </div>
+                        <div className="lg:col-span-2">
+                            <BillingHistory />
+                        </div>
+                    </>
+                )}
             </div>
-        </AnimatedPage>
+        </ApplicationPage>
     )
 }

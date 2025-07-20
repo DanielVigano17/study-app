@@ -11,7 +11,6 @@ import { Trash2, AlertCircle } from "lucide-react";
 import { deleteMateriaAction } from "../actions";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { AnimatedPage } from "@/components/ui/animated-page";
 import { Flashcard } from "@/domain/entities/Flashcard";
 type MateriaWithPendente = Materia & {
   flashcardPendente?: boolean;
@@ -75,7 +74,6 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
   }
   
   return (
-    <AnimatedPage pageKey="list-cards">
       <div className="">
         <div className="w-full flex justify-between gap-3 mb-4">
           <Input value={searchQuery} onChange={handleSearch} className="max-w-sm" type="text" placeholder="Pesquisar Matéria"/>
@@ -149,6 +147,5 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
           </div>
         )}
       </div>
-    </AnimatedPage>
   )
 }

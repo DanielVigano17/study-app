@@ -5,15 +5,15 @@ import { Label } from "@/components/ui/label"
 import { useTheme } from "next-themes"
 import { Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { AnimatedPage } from "@/components/ui/animated-page"
+import { ApplicationPage, ApplicationPageTitle } from "@/components/page-content/ApplicationPage"
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <AnimatedPage pageKey="settings-page">
-      <div className="container mx-auto px-4 pt-8">
-        <h1 className="text-3xl font-bold mb-8 text-foreground">Configurações</h1>
+    <ApplicationPage pageKey="settings-page">
+
+        <ApplicationPageTitle>Configurações</ApplicationPageTitle>
         
         <div className="space-y-6">
           <Card>
@@ -51,7 +51,6 @@ export default function SettingsPage() {
             </CardContent>
           </Card>
         </div>
-      </div>
-    </AnimatedPage>
+    </ApplicationPage>
   )
 }
