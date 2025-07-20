@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { Plus, Play, FileText, MoveLeft } from 'lucide-react'
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { modules } from "@/domain"
-import { QuizForm } from "@/app/(app)/(quiz)/quiz/_components/quiz-form"
 import { QuestionarioCard } from "../_components/questinario-card"
-import { AnimatedPage } from "@/components/ui/animated-page"
+import { ApplicationPage } from "@/components/page-content/ApplicationPage"
 
 export default async function QuestionariosPage({params} : {params : Promise<{materiaId : string}>}) {
   const materiaId = (await params).materiaId;
@@ -13,9 +11,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
   const questionarios = await modules.useCase.questionario.list.execute(materiaId);
 
   return (
-    <AnimatedPage pageKey="questionarios-page">
-      <div className="w-full overflow-y-auto">
-        <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
+    <ApplicationPage pageKey="questionarios-page">
           <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
             <div className="flex items-center gap-4">
               <Link href={`/app/`}><MoveLeft className="w-5 h-5 mb-2 md:mb-0"/></Link>
@@ -52,8 +48,6 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
               <QuestionarioCard key={questionario.id} questionario={questionario} />
             ))}
           </div>
-        </div>
-      </div>
-    </AnimatedPage>
+    </ApplicationPage>
   )
 }

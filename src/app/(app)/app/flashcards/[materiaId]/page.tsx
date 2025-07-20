@@ -3,15 +3,13 @@ import { FlashcardList } from "../_components/FlashCardList"
 import { Plus, Play, FileText, MoveLeft } from 'lucide-react'
 import Link from "next/link"
 import { FlashcardDialog } from "./_components/dialog-new-flashcard";
-import { AnimatedPage } from "@/components/ui/animated-page";
+import { ApplicationPage } from "@/components/page-content/ApplicationPage";
 
 export default async function FlashcardsPage({params} : {params : Promise<{materiaId : string}>}) {
   const materiaId = (await params).materiaId;
 
   return (
-    <AnimatedPage pageKey="flashcards-page">
-      <div className="w-full overflow-y-auto">
-        <div className="container mx-auto h-screen px-4 py-8 overflow-y-visible">
+    <ApplicationPage pageKey="flashcards-page">
           <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
           <div className="flex items-center gap-4">
             <Link href={`/app/`}><MoveLeft className="w-5 h-5 mb-2 md:mb-0"/></Link >
@@ -45,9 +43,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
             </Link>
           </div>
           <FlashcardList materiaId={materiaId}/>
-        </div>
-      </div>
-    </AnimatedPage>
+    </ApplicationPage>
   )
 }
 

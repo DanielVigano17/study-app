@@ -2,7 +2,6 @@
     perspective: 1000px;
     width: 100%;
     max-width: 56rem; /* 384px */
-    height: 32rem; /* 256px */
   }
   
   .flashcardInner {

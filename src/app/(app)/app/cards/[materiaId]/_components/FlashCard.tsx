@@ -11,7 +11,7 @@ interface FlashCardProps {
 export function FlashCard({ front, back, isFlipped, onClick }: FlashCardProps) {
   return (
     <div 
-      className={`${styles.flashcard} w-full max-w-md h-64 cursor-pointer`}
+      className={`${styles.flashcard} w-full max-w-md h-3/5 cursor-pointer`}
       onClick={onClick}
     >
       <div className={`${styles.flashcardInner} ${isFlipped ? styles.isFlipped : ''}`}>

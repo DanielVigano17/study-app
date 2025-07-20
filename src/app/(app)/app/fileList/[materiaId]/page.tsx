@@ -17,7 +17,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { File as FileIcon } from 'lucide-react'
 import Link from "next/link";
-import { AnimatedPage } from "@/components/ui/animated-page"
+import { ApplicationPage } from "@/components/page-content/ApplicationPage";
 
 export default function FilesPages({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
@@ -61,8 +61,7 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
   }
 
   return (
-    <AnimatedPage pageKey="files-page">
-      <div className="container mx-auto px-4 py-8 h-screen overflow-y-auto">
+    <ApplicationPage pageKey="files-page">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <Link href={`/app/`}><MoveLeft className="w-5 h-5"/></Link >
@@ -77,10 +76,6 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
         )}
 
         <div className="space-y-2 h-96">
-          {/* {files.length > 0 && <iframe src={files[0].url} width="100%" height="600px">
-
-          </iframe>
-          } */}
           {files && files.map((file) => (
             <div
               key={file.id}
@@ -122,8 +117,7 @@ export default function FilesPages({params} : {params : Promise<{materiaId : str
         </div>
         ))}
       </div>
-      </div>
-    </AnimatedPage>
+    </ApplicationPage>
   )
 }
 
