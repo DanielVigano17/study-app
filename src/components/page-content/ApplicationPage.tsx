@@ -1,3 +1,4 @@
+import { checkUserAuth } from "../../../auth/check-user-auth";
 import { AnimatedPage } from "../ui/animated-page";
 import { cn } from "@/lib/utils";
 
@@ -5,9 +6,12 @@ interface ApplicationPageProps {
     children: React.ReactNode;
     pageKey: string;
     className?: string;
+    authPage?: boolean;
 }
 
-export function ApplicationPage({ children, pageKey, className }: ApplicationPageProps){
+export async function ApplicationPage({ children, pageKey, className, authPage = false }: ApplicationPageProps){
+    if (authPage) await checkUserAuth();
+
     return (
         <AnimatedPage pageKey={pageKey}>
             <div className={cn("w-full overflow-y-auto", className)}>

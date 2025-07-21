@@ -11,7 +11,7 @@ export default async function QuestionariosPage({params} : {params : Promise<{ma
   const questionarios = await modules.useCase.questionario.list.execute(materiaId);
 
   return (
-    <ApplicationPage pageKey="questionarios-page">
+    <ApplicationPage pageKey="questionarios-page" authPage>
           <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
             <div className="flex items-center gap-4">
               <Link href={`/app/`}><MoveLeft className="w-5 h-5 mb-2 md:mb-0"/></Link>

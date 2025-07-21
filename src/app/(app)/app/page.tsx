@@ -1,7 +1,7 @@
 import { Suspense } from "react"
 import ListCards from "./_components/ListCards"
 import { listMateriasAction } from "./actions"
-import { auth } from "@/auth"
+import { auth } from "../../../../auth/auth"
 import { ApplicationPage } from "@/components/page-content/ApplicationPage"
 
 export default async function ImageCards() {
@@ -9,7 +9,7 @@ export default async function ImageCards() {
   let materias = listMateriasAction(user?.user?.id!);
 
   return (
-    <ApplicationPage pageKey="home-page">
+    <ApplicationPage pageKey="home-page" authPage>
         <Suspense fallback={<p>Carregando...</p>}>
           <ListCards getMaterias={materias}/>
         </Suspense>

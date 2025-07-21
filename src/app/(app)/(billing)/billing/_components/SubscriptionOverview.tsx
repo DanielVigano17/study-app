@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Check } from 'lucide-react'
-import { auth } from "@/auth"
+import { auth } from "../../../../../../auth/auth"
 import Stripe from "stripe"
 import { useContext } from "react"
 import { ApplicationContext } from "@/app/_context/app.context"

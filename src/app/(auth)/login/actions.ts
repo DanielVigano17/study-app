@@ -1,5 +1,5 @@
 "use server"
-import { signIn } from "@/auth"
+import { signIn } from "../../../../auth/auth"
 
 const actionLoginMagicLink = async (email: string) => {
     try {

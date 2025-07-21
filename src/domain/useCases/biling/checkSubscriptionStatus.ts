@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "../../../../auth/auth";
 import { IPaymentGateway } from "@/domain/interfaces/paymentGatewayInterface";
 import { Subscription } from "@/domain/entities/Subscription";
 

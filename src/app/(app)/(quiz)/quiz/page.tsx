@@ -1,14 +1,12 @@
 import React from 'react'
 import { QuizApp } from './_components/quiz-component'
-import { AnimatedPage } from "@/components/ui/animated-page"
+import { ApplicationPage } from '@/components/page-content/ApplicationPage'
 
 const QuizPage = () => {
   return (
-    <AnimatedPage pageKey="quiz-page">
-      <div className='overflow-y-auto flex items-center justify-center'>
-          <QuizApp/>
-      </div>
-    </AnimatedPage>
+    <ApplicationPage pageKey="quiz-page" authPage>
+      <QuizApp/>
+    </ApplicationPage>
   )
 }
 

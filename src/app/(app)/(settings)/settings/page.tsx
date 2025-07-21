@@ -11,7 +11,7 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
 
   return (
-    <ApplicationPage pageKey="settings-page">
+    <ApplicationPage pageKey="settings-page" authPage>
 
         <ApplicationPageTitle>Configurações</ApplicationPageTitle>
         
