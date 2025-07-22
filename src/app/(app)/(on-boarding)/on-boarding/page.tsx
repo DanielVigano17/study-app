@@ -1,14 +1,14 @@
-import { auth } from "@/auth";
+import { ApplicationPage } from "@/components/page-content/ApplicationPage";
+import { auth } from "../../../../../auth/auth";
 import UpdateUserForm from "./_components/UpdateUserForm";
-import { AnimatedPage } from "@/components/ui/animated-page";
 
 const OnBoardingPage = async () => {
   const session = await auth();
   
   return (
-    <AnimatedPage pageKey="onboarding-page">
+    <ApplicationPage pageKey="onboarding-page" authPage>
       <UpdateUserForm id={session?.user?.id}/>
-    </AnimatedPage>
+    </ApplicationPage>
   )
 }
 

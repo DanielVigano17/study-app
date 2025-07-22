@@ -13,7 +13,7 @@ export default async function PageFlashCards({params} : {params : Promise<{mater
     const materia = await modules.useCase.materia.findMateria.execute(materiaId);
 
     return (
-        <ApplicationPage pageKey="flashcards-page">
+        <ApplicationPage pageKey="flashcards-page" authPage>
             <Suspense fallback={<p>Carregando...</p>}>
                 <div className="flex items-center gap-4">
                     <Link href={`/app/flashcards/${materiaId}`}><MoveLeft className="w-5 h-5"/></Link >

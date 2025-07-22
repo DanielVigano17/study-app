@@ -1,6 +1,6 @@
 "use server"
 
-import { auth } from "@/auth";
+import { auth } from "../../../../../auth/auth";
 import BillingHistory from "./_components/BillingHistory";
 import SubscriptionOverview from "./_components/SubscriptionOverview";
 import UsageStats from "./_components/UsageStats";
@@ -40,7 +40,7 @@ export default async function Page({ searchParams }: PageProps) {
     }
 
     return (
-        <ApplicationPage pageKey="billing-page">
+        <ApplicationPage pageKey="billing-page" authPage>
             <ApplicationPageTitle>
                 Gerenciamento de Assinatura
             </ApplicationPageTitle>

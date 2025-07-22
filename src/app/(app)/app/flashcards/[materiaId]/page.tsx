@@ -9,7 +9,7 @@ export default async function FlashcardsPage({params} : {params : Promise<{mater
   const materiaId = (await params).materiaId;
 
   return (
-    <ApplicationPage pageKey="flashcards-page">
+    <ApplicationPage pageKey="flashcards-page" authPage>
           <div className="flex items-start mb-4 md:flex-row md:items-center justify-between md:mb-8">
           <div className="flex items-center gap-4">
             <Link href={`/app/`}><MoveLeft className="w-5 h-5 mb-2 md:mb-0"/></Link >

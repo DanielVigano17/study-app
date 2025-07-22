@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "../../../../auth/auth";
 import { PageContainer } from "@/components/layout/page-container";
 import { Toaster } from "@/components/ui/toaster";
 import { redirect } from "next/navigation";

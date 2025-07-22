@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+import { auth } from "../../../../../auth/auth";
 import { modules } from "@/domain";
 import { NextResponse } from "next/server";
 
