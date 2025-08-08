@@ -3,6 +3,7 @@ import { Blur } from "@/components/blur/Blur";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Play, Star } from "lucide-react";
 import Image from "next/image";
+import { ShineBorder } from "@/components/magicui/shine-border";
 
 export default function Home() {
   return (
@@ -36,19 +37,10 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 mb-16">
             <Button 
               size="lg" 
-              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-sm shadow-lg hover:shadow-xl transition-all duration-300"
             >
               Começar Gratuitamente
               <ArrowRight className="ml-2 w-5 h-5" />
-            </Button>
-            
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-2 border-gray-300 hover:border-gray-400 text-gray-700 px-8 py-4 text-lg font-semibold rounded-xl transition-all duration-300"
-            >
-              <Play className="mr-2 w-5 h-5" />
-              Ver Demonstração
             </Button>
           </div>
         </section>
@@ -58,11 +50,9 @@ export default function Home() {
           <div className="max-w-7xl mx-auto">
             {/* Container para a imagem */}
             <div className="relative">
-              {/* Background com blur */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl blur-3xl opacity-50"></div>
-              
               {/* Espaço para a imagem */}
-              <div className="relative flex items-center justify-center bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100 p-8">
+              <div className="relative flex items-center w-5/6 mx-auto justify-center bg-white rounded-sm shadow-2xl overflow-hidden border border-gray-100 p-8">
+                <ShineBorder shineColor={["#3b82f6", "#3b82f6", "#3b82f6"]} />
                 <Image src="/app-print.png" alt="SmartStudy" width={1000} height={1000} />
               </div>
             </div>

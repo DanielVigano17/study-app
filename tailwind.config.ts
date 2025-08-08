@@ -95,12 +95,25 @@ export default {
 				"0%": { 'opacity': '0', 'transform': "translateX(-50px)" },
 				"100%": { 'opacity': '1', 'transform': "translateX(0)" },
 			  },
+			shine: {
+          "0%": {
+            backgroundPosition: "0% 0%",
+          },
+          "50%": {
+            backgroundPosition: "100% 100%",
+          },
+          "100%": {
+            backgroundPosition: "0% 0%",
+          },
+        },
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'shiny-text': 'shiny-text 8s infinite',
 			'slideInLeft': "slideInLeft 1s ease-out forwards",
+			 shine: "shine 6s infinite linear",
+
   		}
   	}
   },

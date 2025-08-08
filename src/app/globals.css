@@ -34,6 +34,7 @@ body {
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --animate-shine: shine var(--duration) infinite linear;
   }
 
   .dark {
@@ -63,8 +64,10 @@ body {
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+  .theme {
+    --animate-shine: shine var(--duration) infinite linear;
+  }
 }
-
 
 @layer base {
   * {
@@ -86,5 +89,19 @@ body {
   .dark .glass-card {
     background: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+}
+
+@theme inline {
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
   }
 }
