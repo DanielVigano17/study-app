@@ -8,7 +8,7 @@ interface HeaderProps {
 
 export function Header({ children, className }: HeaderProps) {
   return (
-    <header className={cn("fixed top-0 w-full z-50 glass-card border-b border-border/20 shadow-sm", className)}>
+    <header className={cn("fixed flex items-center justify-center top-0 w-full z-50 glass-card border-b border-border/20 shadow-sm", className)}>
       {children}
     </header>
   );
@@ -21,7 +21,7 @@ interface HeaderContentProps {
 
 export function HeaderContent({ children, className }: HeaderContentProps) {
   return (
-    <header className={cn("container flex justify-between w-full p-5", className)}>
+    <header className={cn("container flex items-center justify-between w-full p-5", className)}>
       {children}
     </header>
   );
@@ -33,7 +33,7 @@ interface HeaderTitleProps {
 
 export function HeaderTitle({children} : HeaderTitleProps){
     return(
-        children
+        <h1 className="text-2xl font-bold h-full flex items-center">{children}</h1>
     )
 }
 
@@ -49,7 +49,12 @@ export function HeaderNavigation({ children }: HeaderNavigationProps) {
   );
 }
 
-export function HeaderNavigationItem({ href, label }: { href: string, label: string }) {
+interface HeaderNavigationItemProps {
+  href: string;
+  label: string;
+}
+
+export function HeaderNavigationItem({ href, label }: HeaderNavigationItemProps) {
   return (
     <a
       href={href}
@@ -57,5 +62,17 @@ export function HeaderNavigationItem({ href, label }: { href: string, label: str
     >
       {label}
     </a>
+  );
+}
+
+interface HeaderActionsButtonProps {
+  children: ReactNode;
+}
+
+export function HeaderActionsButton({ children }: HeaderActionsButtonProps) {
+  return (
+    <div className="flex space-x-6 items-center">
+      {children}
+    </div>
   );
 }
