@@ -1,3 +1,5 @@
+"use server"
+
 import { HeaderLandingPage as Header } from "./_components/header-landing-page";
 import { Blur } from "@/components/blur/Blur";
 import { Button } from "@/components/ui/button";
@@ -7,15 +9,15 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div className="relative h-fit">
-      <DotPattern className="opacity-50 h-full w-full" />
+      <DotPattern className="opacity-50 h-full w-full -z-10"/>
       <Header/>
       <Blur className="fixed top-0 left-0 w-72 opacity-15 blur-2xl" />
       <Blur className="fixed bottom-0 right-0 w-72 opacity-15" />
-      <main className="container mx-auto mt-24 h-screen flex flex-col items-center">
-        <section id="hero" className="flex flex-col items-center w-full h-screen text-center p-4">
+      <main className="container mx-auto mt-24 flex flex-col">
+        <section id="hero" className="flex flex-col items-center w-full text-center p-4 scroll-mt-24">
           {/* Badge de destaque */}
           <div className="flex items-center gap-2 bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
             <Star className="w-4 h-4 fill-current" />
@@ -49,7 +51,7 @@ export default function Home() {
         </section>
 
         {/* Seção para imagem da tela do software */}
-        <section id="app-print" className="w-full px-4">
+        <section id="app-print" className="w-full px-4 scroll-mt-24">
           <div className="max-w-7xl mx-auto">
             {/* Container para a imagem */}
             <div className="relative">
@@ -62,7 +64,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="features" className="flex flex-col mt-24 items-center w-full h-screen text-center p-4">
+        <section id="features" className="flex flex-col mt-24 items-center w-full text-center p-4 scroll-mt-24">
           <div className="max-w-7xl mx-auto">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
               Recursos que {" "}
