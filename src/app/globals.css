@@ -67,6 +67,8 @@ body {
   .theme {
     --animate-shine: shine var(--duration) infinite linear;
     --animate-aurora: aurora 8s ease-in-out infinite alternate;
+    --animate-marquee: marquee var(--duration) infinite linear;
+    --animate-marquee-vertical: marquee-vertical var(--duration) linear infinite;
   }
 }
 
@@ -125,6 +127,22 @@ body {
   100% {
     background-position: 0% 50%;
     transform: rotate(-5deg) scale(0.9);
+    }
+  }
+  @keyframes marquee {
+  from {
+    transform: translateX(0);
+    }
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
+  @keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+    }
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
     }
   }
 }

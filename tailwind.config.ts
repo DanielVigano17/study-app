@@ -127,6 +127,22 @@ export default {
 				  "background-position": "0% 50%",
 				  "transform": "rotate(-5deg) scale(0.9)",
 				  }
+				},
+				'marquee': {
+					"from": {
+						"transform": "translateX(0)",
+					},
+					"to": {
+						"transform": "translateX(calc(-100% - var(--gap)))"
+					}
+				},
+				'marquee-vertical': {
+					"from": {
+						"transform": "translateY(0)",
+					},
+					"to": {
+						"transform": "translateY(calc(-100% - var(--gap)))"
+					}
 				}
   		},
   		animation: {
@@ -136,6 +152,8 @@ export default {
 			'slideInLeft': "slideInLeft 1s ease-out forwards",
 			'shine': "shine 6s infinite linear",
 			'aurora': "aurora 6s infinite linear",
+			'marquee': "marquee 20s infinite linear",
+			'marquee-vertical': "marquee-vertical 20s infinite linear",
   		}
   	}
   },
