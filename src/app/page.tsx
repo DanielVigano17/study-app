@@ -17,8 +17,8 @@ export default async function Home() {
     <div className="relative h-fit">
       <ParallaxBackground dotColor="#d1d1d1" dotSize={2} dotCount={400} speed={0.15} />
       <Header/>
-      <Blur className="fixed top-0 left-0 w-72 opacity-15 blur-2xl z-20" />
-      <Blur className="fixed bottom-0 right-0 w-72 opacity-15 blur-2xl z-20" />
+      <Blur className="fixed top-0 left-0 opacity-15 blur-2xl z-20 w-36 md:w-72" />
+      <Blur className="fixed bottom-0 right-0 opacity-15 blur-2xl z-20 w-36 md:w-72" />
       <main className="container mx-auto mt-24 flex flex-col">
         <section id="hero" className="flex flex-col items-center w-full text-center p-4 scroll-mt-24 z-30">
           {/* Badge de destaque */}
@@ -36,7 +36,7 @@ export default async function Home() {
           </h1>
 
           {/* Subtítulo */}
-          <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mb-12 leading-relaxed">
+          <p className="text-lg md:text-2xl text-gray-600 max-w-3xl mb-12 leading-relaxed">
             Crie flashcards inteligentes, questionários adaptativos e acompanhe seu progresso 
             com ferramentas avançadas de IA. Estude de forma mais eficiente e inteligente.
           </p>
@@ -75,7 +75,7 @@ export default async function Home() {
               {/* Espaço para a imagem */}
               <div className="relative flex items-center w-full mx-auto justify-center bg-white rounded-sm shadow-2xl overflow-hidden border border-gray-100 p-1">
                 <ShineBorder shineColor={["#3b82f6", "#3b82f6", "#3b82f6"]} />
-                <Image src="/app-print.png" alt="SmartStudy" width={1920} height={1080} className="rounded-[6px]" />
+                <Image src="/app-print.png" alt="SmartStudy" width={1470} height={992} className="rounded-[6px]" />
               </div>
             </div>
           </div>
