@@ -2,6 +2,16 @@ import type { Config } from "tailwindcss";
 
 export default {
     darkMode: ["class"],
+	safelist: [
+		"accordion-down",
+		"accordion-up",
+		"shiny-text",
+		"slideInLeft",
+		"shine",
+		"aurora",
+		"marquee",
+		"marquee-vertical",
+	],
     content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -91,16 +101,75 @@ export default {
   					'background-position': 'calc(100% + var(--shiny-width)) 0'
   				}
   			},
-			  'slideInLeft': {
-				"0%": { 'opacity': '0', 'transform': "translateX(-50px)" },
-				"100%": { 'opacity': '1', 'transform': "translateX(0)" },
-			  },
+  			slideInLeft: {
+  				'0%': {
+  					opacity: '0',
+  					transform: 'translateX(-50px)'
+  				},
+  				'100%': {
+  					opacity: '1',
+  					transform: 'translateX(0)'
+  				}
+  			},
+  			shine: {
+  				'0%': {
+  					backgroundPosition: '0% 0%'
+  				},
+  				'50%': {
+  					backgroundPosition: '100% 100%'
+  				},
+  				'100%': {
+  					backgroundPosition: '0% 0%'
+  				}
+  			},
+  			aurora: {
+  				'0%': {
+  					'background-position': '0% 50%',
+  					transform: 'rotate(-5deg) scale(0.9)'
+  				},
+  				'25%': {
+  					'background-position': '50% 100%',
+  					transform: 'rotate(5deg) scale(1.1)'
+  				},
+  				'50%': {
+  					'background-position': '100% 50%',
+  					transform: 'rotate(-3deg) scale(0.95)'
+  				},
+  				'75%': {
+  					'background-position': '50% 0%',
+  					transform: 'rotate(3deg) scale(1.05)'
+  				},
+  				'100%': {
+  					'background-position': '0% 50%',
+  					transform: 'rotate(-5deg) scale(0.9)'
+  				}
+  			},
+  			marquee: {
+  				from: {
+  					transform: 'translateX(0)'
+  				},
+  				to: {
+  					transform: 'translateX(calc(-100% - var(--gap)))'
+  				}
+  			},
+  			'marquee-vertical': {
+  				from: {
+  					transform: 'translateY(0)'
+  				},
+  				to: {
+  					transform: 'translateY(calc(-100% - var(--gap)))'
+  				}
+  			}
   		},
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'shiny-text': 'shiny-text 8s infinite',
-			'slideInLeft': "slideInLeft 1s ease-out forwards",
+  			slideInLeft: 'slideInLeft 1s ease-out forwards',
+  			shine: 'shine 6s infinite linear',
+  			aurora: 'aurora 6s infinite linear',
+  			marquee: 'marquee var(--duration) infinite linear',
+  			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
   		}
   	}
   },
