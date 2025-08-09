@@ -43,7 +43,7 @@ interface HeaderNavigationProps {
 
 export function HeaderNavigation({ children }: HeaderNavigationProps) {
   return (
-    <div className="flex space-x-6 items-center">
+    <div className="hidden md:flex space-x-6 items-center">
       {children}
     </div>
   );

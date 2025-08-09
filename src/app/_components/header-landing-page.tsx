@@ -11,8 +11,8 @@ export function HeaderLandingPage()
                     <SmartStudyIcon />
                 </HeaderTitle>
                 <HeaderNavigation>
-                    <HeaderNavigationItem href="/" label="Link Teste"></HeaderNavigationItem>
-                    <HeaderNavigationItem href="/" label="Link Teste"></HeaderNavigationItem>
+                    <HeaderNavigationItem href="#hero" label="Início"></HeaderNavigationItem>
+                    <HeaderNavigationItem href="#app-print" label="Como funciona"></HeaderNavigationItem>
                 </HeaderNavigation>
                 <HeaderActionsButton>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
