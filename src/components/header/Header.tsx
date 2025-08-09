@@ -39,11 +39,12 @@ export function HeaderTitle({children} : HeaderTitleProps){
 
 interface HeaderNavigationProps {
   children: ReactNode;
+  className?: string;
 }
 
-export function HeaderNavigation({ children }: HeaderNavigationProps) {
+export function HeaderNavigation({ children, className }: HeaderNavigationProps) {
   return (
-    <div className="hidden md:flex space-x-6 items-center">
+    <div className={cn("hidden md:flex space-x-6 items-center", className)}>
       {children}
     </div>
   );
@@ -58,7 +59,7 @@ export function HeaderNavigationItem({ href, label }: HeaderNavigationItemProps)
   return (
     <a
       href={href}
-      className="text-black hover:text-blue-500 transition-colors duration-300"
+      className="text-black hover:text-blue-500 transition-colors duration-300 text-[16px]"
     >
       {label}
     </a>

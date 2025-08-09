@@ -9,11 +9,13 @@ import { ShineBorder } from "@/components/magicui/shine-border";
 import { AuroraText } from "@/components/magicui/aurora-text";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import { ReviewsLandingPage } from "./_components/reviews-landing-page";
+import { PricingSection } from "./_components/pricing-section";
+import ParallaxBackground from "@/components/backgrounds/parallax-background";
 
 export default async function Home() {
   return (
     <div className="relative h-fit">
-      <DotPattern className="opacity-50 h-full w-full -z-50"/>
+      <ParallaxBackground dotColor="#d1d1d1" dotSize={2} dotCount={400} speed={0.15} />
       <Header/>
       <Blur className="fixed top-0 left-0 w-72 opacity-15 blur-2xl z-20" />
       <Blur className="fixed bottom-0 right-0 w-72 opacity-15 blur-2xl z-20" />
@@ -66,14 +68,14 @@ export default async function Home() {
         </section>
 
         {/* Seção para imagem da tela do software */}
-        <section id="app-print" className="w-full px-4 scroll-mt-24 z-30">
-          <div className="max-w-7xl mx-auto">
+        <section id="app-print" className="w-full scroll-mt-24 z-30">
+          <div className="max-w-full px-2 md:max-w-7xl mx-auto">
             {/* Container para a imagem */}
             <div className="relative">
               {/* Espaço para a imagem */}
-              <div className="relative flex items-center w-5/6 mx-auto justify-center bg-white rounded-sm shadow-2xl overflow-hidden border border-gray-100 p-8">
+              <div className="relative flex items-center w-full mx-auto justify-center bg-white rounded-sm shadow-2xl overflow-hidden border border-gray-100 p-1">
                 <ShineBorder shineColor={["#3b82f6", "#3b82f6", "#3b82f6"]} />
-                <Image src="/app-print.png" alt="SmartStudy" width={1200} height={720} className="rounded-[6px]" />
+                <Image src="/app-print.png" alt="SmartStudy" width={1920} height={1080} className="rounded-[6px]" />
               </div>
             </div>
           </div>
@@ -164,13 +166,19 @@ export default async function Home() {
         <section id="testimonials" className="mt-24 px-4 scroll-mt-24">
           <div className="max-w-7xl mx-auto text-center">
             <h2 className="text-4xl font-bold text-gray-900 mb-6">
+            O que dizem {" "}
             <AuroraText colors={["#3b82f6", "#003c9d", "#3b82f6","#95beff"]}>
-              O que dizem nossos alunos
+              nossos Estudantes
             </AuroraText>
               </h2>
             <p className="text-lg text-gray-600 mb-12">Resultados reais de quem já usa o SmartStudy</p>
               <ReviewsLandingPage/>
           </div>
+        </section>
+
+        {/* Planos e preços */}
+        <section id="pricing" className="mt-24 px-4 scroll-mt-24">
+          <PricingSection />
         </section>
 
         {/* FAQ */}
@@ -212,28 +220,18 @@ export default async function Home() {
               <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50" asChild>
                 <a href="#app-print">Começar agora</a>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10" asChild>
-                <a href="#faq">Tirar dúvidas</a>
-              </Button>
             </div>
           </div>
         </section>
+      </main>
 
-        {/* Footer */}
-        <footer id="footer" className="mt-24 mb-12 px-4 text-sm text-gray-600 z-30">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="opacity-80">© {new Date().getFullYear()} SmartStudy. Todos os direitos reservados.</div>
-            <nav className="flex items-center gap-4">
-              <a href="#hero" className="hover:text-gray-900">Início</a>
-              <a href="#features" className="hover:text-gray-900">Recursos</a>
-              <a href="#how-it-works" className="hover:text-gray-900">Como funciona</a>
-              <a href="#testimonials" className="hover:text-gray-900">Depoimentos</a>
-              <a href="#faq" className="hover:text-gray-900">FAQ</a>
-            </nav>
+      {/* Footer */}
+      <footer id="footer" className="mt-24 h-24 border-t border-gray-200 px-4 text-sm text-gray-600 z-30 glass-card">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-center gap-4 h-full">
+            <div className="font-bold">© {new Date().getFullYear()} SmartStudy. Todos os direitos reservados.</div>
           </div>
         </footer>
 
-      </main>
     </div>
   );
 }

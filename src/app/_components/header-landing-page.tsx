@@ -9,11 +9,13 @@ export function HeaderLandingPage()
             <HeaderContent>
                 <HeaderTitle>
                     <SmartStudyIcon />
+                    <HeaderNavigation className="ml-4">
+                        <HeaderNavigationItem href="#hero" label="Início"></HeaderNavigationItem>
+                        <HeaderNavigationItem href="#app-print" label="Como funciona"></HeaderNavigationItem>
+                        <HeaderNavigationItem href="#testimonials" label="Depoimentos"></HeaderNavigationItem>
+                        <HeaderNavigationItem href="#pricing" label="Planos"></HeaderNavigationItem>
+                    </HeaderNavigation>
                 </HeaderTitle>
-                <HeaderNavigation>
-                    <HeaderNavigationItem href="#hero" label="Início"></HeaderNavigationItem>
-                    <HeaderNavigationItem href="#app-print" label="Como funciona"></HeaderNavigationItem>
-                </HeaderNavigation>
                 <HeaderActionsButton>
                     <button className="bg-blue-500 text-white px-4 py-2 rounded-md">
                         <Link href="/login">

@@ -95,7 +95,7 @@ const ParallaxBackground: React.FC<ParallaxBackgroundProps> = ({
     }
   }, [dotColor, dotSize, dotCount, speed])
 
-  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full" />
+  return <canvas ref={canvasRef} className="fixed inset-0 w-full h-full -z-50" />
 }
 
 export default ParallaxBackground
