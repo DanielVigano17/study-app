@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ApplicationProvider } from "./_context/app.context";
 import { auth } from "../../auth/auth";
 import { ThemeProvider } from "./_context/theme-context";
+import { GoogleTagManager } from "@next/third-parties/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,6 +45,9 @@ export default async function RootLayout({
   const session = await auth();
   return (
     <html lang="pt-br" suppressHydrationWarning className="scroll-smooth">
+
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_TAG_MENAGER_ID!} />
+
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
           attribute="class"
