@@ -7,7 +7,6 @@ export async function POST(request: NextRequest) {
     const session = await auth();
     let successUrl = `/app/`;
     let usuarioJaUtilizouFreeTrial = true;
-    console.log("session", session);
     
     if (!session?.user) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });

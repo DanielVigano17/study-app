@@ -5,31 +5,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge"
 import { Check, Star, Loader2 } from 'lucide-react'
 import { useState } from "react"
-
-interface Feature {
-  lookup_key: string;
-  name: string;
-  feature_presentation: string;
-  value: string;
-}
-
-interface Price {
-  id: string;
-  type: string;
-  recurring: {
-    interval: string;
-  };
-  currency: string;
-  unit_amount: number;
-}
-
-interface Plan {
-  id: string;
-  name: string;
-  description: string;
-  features: Feature[];
-  prices: Price[];
-}
+import { StripeProduct as Plan } from "@/config/stripe-products";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface PlansOverviewProps {
   plans: Plan[];
@@ -37,8 +15,8 @@ interface PlansOverviewProps {
 }
 
 export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProps) {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingPlanId, setLoadingPlanId] = useState<string | null>(null);
+  const [isAnnual, setIsAnnual] = useState<boolean>(false);
 
   const formatPrice = (amount: number, currency: string) => {
     const value = amount / 100; // Stripe armazena em centavos
@@ -52,24 +30,19 @@ export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProp
     return interval === 'month' ? 'mês' : 'ano';
   };
 
-  const handlePlanSelect = (planId: string, priceId: string) => {
-    setSelectedPlan(planId);
-  };
-
-  const handleContinueSubscription = async () => {
-    if (selectedPlan) {
-      setIsLoading(true);
-      try {
-        const plan = plans.find(p => p.id === selectedPlan);
-        const monthlyPrice = plan?.prices.find(p => p.recurring.interval === 'month');
-        if (monthlyPrice) {
-          await onSelectPlan(monthlyPrice.id);
-        }
-      } catch (error) {
-        console.error('Erro ao processar assinatura:', error);
-      } finally {
-        setIsLoading(false);
+  const handlePlanClick = async (planId: string) => {
+    setLoadingPlanId(planId);
+    try {
+      const plan = plans.find(p => p.id === planId);
+      const desiredInterval = isAnnual ? 'year' : 'month';
+      const selectedPrice = plan?.prices.find(p => p.recurring.interval === desiredInterval);
+      if (selectedPrice) {
+        await onSelectPlan(selectedPrice.id);
       }
+    } catch (error) {
+      console.error('Erro ao processar assinatura:', error);
+    } finally {
+      setLoadingPlanId(null);
     }
   };
 
@@ -78,25 +51,38 @@ export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProp
       <div className="text-center">
         <h2 className="text-3xl font-bold mb-2">Escolha seu Plano</h2>
         <p className="text-muted-foreground">
-          Reative sua assinatura escolhendo o plano ideal para você
+          Ative sua assinatura escolhendo o plano ideal para você
         </p>
+      </div>
+
+      {/* Toggle Mensal/Anual */}
+      <div className="flex items-center justify-center gap-3">
+        <Label className={!isAnnual ? "font-semibold" : "text-muted-foreground"}>Mensal</Label>
+        <Switch checked={isAnnual} onCheckedChange={setIsAnnual} />
+        <div className="flex items-center gap-2">
+          <Label className={isAnnual ? "font-semibold" : "text-muted-foreground"}>Anual</Label>
+          <span className="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">Economize</span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {plans.map((plan) => {
           const monthlyPrice = plan.prices.find(p => p.recurring.interval === 'month');
           const yearlyPrice = plan.prices.find(p => p.recurring.interval === 'year');
-          
+          const activePrice = isAnnual ? yearlyPrice : monthlyPrice;
+          const secondaryPrice = isAnnual ? monthlyPrice : yearlyPrice;
+          const activeInterval = isAnnual ? 'year' : 'month';
+          const isLoadingThis = loadingPlanId === plan.id;
+          const isAnyLoading = loadingPlanId !== null;
+
           return (
             <Card 
               key={plan.id} 
-              className={`relative transition-all duration-200 hover:shadow-lg ${
-                selectedPlan === plan.id ? 'ring-2 ring-primary' : ''
-              }`}
+              className={`relative transition-all duration-200 hover:shadow-lg`}
             >
               {plan.id === 'pro' && (
                 <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                  <Badge className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1">
+                  <Badge className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1">
                     <Star className="w-3 h-3 mr-1" />
                     Mais Popular
                   </Badge>
@@ -110,17 +96,17 @@ export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProp
               
               <CardContent>
                 <div className="text-center mb-6">
-                  {monthlyPrice && (
+                  {activePrice && (
                     <div className="mb-2">
                       <span className="text-3xl font-bold">
-                        {formatPrice(monthlyPrice.unit_amount, monthlyPrice.currency)}
+                        {formatPrice(activePrice.unit_amount, activePrice.currency)}
                       </span>
-                      <span className="text-muted-foreground">/{formatInterval(monthlyPrice.recurring.interval)}</span>
+                      <span className="text-muted-foreground">/{formatInterval(activeInterval)}</span>
                     </div>
                   )}
-                  {yearlyPrice && (
-                    <div className="text-sm text-muted-foreground">
-                      ou {formatPrice(yearlyPrice.unit_amount, yearlyPrice.currency)}/{formatInterval(yearlyPrice.recurring.interval)}
+                  {secondaryPrice && (
+                    <div className="text-xs text-muted-foreground">
+                      ou {formatPrice(secondaryPrice.unit_amount, secondaryPrice.currency)}/{formatInterval(secondaryPrice.recurring.interval)}
                     </div>
                   )}
                 </div>
@@ -142,15 +128,20 @@ export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProp
               
               <CardFooter>
                 <div className="w-full space-y-2">
-                  {monthlyPrice && (
+                  {activePrice && (
                     <Button 
-                      onClick={() => handlePlanSelect(plan.id, monthlyPrice.id)}
-                      disabled={isLoading}
-                      className={`w-full ${
-                        selectedPlan === plan.id ? 'bg-primary' : 'bg-secondary hover:bg-secondary/80'
-                      }`}
+                      onClick={() => handlePlanClick(plan.id)}
+                      disabled={isAnyLoading}
+                      className={`w-full bg-primary text-white`}
                     >
-                      {selectedPlan === plan.id ? 'Plano Selecionado' : `Assinar ${plan.name}`}
+                      {isLoadingThis ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Processando...
+                        </>
+                      ) : (
+                        `Assinar ${plan.name}`
+                      )}
                     </Button>
                   )}
                 </div>
@@ -159,28 +150,6 @@ export default function PlansOverview({ plans, onSelectPlan }: PlansOverviewProp
           );
         })}
       </div>
-
-      {selectedPlan && (
-        <div className="text-center mt-6">
-          <p className="text-sm text-muted-foreground mb-2">
-            Clique no botão abaixo para prosseguir com a assinatura
-          </p>
-          <Button 
-            onClick={handleContinueSubscription}
-            disabled={isLoading}
-            className="bg-primary hover:bg-primary/90"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processando...
-              </>
-            ) : (
-              'Continuar com a Assinatura'
-            )}
-          </Button>
-        </div>
-      )}
     </div>
   )
 } 

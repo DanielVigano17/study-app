@@ -1,5 +1,5 @@
 import { StripeRepository } from "@/repositories/stripeRepository";
-import stripeProducts from "@/config/stripe-products.json";
+import stripeProducts from "@/config/stripe-products";
 import Stripe from "stripe";
 
 export class StripeSyncService {
@@ -12,17 +12,13 @@ export class StripeSyncService {
             errors: [] as string[]
         };
 
-        // Cria uma cópia dos produtos para manipulação
-        const productsToSync = JSON.parse(JSON.stringify(stripeProducts.products));
-        let configUpdated = false;
+        const productsToSync = stripeProducts; // já é array tipado
 
         for (const product of productsToSync) {
             try {
-                // Busca produto existente ou cria novo
                 let stripeProduct = await this.stripeRepo.getProduct(product.id).catch(() => null);
 
                 if (stripeProduct) {
-                    // Atualiza produto existente
                     stripeProduct = await this.stripeRepo.updateProduct(product.id, {
                         name: product.name,
                         description: product.description,
@@ -32,7 +28,6 @@ export class StripeSyncService {
                     });
                     results.updated.push(product.id);
                 } else {
-                    // Cria novo produto
                     stripeProduct = await this.stripeRepo.createProduct({
                         id: product.id,
                         name: product.name,
@@ -44,23 +39,20 @@ export class StripeSyncService {
                     results.created.push(product.id);
                 }
 
-                // Sincroniza preços
                 for (const price of product.prices) {
                     try {
                         let stripePrice = await this.stripeRepo.getPrice(price.id).catch(() => null);
 
+                        console.log("stripePrice", stripePrice);
+
                         if (!stripePrice) {
-                            // Cria novo preço
                             stripePrice = await this.stripeRepo.createPrice({
                                 product: product.id,
                                 currency: price.currency,
                                 unit_amount: price.unit_amount,
                                 recurring: price.recurring as Stripe.PriceCreateParams.Recurring
                             });
-                            
-                            // Atualiza o ID do preço no array de produtos
-                            price.id = stripePrice.id;
-                            configUpdated = true;
+                            // opcional: não sobrescrevemos o id local
                             results.created.push(`${product.id}:${price.id}`);
                         }
                     } catch (error) {
