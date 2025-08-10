@@ -1,8 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { actionLoginGoogle, actionLoginMagicLink } from "../login/actions"
 import { Loader2 } from "lucide-react"
@@ -12,14 +11,18 @@ import ParallaxBackground from "@/components/backgrounds/parallax-background"
 import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
 
-export function AuthForm() {
+interface AuthFormProps {
+  redirectTo?: string
+}
+
+export function AuthForm({ redirectTo = "/app" }: AuthFormProps) {
   const googleForm = useForm();
   const magicLinkForm = useForm();
   const { toast } = useToast()
 
   const handleSubmitGoogle = googleForm.handleSubmit(async () => {
     try {
-      await actionLoginGoogle();
+      await actionLoginGoogle(redirectTo);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -32,10 +35,10 @@ export function AuthForm() {
 
   const handleSubmitMagicLink = magicLinkForm.handleSubmit(async (data) => {
     try {
-      await actionLoginMagicLink(data.email);
+      await actionLoginMagicLink(data.email, redirectTo);
       toast({
         title: "Link Enviado",
-        description: "O link para acesso foi enviado para o seu email",
+        description: "Verifique seu e-mail e, ao acessar pelo link, você será redirecionado.",
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } catch (error) {

@@ -1,25 +1,16 @@
 "use server"
 import { signIn } from "../../../../auth/auth"
 
-const actionLoginMagicLink = async (email: string) => {
-    try {
-        await signIn("resend", {
-            email: email,
-            redirect: false
-        })
-    } catch (e) {
-        console.error("Erro ao enviar magic link:", e)
-        throw e
-    }
+const actionLoginMagicLink = async (email: string, redirectTo: string) => {
+  await signIn("resend", {
+    email,
+    redirect: false,
+    redirectTo,
+  })
 }
 
-const actionLoginGoogle = async () => {
-    try {
-        await signIn("google", { redirect: true })
-    } catch (e) {
-        console.error("Erro ao fazer login com Google:", e)
-        throw e
-    }
+const actionLoginGoogle = async (callbackUrl: string) => {
+  await signIn("google", { redirect: true, redirectTo: callbackUrl })
 }
 
 export { actionLoginMagicLink, actionLoginGoogle }

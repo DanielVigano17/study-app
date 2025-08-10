@@ -1,33 +1,8 @@
-import stripeProducts from '@/config/stripe-products.json';
-
-export interface Feature {
-  lookup_key: string;
-  name: string;
-  feature_presentation: string;
-  value: string;
-}
-
-export interface Price {
-  id: string;
-  type: string;
-  recurring: {
-    interval: string;
-  };
-  currency: string;
-  unit_amount: number;
-}
-
-export interface Plan {
-  id: string;
-  name: string;
-  description: string;
-  features: Feature[];
-  prices: Price[];
-}
+import stripeProducts, { StripeProduct as Plan, StripeProductPrice as Price, StripeProductFeature as Feature } from '@/config/stripe-products';
 
 export class PlansService {
   static getPlans(): Plan[] {
-    return stripeProducts.products as Plan[];
+    return stripeProducts;
   }
 
   static getPlanById(planId: string): Plan | undefined {

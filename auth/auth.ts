@@ -6,7 +6,6 @@ import { NextResponse } from "next/server"
 import { CreateCustomer } from "../src/domain/useCases/biling/createCustomer"
 import { StripeRepository } from "../src/repositories/stripeRepository"
 import { UserRepository } from "../src/repositories/userRepository"
-import { CreateSubscription } from "../src/domain/useCases/biling/createSubscription"
 import Google from "next-auth/providers/google"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -32,8 +31,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {
     signIn: "/login",
-    verifyRequest: '/login',
-    newUser: '/on-boarding',
+    verifyRequest: '/login'
   },
   events: {
     createUser: async (event) => {
@@ -41,12 +39,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const userRepository = new UserRepository();
       const stripeRepository = new StripeRepository();
       const createCustumer = new CreateCustomer(stripeRepository, userRepository);
-      const createSubscription = new CreateSubscription(stripeRepository, userRepository);
 
       try {
         if (!email || !id) throw new Error("Erro ao recuperar usuário criado")
-        const user = await createCustumer.execute({ userId: id, email: email });
-        const updatedUser = await createSubscription.execute(user.customerId!, user.id);
+        await createCustumer.execute({ userId: id, email: email });
       } catch (e) {
         console.log("Este é o erro da mensagem: ", e)
       }

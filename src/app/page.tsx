@@ -48,7 +48,7 @@ export default async function Home() {
               className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-sm shadow-lg hover:shadow-xl transition-all duration-300"
               asChild
             >
-              <a href="#app-print">
+              <a href="#pricing">
                 Começar Gratuitamente
                 <ArrowRight className="ml-2 w-5 h-5" />
               </a>

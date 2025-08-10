@@ -5,9 +5,17 @@ import { modules } from "@/domain";
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
+    let successUrl = `/app/`;
+    let usuarioJaUtilizouFreeTrial = true;
     
     if (!session?.user) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
+    }
+
+    if(!session.user.subscriptionId)
+    {
+      successUrl = "/on-boarding";
+      usuarioJaUtilizouFreeTrial = false;
     }
 
     const { priceId } = await request.json();
@@ -16,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "priceId é obrigatório" }, { status: 400 });
     }
 
-    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(priceId);
+    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(successUrl, usuarioJaUtilizouFreeTrial, priceId);
 
     if (!checkoutUrl) {
       return NextResponse.json({ error: "Erro ao criar sessão de checkout" }, { status: 500 });

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import PlansOverview from "./PlansOverview";
-import { Plan } from "@/services/plansService";
+import { StripeProduct as Plan } from "@/config/stripe-products";
 
 interface PlansWrapperProps {
   plans: Plan[];

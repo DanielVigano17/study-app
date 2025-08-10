@@ -9,7 +9,7 @@ export default async function ImageCards() {
   let materias = listMateriasAction(user?.user?.id!);
 
   return (
-    <ApplicationPage pageKey="home-page" authPage>
+    <ApplicationPage pageKey="home-page" authPage subscriptionRequired >
         <Suspense fallback={<p>Carregando...</p>}>
           <ListCards getMaterias={materias}/>
         </Suspense>

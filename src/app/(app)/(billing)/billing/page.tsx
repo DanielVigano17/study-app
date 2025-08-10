@@ -11,65 +11,89 @@ import { PlansService } from "@/services/plansService";
 import { ApplicationPage, ApplicationPageTitle } from "@/components/page-content/ApplicationPage";
 
 interface PageProps {
-    searchParams: Promise<{
-        error?: string;
-        redirectTo?: string;
-    }>
+  searchParams: Promise<{
+    error?: string;
+    redirectTo?: string;
+  }>;
 }
 
 export default async function Page({ searchParams }: PageProps) {
-    const params = await searchParams;
-    const session = await auth();
-    const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
-    const subscription = await modules.useCase.billing.findSubscription.execute(session?.user?.subscriptionId!);
-    const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
-    const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(session?.user?.id!);
-    const plans = PlansService.getPlans();
+  const params = await searchParams;
+  const session = await auth();
+  const plans = PlansService.getPlans();
 
-    const subscriptionDetailsObject = {
-        nameAssinatura: product?.name,
-        metadata: product?.metadata,
-        status: subscription?.status || "",
-        amount: subscription?.amount || 0,
-        nextBillingDate: subscription?.nextBillingDate
-    }
-
-    // Se a assinatura estiver ativa e houver uma URL de redirecionamento, redireciona
-    if (subscription?.status === "active" && params.redirectTo) {
-        redirect(params.redirectTo);
-    }
-
+  // Sem subscriptionId → mostra planos para assinatura
+  if (!session?.user?.subscriptionId) {
     return (
-        <ApplicationPage pageKey="billing-page" authPage>
-            <ApplicationPageTitle>
-                Gerenciamento de Assinatura
-            </ApplicationPageTitle>
-            {params.error && (
-                <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-700">{params.error}</p>
-                </div>
-            )}
+      <ApplicationPage pageKey="billing-page" authPage>
+        <ApplicationPageTitle>Gerenciamento de Assinatura</ApplicationPageTitle>
+        {params.error && (
+          <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-red-700">{params.error}</p>
+          </div>
+        )}
+        <div className="flex flex-col pb-24">
+          <PlansWrapper plans={plans} />
+        </div>
+      </ApplicationPage>
+    );
+  }
 
-            <div className="flex flex-col pb-24">
-                {subscription?.status === "canceled" ? (
-                    <PlansWrapper 
-                        plans={plans} 
-                    />
-                ) : (
-                    <>
-                        <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
-                            <SubscriptionOverview subscriptionDetails={subscriptionDetailsObject} url={billingPortalUrl as string} />
-                            <UsageStats 
-                                featuresJson={product?.metadata?.features} 
-                                currentUsage={featureUsage}
-                            />
-                        </div>
-                        <div className="lg:col-span-2">
-                            <BillingHistory />
-                        </div>
-                    </>
-                )}
+  // Com subscriptionId → carrega dados atuais
+  const billingPortalUrl = await modules.useCase.billing.createBillingPortal.execute();
+  const subscription = await modules.useCase.billing.findSubscription.execute(
+    session.user.subscriptionId as string
+  );
+  const product = await modules.useCase.billing.retriveProduct.execute(
+    subscription?.metadata.productId
+  );
+  const featureUsage = await modules.useCase.user.calculateFeatureUsage.execute(
+    session.user.id!
+  );
+
+  const subscriptionDetailsObject = {
+    nameAssinatura: product?.name,
+    metadata: product?.metadata,
+    status: subscription?.status || "",
+    amount: subscription?.amount || 0,
+    nextBillingDate: subscription?.nextBillingDate,
+  };
+
+  // Se a assinatura estiver ativa e houver uma URL de redirecionamento, redireciona
+  if (subscription?.status === "active" && params.redirectTo) {
+    redirect(params.redirectTo);
+  }
+
+  return (
+    <ApplicationPage pageKey="billing-page" authPage>
+      <ApplicationPageTitle>Gerenciamento de Assinatura</ApplicationPageTitle>
+      {params.error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-700">{params.error}</p>
+        </div>
+      )}
+
+      <div className="flex flex-col pb-24">
+        {subscription?.status === "canceled" ? (
+          <PlansWrapper plans={plans} />
+        ) : (
+          <>
+            <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">
+              <SubscriptionOverview
+                subscriptionDetails={subscriptionDetailsObject}
+                url={billingPortalUrl as string}
+              />
+              <UsageStats
+                featuresJson={product?.metadata?.features}
+                currentUsage={featureUsage}
+              />
             </div>
-        </ApplicationPage>
-    )
+            <div className="lg:col-span-2">
+              <BillingHistory />
+            </div>
+          </>
+        )}
+      </div>
+    </ApplicationPage>
+  );
 }
