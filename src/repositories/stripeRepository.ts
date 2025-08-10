@@ -168,7 +168,7 @@ export class StripeRepository implements IPaymentGateway {
     return this.stripe.prices.update(priceId, params);
   }
 
-  async createCheckoutSession(customerId: string, priceId?: string) : Promise<Stripe.Checkout.Session> {
+  async createCheckoutSession(customerId: string, successUrl: string, priceId?: string) : Promise<Stripe.Checkout.Session> {
     const lineItems = priceId 
       ? [{ price: priceId, quantity: 1 }]
       : [{ price: 'price_1R04BRP3utzNziQ1oJ1T83CB', quantity: 1,}];
@@ -176,7 +176,7 @@ export class StripeRepository implements IPaymentGateway {
     const checkoutSession = await this.stripe.checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      success_url: process.env.NEXT_PUBLIC_APP_URL,
+      success_url: successUrl,
       line_items: lineItems,
       subscription_data: {
         trial_period_days: 15

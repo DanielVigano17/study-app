@@ -5,6 +5,7 @@ import { modules } from "@/domain";
 export default async function ContinueCheckoutPage({ searchParams }: { searchParams: Promise<{ priceId?: string }> }) {
   const session = await auth();
   const priceId = (await searchParams)?.priceId;
+  const successUrl = "/on-boarding";
 
   if (!session?.user) {
     redirect(`/login?redirectTo=/continue-checkout${priceId ? `?priceId=${encodeURIComponent(priceId)}` : ""}`);
@@ -14,7 +15,7 @@ export default async function ContinueCheckoutPage({ searchParams }: { searchPar
     redirect("/app/billing");
   }
 
-  const url = await modules.useCase.billing.createCheckoutSession.execute(priceId);
+  const url = await modules.useCase.billing.createCheckoutSession.execute(successUrl, priceId);
 
   if (!url) {
     redirect("/app/billing?error=checkout_url");

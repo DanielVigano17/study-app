@@ -1,8 +1,7 @@
 "use client"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import { useForm } from "react-hook-form"
 import { actionLoginGoogle, actionLoginMagicLink } from "../login/actions"
 import { Loader2 } from "lucide-react"
@@ -16,7 +15,7 @@ interface AuthFormProps {
   redirectTo?: string
 }
 
-export function AuthForm({ redirectTo = "/app/" }: AuthFormProps) {
+export function AuthForm({ redirectTo = "/app" }: AuthFormProps) {
   const googleForm = useForm();
   const magicLinkForm = useForm();
   const { toast } = useToast()
