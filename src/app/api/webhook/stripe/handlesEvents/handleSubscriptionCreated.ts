@@ -7,6 +7,12 @@ async function handleSubscriptionCreated(data : Stripe.Subscription) : Promise<v
             productId : data.items.data[0].price.product as string
         }
     });
+
+    console.log("data.customer", data.customer);
+
+    await modules.useCase.user.updateUserByCustomerId.execute(data.customer as string, {
+        subscriptionId: data.id as string,
+    });
 }
 
 export default handleSubscriptionCreated

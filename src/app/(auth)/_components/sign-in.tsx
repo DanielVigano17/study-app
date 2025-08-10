@@ -12,14 +12,18 @@ import ParallaxBackground from "@/components/backgrounds/parallax-background"
 import Image from "next/image"
 import { Separator } from "@/components/ui/separator"
 
-export function AuthForm() {
+interface AuthFormProps {
+  redirectTo?: string
+}
+
+export function AuthForm({ redirectTo = "/app/billing" }: AuthFormProps) {
   const googleForm = useForm();
   const magicLinkForm = useForm();
   const { toast } = useToast()
 
   const handleSubmitGoogle = googleForm.handleSubmit(async () => {
     try {
-      await actionLoginGoogle();
+      await actionLoginGoogle(redirectTo);
     } catch (error) {
       toast({
         variant: "destructive",
@@ -35,7 +39,7 @@ export function AuthForm() {
       await actionLoginMagicLink(data.email);
       toast({
         title: "Link Enviado",
-        description: "O link para acesso foi enviado para o seu email",
+        description: "Verifique seu e-mail e, ao acessar pelo link, você será redirecionado.",
         action: <ToastAction altText="Ok">Ok</ToastAction>,
       });
     } catch (error) {

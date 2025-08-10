@@ -5,51 +5,60 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Check } from "lucide-react";
+import { Check, Loader2 } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Plan {
   name: string;
   description: string;
-  monthly: number;
-  annualMonthly: number; // preço por mês no anual
+  monthly: number; // preço mensal exibido no modo Mensal
+  annualMonthly: number; // preço por mês quando anual
   cta: string;
-  href: string;
+  href?: string; // fallback para planos sem checkout
   features: string[];
   highlight?: boolean;
+  priceIdMonthly?: string; // Stripe Price ID mensal
+  priceIdAnnual?: string; // Stripe Price ID anual
 }
 
 export function PricingSection() {
   const [isAnnual, setIsAnnual] = useState<boolean>(true);
+  const [isLoading, setIsLoading] = useState<string | null>(null); // plano em loading
+  const { toast } = useToast();
 
   const formatBRL = (value: number) =>
     new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
 
+  // ATENÇÃO: IDs vindos do arquivo src/config/stripe-products.json
+  // basic: price_1R04BRP3utzNziQ1oJ1T83CB (mensal), price_1R04BSP3utzNziQ1mPWHca4S (anual)
+  // pro:   price_1R04BTP3utzNziQ17bDLmAJB (mensal), price_1R04BTP3utzNziQ1uaE0jauy (anual)
   const plans: Plan[] = useMemo(
     () => [
       {
         name: "Starter",
         description: "Para começar sua jornada com IA",
-        monthly: 19,
-        annualMonthly: 15,
+        monthly: 29.9,
+        annualMonthly: 24.9,
         cta: "Começar",
-        href: "/app/billing",
+        priceIdMonthly: "price_1R04BRP3utzNziQ1oJ1T83CB",
+        priceIdAnnual: "price_1R04BSP3utzNziQ1mPWHca4S",
         features: [
-          "100 flashcards/mês",
-          "5 uploads de arquivos/mês",
-          "Questionários básicos",
+          "60 flashcards/mês",
+          "15 questionários/mês",
+          "Até 15 matérias",
           "Suporte por e-mail",
         ],
       },
       {
         name: "Pro",
         description: "Para estudar todos os dias com performance",
-        monthly: 39,
-        annualMonthly: 31,
+        monthly: 49.9,
+        annualMonthly: 41.5,
         cta: "Assinar Pro",
-        href: "/app/billing",
+        priceIdMonthly: "price_1R04BTP3utzNziQ17bDLmAJB",
+        priceIdAnnual: "price_1R04BTP3utzNziQ1uaE0jauy",
         features: [
           "Ilimitado em flashcards",
-          "20 uploads de arquivos/mês",
           "Questionários adaptativos",
           "Revisão espaçada avançada",
           "Prioridade no suporte",
@@ -62,7 +71,7 @@ export function PricingSection() {
         monthly: 79,
         annualMonthly: 63,
         cta: "Falar com vendas",
-        href: "/app/billing",
+        href: "mailto:contato@smartstudy.com",
         features: [
           "Até 5 membros",
           "Bibliotecas compartilhadas",
@@ -74,6 +83,52 @@ export function PricingSection() {
     ],
     []
   );
+
+  const handleSubscribe = async (plan: Plan) => {
+    const priceId = isAnnual ? plan.priceIdAnnual : plan.priceIdMonthly;
+
+    // Planos sem priceId abrem link fallback
+    if (!priceId) {
+      if (plan.href) window.location.href = plan.href;
+      return;
+    }
+
+    try {
+      setIsLoading(plan.name);
+      const response = await fetch('/api/payment/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ priceId }),
+      });
+
+      if (response.status === 401) {
+        // Não autenticado → redireciona ao login preservando fluxo e priceId
+        const redirectTo = encodeURIComponent(`/continue-checkout?priceId=${priceId}`);
+        window.location.href = `/login?redirectTo=${redirectTo}`;
+        return;
+      }
+
+      if (!response.ok) {
+        throw new Error('Falha ao criar sessão de checkout');
+      }
+
+      const { url } = await response.json();
+      if (url) {
+        window.location.href = url;
+      } else {
+        throw new Error('URL de checkout não recebida');
+      }
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        title: 'Erro ao iniciar assinatura',
+        description: 'Tente novamente em instantes ou contate o suporte.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(null);
+    }
+  };
 
   return (
     <div className="px-4">
@@ -96,6 +151,8 @@ export function PricingSection() {
           {plans.map((plan) => {
             const monthlyPrice = isAnnual ? plan.annualMonthly : plan.monthly;
             const annualTotal = plan.annualMonthly * 12;
+            const isLoadingThis = isLoading === plan.name;
+
             return (
               <Card key={plan.name} className={plan.highlight ? "border-blue-500 shadow-lg" : undefined}>
                 <CardHeader>
@@ -127,8 +184,13 @@ export function PricingSection() {
                   </ul>
                 </CardContent>
                 <CardFooter>
-                  <Button className={plan.highlight ? "w-full bg-blue-600 hover:bg-blue-700" : "w-full"} asChild>
-                    <a href={plan.href}>{plan.cta}</a>
+                  <Button 
+                    className={plan.highlight ? "w-full bg-blue-600 hover:bg-blue-700" : "w-full"}
+                    onClick={() => handleSubscribe(plan)}
+                    disabled={isLoadingThis}
+                  >
+                    {isLoadingThis && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {plan.cta}
                   </Button>
                 </CardFooter>
               </Card>

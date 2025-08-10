@@ -177,7 +177,10 @@ export class StripeRepository implements IPaymentGateway {
       customer: customerId,
       mode: 'subscription',
       success_url: process.env.NEXT_PUBLIC_APP_URL,
-      line_items: lineItems
+      line_items: lineItems,
+      subscription_data: {
+        trial_period_days: 15
+      }
     });
     return checkoutSession;
   }
