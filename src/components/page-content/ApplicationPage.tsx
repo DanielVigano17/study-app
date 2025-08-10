@@ -1,4 +1,5 @@
 import { checkUserAuth } from "../../../auth/check-user-auth";
+import { checkSubscription } from "@/middleware/checkSubscription";
 import { AnimatedPage } from "../ui/animated-page";
 import { cn } from "@/lib/utils";
 
@@ -7,10 +8,12 @@ interface ApplicationPageProps {
     pageKey: string;
     className?: string;
     authPage?: boolean;
+    subscriptionRequired?: boolean;
 }
 
-export async function ApplicationPage({ children, pageKey, className, authPage = false }: ApplicationPageProps){
+export async function ApplicationPage({ children, pageKey, className, authPage = false, subscriptionRequired = false }: ApplicationPageProps){
     if (authPage) await checkUserAuth();
+    if (subscriptionRequired) await checkSubscription();
 
     return (
         <AnimatedPage pageKey={pageKey}>

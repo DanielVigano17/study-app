@@ -8,8 +8,6 @@ async function handleSubscriptionCreated(data : Stripe.Subscription) : Promise<v
         }
     });
 
-    console.log("data.customer", data.customer);
-
     await modules.useCase.user.updateUserByCustomerId.execute(data.customer as string, {
         subscriptionId: data.id as string,
     });

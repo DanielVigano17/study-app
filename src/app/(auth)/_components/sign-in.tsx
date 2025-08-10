@@ -16,7 +16,7 @@ interface AuthFormProps {
   redirectTo?: string
 }
 
-export function AuthForm({ redirectTo = "/app/billing" }: AuthFormProps) {
+export function AuthForm({ redirectTo = "/app/" }: AuthFormProps) {
   const googleForm = useForm();
   const magicLinkForm = useForm();
   const { toast } = useToast()
