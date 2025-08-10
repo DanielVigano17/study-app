@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { AuthForm } from "../_components/sign-in";
 
 export default async function LoginPage({ searchParams }: { searchParams: Promise<{ redirectTo?: string }> }) {

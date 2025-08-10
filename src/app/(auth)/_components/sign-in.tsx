@@ -36,7 +36,7 @@ export function AuthForm({ redirectTo = "/app/" }: AuthFormProps) {
 
   const handleSubmitMagicLink = magicLinkForm.handleSubmit(async (data) => {
     try {
-      await actionLoginMagicLink(data.email);
+      await actionLoginMagicLink(data.email, redirectTo);
       toast({
         title: "Link Enviado",
         description: "Verifique seu e-mail e, ao acessar pelo link, você será redirecionado.",
