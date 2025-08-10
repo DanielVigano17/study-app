@@ -6,6 +6,7 @@ export default async function ContinueCheckoutPage({ searchParams }: { searchPar
   const session = await auth();
   const priceId = (await searchParams)?.priceId;
   const successUrl = "/on-boarding";
+  const usuarioJaUtilizouFreeTrial = false;
 
   if (!session?.user) {
     redirect(`/login?redirectTo=/continue-checkout${priceId ? `?priceId=${encodeURIComponent(priceId)}` : ""}`);
@@ -15,7 +16,7 @@ export default async function ContinueCheckoutPage({ searchParams }: { searchPar
     redirect("/app/billing");
   }
 
-  const url = await modules.useCase.billing.createCheckoutSession.execute(successUrl, priceId);
+  const url = await modules.useCase.billing.createCheckoutSession.execute(successUrl, usuarioJaUtilizouFreeTrial, priceId);
 
   if (!url) {
     redirect("/app/billing?error=checkout_url");
