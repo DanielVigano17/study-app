@@ -35,6 +35,7 @@ import { DeleteQuestionarioUseCase } from "./useCases/questionario/delete-questi
 import { CreateCheckoutSession } from "./useCases/biling/create-checkout-session";
 import { UpdateUserByCustomerIdUseCase } from "./useCases/user/update-user-by-customer-id";
 import { FindUserByIdUseCase } from "./useCases/user/find-user-by-id";
+import GeminiRepository from "@/repositories/gemini-repository";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -87,6 +88,9 @@ export const modules = {
             list : new ListQuestionariosUseCase(questionarioRepository),
             getById : new GetQuestionarioUseCase(questionarioRepository),
             delete : new DeleteQuestionarioUseCase(questionarioRepository)
+        },
+        ai : {
+            gerarFlashcardPDF : new GeminiRepository(),
         }
     }
 }
