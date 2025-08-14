@@ -1,6 +1,7 @@
+import { FlashCard } from "@/app/(app)/app/cards/[materiaId]/_components/FlashCard";
 import { GerarFlashcardPDFDTO, GerarListaPerguntaDTO, GerarRespostaDTO, IAiReposository } from "../domain/interfaces/ai-interface";
-import Pergunta from "../domain/interfaces/Pergunta";
-import { GoogleGenAI } from "@google/genai";
+import Pergunta from "../domain/interfaces/pergunta";
+import { GoogleGenAI, Type } from "@google/genai";
 
 export default class GeminiRepository implements IAiReposository {
 
@@ -22,7 +23,7 @@ export default class GeminiRepository implements IAiReposository {
         .then((response) => response.arrayBuffer());
 
         const contents = [
-            { text: "Analise este pdf e retorne uma lista de perguntas e respostas" },
+            { text: "Analise este pdf e retorne uma lista de 10 flashcards" },
             {
                 inlineData: {
                     mimeType: 'application/pdf',
@@ -33,7 +34,24 @@ export default class GeminiRepository implements IAiReposository {
 
         const response = await this.geminiClient.models.generateContent({
             model: "gemini-2.5-flash",
-            contents: contents
+            contents: contents,
+            config : {
+                responseMimeType: "application/json",
+                responseSchema : {
+                    type: Type.ARRAY,
+                    items:{
+                        type: Type.OBJECT,
+                        properties :{
+                            acao : {
+                                type: Type.STRING,
+                            },
+                            resposta :{
+                                type : Type.STRING
+                            }
+                        }
+                    }
+                }
+            }
         });
 
         return response.text || '';

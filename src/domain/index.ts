@@ -36,6 +36,7 @@ import { CreateCheckoutSession } from "./useCases/biling/create-checkout-session
 import { UpdateUserByCustomerIdUseCase } from "./useCases/user/update-user-by-customer-id";
 import { FindUserByIdUseCase } from "./useCases/user/find-user-by-id";
 import GeminiRepository from "@/repositories/gemini-repository";
+import { CreateFlashcardByPDF } from "./useCases/flashcard/create-flashcard-by-pdf";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -43,6 +44,7 @@ const materiaRepository = new MateriaRepository();
 const fileRepository = new FileRepository();
 const flashcardRepository = new FlashcardRepository();
 const questionarioRepository = new QuestionarioRepository();
+const geminiRepository = new GeminiRepository();
 
 export const modules = {
     useCase : {
@@ -90,7 +92,7 @@ export const modules = {
             delete : new DeleteQuestionarioUseCase(questionarioRepository)
         },
         ai : {
-            gerarFlashcardPDF : new GeminiRepository(),
+            gerarFlashcardPDF : new CreateFlashcardByPDF(flashcardRepository,geminiRepository),
         }
     }
 }

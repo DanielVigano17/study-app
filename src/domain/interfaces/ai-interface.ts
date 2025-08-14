@@ -1,4 +1,4 @@
-import Pergunta from "./Pergunta";
+import Pergunta from "./pergunta"
 
 export interface GerarRespostaDTO {
     pergunta : string
