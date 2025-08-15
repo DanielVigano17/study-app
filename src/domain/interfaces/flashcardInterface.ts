@@ -20,4 +20,5 @@ export interface IFlashcardRepository{
     findManyFlashcard : (materiaId : string) => Promise<Flashcard[]>
     deleteFlashcard : (perguntaId : string) => Promise<Flashcard>
     update : (data : UpdateFlashcardDTO, id : string) => Promise<Flashcard>
+    createManyFlashcard : (data : CreateFlashcardDTO[]) => Promise<{ count: number }>
 }
