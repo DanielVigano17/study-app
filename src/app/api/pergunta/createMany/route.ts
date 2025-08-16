@@ -11,15 +11,9 @@ export async function POST(req : NextRequest) {
     }
 
     try{
-        const flashcards = await modules.useCase.ai.gerarFlashcardPDF.execute({urlPDF : urlPdf});
+        const result = await modules.useCase.ai.gerarFlashcardPDF.execute({urlPDF : urlPdf, materiaId : materiaId});
 
-        flashcards.forEach(flashcard => {
-            flashcard.materiaId = materiaId;
-        });
-
-        const result = await modules.useCase.flashcard.createManyFlashcard.execute(flashcards);
-
-        return NextResponse.json({status : 200, count : result.count});
+        return NextResponse.json({status : 200, count : result.length});
     }catch(e){
         console.log(e);
 

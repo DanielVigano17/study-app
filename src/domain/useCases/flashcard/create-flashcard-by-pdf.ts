@@ -9,8 +9,18 @@ export class CreateFlashcardByPDF {
 
   async execute(data : GerarFlashcardPDFDTO): Promise<Flashcard[]> {
         const flashcardsSerializado = await this.aiRepository.gerarFlashcardPDF(data);
-        const flashcards = JSON.parse(flashcardsSerializado);
-        console.log(flashcards)
+        let flashcards = JSON.parse(flashcardsSerializado);
+        
+        flashcards = flashcards.map((flashcard : Flashcard) => {
+          return {
+            acao: flashcard.acao,
+            resposta: flashcard.resposta,
+            materiaId: data.materiaId,
+          }
+        });
+
+        await this.flashcardRepository.createManyFlashcard(flashcards);
+        
         return flashcards;
   }
 }

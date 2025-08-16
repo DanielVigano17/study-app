@@ -12,6 +12,7 @@ export interface GerarListaPerguntaDTO {
 
 export interface GerarFlashcardPDFDTO {
     urlPDF : string
+    materiaId : string
 }
 
 export interface IAiReposository{

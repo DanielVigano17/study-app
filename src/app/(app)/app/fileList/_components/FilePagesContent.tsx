@@ -1,10 +1,10 @@
 "use client"
-import { use, useEffect, useState } from "react";
-import { deleteFileAction, listFilesAction } from "../../actions";
+import { use, useContext, useEffect, useState } from "react";
+import { createManyFlashcardAction, deleteFileAction, listFilesAction } from "../../actions";
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { Share, Download, MoreVertical, Trash, MoveLeft } from 'lucide-react'
+import { Share, Download, MoreVertical, Trash, MoveLeft, Zap } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,12 +16,15 @@ import {
 import { Button } from "@/components/ui/button"
 import { File as FileIcon } from 'lucide-react'
 import Link from "next/link";
+import { ApplicationContext } from "@/app/_context/app.context";
 
 export default function FilesPagesContent({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
-  
+  const { session } = useContext(ApplicationContext);
+
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
+  const [isGeneratingFlashcards, setIsGeneratingFlashcards] = useState<boolean>(false)
 
   function getFilePathFromUrl(fileUrl : string) {
     const urlObj = new URL(fileUrl);
@@ -39,6 +42,12 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
         const filesSemExcluido = files?.filter(item => item.id != fileRemoved.id);
         setFiles(filesSemExcluido);
       }
+  }
+
+  const handleGenerateFlashcards = async (url : string) => {
+    setIsGeneratingFlashcards(true);
+    const result = await createManyFlashcardAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
+    setIsGeneratingFlashcards(false);
   }
  
   useEffect(() => {
@@ -96,6 +105,11 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
                 EXCLUIR
               </Button>
 
+              <Button onClick={() => handleGenerateFlashcards(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={isGeneratingFlashcards}>
+                <Zap className="w-4 h-4" />
+                GERAR FLASHCARDS
+              </Button>
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" size="icon">
@@ -107,6 +121,7 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">Download</DropdownMenuItem>
+                  <DropdownMenuItem className="cursor-pointer">Gerar Flashcards</DropdownMenuItem>
                   <DropdownMenuSeparator className="flex md:hidden"/>
                   <DropdownMenuItem onClick={() => handleDelete(file.id, getFilePathFromUrl(file.url))} className="flex cursor-pointer md:hidden">Excluir</DropdownMenuItem>
                 </DropdownMenuContent>

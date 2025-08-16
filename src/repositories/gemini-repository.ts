@@ -23,7 +23,14 @@ export default class GeminiRepository implements IAiReposository {
         .then((response) => response.arrayBuffer());
 
         const contents = [
-            { text: "Analise este pdf e retorne uma lista de 10 flashcards" },
+            {
+                role: "system",
+                text: "Você é um assistente especializado em criar flashcards a partir de pdfs. Mantenha as respostas curtas e diretas."
+            },
+            { 
+                role: "user",
+                text: "Analise este pdf e retorne uma lista de 10 flashcards" 
+            },
             {
                 inlineData: {
                     mimeType: 'application/pdf',
