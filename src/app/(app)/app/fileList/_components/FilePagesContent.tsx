@@ -4,7 +4,7 @@ import { createManyFlashcardAction, deleteFileAction, listFilesAction } from "..
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { Share, Download, MoreVertical, Trash, MoveLeft, Zap } from 'lucide-react'
+import { Share, Download, MoreVertical, Trash, MoveLeft, Zap, Loader2, X } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +17,8 @@ import { Button } from "@/components/ui/button"
 import { File as FileIcon } from 'lucide-react'
 import Link from "next/link";
 import { ApplicationContext } from "@/app/_context/app.context";
+import HelperFile from "@/helpers/helper-file";
+import { toast } from "sonner";
 
 export default function FilesPagesContent({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
@@ -24,16 +26,7 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
 
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
-  const [isGeneratingFlashcards, setIsGeneratingFlashcards] = useState<boolean>(false)
-
-  function getFilePathFromUrl(fileUrl : string) {
-    const urlObj = new URL(fileUrl);
-    const pathParts = urlObj.pathname.split('/');
-
-    const filename = pathParts[pathParts.length - 1];
-
-    return `${filename}`;
-  }
+  const [generatingFileUrl, setGeneratingFileUrl] = useState<string | null>(null)
 
   const handleDelete = async (fileId : string, filePath : string) => {
       const fileRemoved = await deleteFileAction(fileId,filePath);
@@ -45,9 +38,15 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
   }
 
   const handleGenerateFlashcards = async (url : string) => {
-    setIsGeneratingFlashcards(true);
-    const result = await createManyFlashcardAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
-    setIsGeneratingFlashcards(false);
+    setGeneratingFileUrl(url);
+    try {
+      await createManyFlashcardAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
+      toast.success("Flashcards gerados com sucesso!");
+    } catch (error) {
+      toast.error("Erro ao gerar os flashcards. Tente novamente.");
+    } finally {
+      setGeneratingFileUrl(null);
+    }
   }
  
   useEffect(() => {
@@ -100,14 +99,23 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
                 </div>
               </div>
               <div className="flex items-center gap-2">
-              <Button onClick={() => handleDelete(file.id, getFilePathFromUrl(file.url))} variant="destructive" size="sm" className="gap-2 hidden md:flex">
+              <Button onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} variant="destructive" size="sm" className="gap-2 hidden md:flex">
                 <Trash className="w-4 h-4" />
                 EXCLUIR
               </Button>
 
-              <Button onClick={() => handleGenerateFlashcards(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={isGeneratingFlashcards}>
-                <Zap className="w-4 h-4" />
-                GERAR FLASHCARDS
+              <Button onClick={() => handleGenerateFlashcards(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingFileUrl}>
+                {generatingFileUrl === file.url ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    GERANDO...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    GERAR FLASHCARDS
+                  </>
+                )}
               </Button>
 
               <DropdownMenu>
@@ -121,9 +129,11 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
                   <DropdownMenuSeparator />
                   <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
                   <DropdownMenuItem className="cursor-pointer">Download</DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">Gerar Flashcards</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleGenerateFlashcards(file.url)} disabled={!!generatingFileUrl} className="cursor-pointer">
+                    {generatingFileUrl === file.url ? 'Gerando...' : 'Gerar Flashcards'}
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator className="flex md:hidden"/>
-                  <DropdownMenuItem onClick={() => handleDelete(file.id, getFilePathFromUrl(file.url))} className="flex cursor-pointer md:hidden">Excluir</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} className="flex cursor-pointer md:hidden">Excluir</DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
