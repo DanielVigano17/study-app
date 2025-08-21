@@ -157,6 +157,25 @@ export async function createFlashcardAction(data: CreateFlashcardDTO, userId: st
     throw new Error("Erro ao cadastrar pergunta");
   }
 }
+export async function createManyFlashcardAction(urlPdf : string, userId: string, subscriptionId: string, materiaId: string): Promise<{ count: number }> {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + `/api/pergunta/createMany`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ urlPdf, userId, subscriptionId, materiaId }),
+    });
+
+    const { count } = await response.json();
+    revalidateTag('list-materias');
+    return { count };
+    
+  } catch (error) {
+    console.log(error);
+    throw new Error("Erro ao cadastrar perguntas");
+  }
+}
 
 export async function updatePerguntaAction(data : UpdateFlashcardDTO, id : string) : Promise<Flashcard> {
 

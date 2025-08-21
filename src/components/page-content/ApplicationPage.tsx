@@ -33,7 +33,7 @@ interface ApplicationPageContentProps {
 
 export function ApplicationPageContent({ children, className }: ApplicationPageContentProps){
     return (
-        <div className={cn("container mx-auto py-8 px-8 h-screen overflow-y-visible", className)}>
+        <div className={cn("container mx-auto py-8 px-4 h-screen overflow-y-visible md:px-8", className)}>
             {children}
         </div>
     )

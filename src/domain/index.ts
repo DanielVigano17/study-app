@@ -15,7 +15,7 @@ import { CreateFile } from "./useCases/file/createFile";
 import { FileRepository } from "@/repositories/fileRepository";
 import { ListFiles } from "./useCases/file/listFiles";
 import { CreateFlashcardUseCase } from "./useCases/flashcard/createFlashcard";
-import { FlashcardRepository } from "@/repositories/perguntaRepository";
+import { FlashcardRepository } from "@/repositories/flashcard-repository";
 import { FindManyFlashcard } from "./useCases/flashcard/findManyFlashcard";
 import DeleteMateriaUseCase from "./useCases/materia/delete-materia";
 import DeleteFlashcardUseCase from "./useCases/flashcard/delete-flashcard";
@@ -35,6 +35,9 @@ import { DeleteQuestionarioUseCase } from "./useCases/questionario/delete-questi
 import { CreateCheckoutSession } from "./useCases/biling/create-checkout-session";
 import { UpdateUserByCustomerIdUseCase } from "./useCases/user/update-user-by-customer-id";
 import { FindUserByIdUseCase } from "./useCases/user/find-user-by-id";
+import GeminiRepository from "@/repositories/gemini-repository";
+import { CreateFlashcardByPDF } from "./useCases/flashcard/create-flashcard-by-pdf";
+import { CreateManyFlashcardUseCase } from "./useCases/flashcard/create-many-flashcards";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -42,6 +45,7 @@ const materiaRepository = new MateriaRepository();
 const fileRepository = new FileRepository();
 const flashcardRepository = new FlashcardRepository();
 const questionarioRepository = new QuestionarioRepository();
+const geminiRepository = new GeminiRepository();
 
 export const modules = {
     useCase : {
@@ -81,12 +85,16 @@ export const modules = {
             deleteFlashcard : new DeleteFlashcardUseCase(flashcardRepository),
             update : new UpdateFlashcardUseCase(flashcardRepository),
             findflashcardRevisao : new FindFlashcardsRevisao(flashcardRepository),
+            createManyFlashcard : new CreateManyFlashcardUseCase(flashcardRepository),
         },
         questionario :{
             create : new CreateQuestionarioUseCase(questionarioRepository),
             list : new ListQuestionariosUseCase(questionarioRepository),
             getById : new GetQuestionarioUseCase(questionarioRepository),
             delete : new DeleteQuestionarioUseCase(questionarioRepository)
+        },
+        ai : {
+            gerarFlashcardPDF : new CreateFlashcardByPDF(flashcardRepository,geminiRepository),
         }
     }
 }

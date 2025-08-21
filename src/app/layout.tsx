@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { ApplicationProvider } from "./_context/app.context";
 import { auth } from "../../auth/auth";
 import { ThemeProvider } from "./_context/theme-context";
-import { GoogleTagManager } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -47,6 +47,7 @@ export default async function RootLayout({
     <html lang="pt-br" suppressHydrationWarning className="scroll-smooth">
 
       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_TAG_MENAGER_ID!} />
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} />
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
