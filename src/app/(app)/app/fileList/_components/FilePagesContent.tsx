@@ -18,11 +18,12 @@ import { File as FileIcon } from 'lucide-react'
 import Link from "next/link";
 import { ApplicationContext } from "@/app/_context/app.context";
 import HelperFile from "@/helpers/helper-file";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast"
 
 export default function FilesPagesContent({params} : {params : Promise<{materiaId : string}>}) {
   const { materiaId } = use(params);
   const { session } = useContext(ApplicationContext);
+  const { toast } = useToast();
 
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
@@ -41,9 +42,17 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
     setGeneratingFileUrl(url);
     try {
       await createManyFlashcardAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
-      toast.success("Flashcards gerados com sucesso!");
+      toast({
+        title: "Flashcards gerados com sucesso!",
+        description: "Os flashcards foram gerados com sucesso!",
+        variant: "default"
+      });
     } catch (error) {
-      toast.error("Erro ao gerar os flashcards. Tente novamente.");
+      toast({
+        title: "Erro ao gerar os flashcards.",
+        description: "Tente novamente.",
+        variant: "destructive"
+      });
     } finally {
       setGeneratingFileUrl(null);
     }
