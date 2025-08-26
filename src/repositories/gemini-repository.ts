@@ -1,5 +1,5 @@
 import { FlashCard } from "@/app/(app)/app/cards/[materiaId]/_components/FlashCard";
-import { GerarFlashcardPDFDTO, GerarListaPerguntaDTO, GerarRespostaDTO, IAiReposository } from "../domain/interfaces/ai-interface";
+import { GerarFlashcardPDFDTO, GerarListaPerguntaDTO, GerarQuestionarioPDFDTO, GerarRespostaDTO, IAiReposository } from "../domain/interfaces/ai-interface";
 import Pergunta from "../domain/interfaces/pergunta";
 import { GoogleGenAI, Type } from "@google/genai";
 
@@ -54,6 +54,64 @@ export default class GeminiRepository implements IAiReposository {
                             },
                             resposta :{
                                 type : Type.STRING
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        return response.text || '';
+    }
+
+    async gerarQuestionarioPDF(data: GerarQuestionarioPDFDTO): Promise<string> {
+        
+        const pdfResp = await fetch(data.urlPDF)
+        .then((response) => response.arrayBuffer());
+
+        const contents = [
+            {
+                role: "system",
+                text: "Você é um assistente especializado em criar questionários a partir de pdfs. Mantenha as respostas curtas e diretas."
+            },
+            {
+                role: "user",
+                text: "Analise este pdf e retorne uma lista de 10 perguntas"
+            },
+            {
+                inlineData: {
+                    mimeType: 'application/pdf',
+                    data: Buffer.from(pdfResp).toString("base64")
+                }
+            }
+        ];
+
+        const response = await this.geminiClient.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: contents,
+            config : {
+                responseMimeType: "application/json",
+                responseSchema : {
+                    type: Type.ARRAY,
+                    items:{
+                        type: Type.OBJECT,
+                        properties :{
+                            pergunta : {
+                                type: Type.STRING,
+                            },
+                            opcoes : {
+                                type: Type.ARRAY,
+                                items:{
+                                    type: Type.OBJECT,
+                                    properties :{
+                                        opcao : {
+                                            type: Type.STRING,
+                                        },
+                                        correta : {
+                                            type: Type.BOOLEAN,
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

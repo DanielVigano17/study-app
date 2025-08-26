@@ -1,10 +1,10 @@
 "use client"
 import { use, useContext, useEffect, useState } from "react";
-import { createManyFlashcardAction, deleteFileAction, listFilesAction } from "../../actions";
+import { createManyFlashcardAction, createQuestionarioByAiAction, deleteFileAction, listFilesAction } from "../../actions";
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { Share, Download, MoreVertical, Trash, MoveLeft, Zap, Loader2, X } from 'lucide-react'
+import { MoreVertical, Trash, MoveLeft, Zap, Loader2, X } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -54,6 +54,28 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
         variant: "destructive"
       });
     } finally {
+      setGeneratingFileUrl(null);
+    }
+  }
+
+  const handleGenerateQuestionario = async (url : string) => {
+    setGeneratingFileUrl(url);
+    try {
+      await createQuestionarioByAiAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
+      toast({
+        title: "Questionário gerado com sucesso!",
+        description: "O questionário foi gerado com sucesso!",
+        variant: "default"
+      });
+    }
+    catch(error){
+      toast({
+        title: "Erro ao gerar o questionário.",
+        description: "Tente novamente.",
+        variant: "destructive"
+      });
+    }
+    finally{
       setGeneratingFileUrl(null);
     }
   }
@@ -111,6 +133,20 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
               <Button onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} variant="destructive" size="sm" className="gap-2 hidden md:flex">
                 <Trash className="w-4 h-4" />
                 EXCLUIR
+              </Button>
+
+              <Button onClick={() => handleGenerateQuestionario(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingFileUrl}>
+                {generatingFileUrl === file.url ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    GERANDO...
+                  </>
+                ) : (
+                  <>
+                    <Zap className="w-4 h-4" />
+                    GERAR QUESTIONÁRIO
+                  </>
+                )}
               </Button>
 
               <Button onClick={() => handleGenerateFlashcards(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingFileUrl}>

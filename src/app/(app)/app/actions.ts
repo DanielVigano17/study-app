@@ -300,3 +300,22 @@ export async function deleteQuestionarioAction(id: string): Promise<{ success?: 
     return { error: { message: 'Erro ao deletar questionário' } };
   }
 }
+
+export async function createQuestionarioByAiAction(url : string, userId : string, subscriptionId : string, materiaId : string) {
+  try {
+    const response = await fetch(process.env.NEXT_PUBLIC_APP_URL + `/api/questionario/create-by-pdf`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ urlPdf : url, materiaId, userId, subscriptionId }),
+    });
+
+    const { questionario } = await response.json();
+    return questionario;
+  }
+  catch(error){
+    console.log(error);
+    throw new Error("Erro ao gerar questionário");
+  }
+}
