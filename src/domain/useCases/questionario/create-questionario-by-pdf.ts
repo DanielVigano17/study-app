@@ -10,20 +10,19 @@ export class CreateQuestionarioByPDFUseCase {
   async execute(data : GerarQuestionarioPDFDTO): Promise<Questionario | null> {
     try{
 
-        const pdf = await this.aiRepository.gerarQuestionarioPDF({
+        const questionario = await this.aiRepository.gerarQuestionarioByPDF({
             urlPDF : data.urlPDF,
             materiaId : data.materiaId
         });
 
-        const listaPerguntas = JSON.parse(pdf);
-        console.log(listaPerguntas);
+        console.log(questionario);
 
-        const questionario = await this.questionarioRepository.createQuestionario({
-            perguntas : listaPerguntas,
+        const questionarioCriado = await this.questionarioRepository.createQuestionario({
+            perguntas : questionario.perguntas,
             materiaId : data.materiaId
         });
         
-        return questionario;
+        return questionarioCriado;
     }catch(error){
         console.log(error);
         return null;

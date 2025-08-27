@@ -25,5 +25,5 @@ export interface IAiReposository{
     gerarRespostaFlashcard : (data : GerarRespostaDTO) => Promise<string>;
     gerarPergunta : (data : GerarListaPerguntaDTO) => Promise<Questionario>;
     gerarFlashcardPDF : (data : GerarFlashcardPDFDTO) => Promise<string>;
-    gerarQuestionarioPDF : (data : GerarQuestionarioPDFDTO) => Promise<string>;
+    gerarQuestionarioByPDF : (data : GerarQuestionarioPDFDTO) => Promise<Questionario>;
 }

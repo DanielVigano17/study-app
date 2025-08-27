@@ -75,7 +75,6 @@ export default class GeminiRepository implements IAiReposository {
             }
         });
 
-        console.log(response.text);
         return this.desserializarPerguntasQuestionario(response.text || '');
     }
     async gerarFlashcardPDF(data: GerarFlashcardPDFDTO): Promise<string> {
@@ -125,7 +124,7 @@ export default class GeminiRepository implements IAiReposository {
         return response.text || '';
     }
 
-    async gerarQuestionarioPDF(data: GerarQuestionarioPDFDTO): Promise<string> {
+    async gerarQuestionarioByPDF(data: GerarQuestionarioPDFDTO): Promise<Questionario> {
         
         const pdfResp = await fetch(data.urlPDF)
         .then((response) => response.arrayBuffer());
@@ -153,23 +152,37 @@ export default class GeminiRepository implements IAiReposository {
             config : {
                 responseMimeType: "application/json",
                 responseSchema : {
-                    type: Type.ARRAY,
-                    items:{
-                        type: Type.OBJECT,
-                        properties :{
-                            pergunta : {
-                                type: Type.STRING,
-                            },
-                            opcoes : {
-                                type: Type.ARRAY,
-                                items:{
-                                    type: Type.OBJECT,
-                                    properties :{
-                                        opcao : {
-                                            type: Type.STRING,
-                                        },
-                                        correta : {
-                                            type: Type.BOOLEAN,
+                    type: Type.OBJECT,
+                    properties :{
+                        nome : {
+                            type: Type.STRING,
+                        },
+                        questions : {
+                            type: Type.ARRAY,
+                            items : {
+                                type : Type.OBJECT,
+                                properties : {
+                                    id : {
+                                        type : Type.STRING,
+                                    },
+                                    pergunta : {
+                                        type : Type.STRING,
+                                    },
+                                    opcoes : {
+                                        type : Type.ARRAY,
+                                        items : {
+                                            type : Type.OBJECT,
+                                            properties : {
+                                                id : {
+                                                    type : Type.STRING,
+                                                },
+                                                texto : {
+                                                    type : Type.STRING,
+                                                },
+                                                isCorreta : {
+                                                    type : Type.BOOLEAN,
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -180,7 +193,7 @@ export default class GeminiRepository implements IAiReposository {
             }
         });
 
-        return response.text || '';
+        return this.desserializarPerguntasQuestionario(response.text || '');
     }
 
     /////////////////////////// métodos privados /////////////////////////////////////

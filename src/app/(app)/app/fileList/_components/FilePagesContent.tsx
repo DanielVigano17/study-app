@@ -4,7 +4,7 @@ import { createManyFlashcardAction, createQuestionarioByAiAction, deleteFileActi
 import { File } from "@/domain/entities/File";
 import { FileFilters } from "../_components/fileFilters";
 import DialogNewFile from "../_components/DialogNewFile";
-import { MoreVertical, Trash, MoveLeft, Zap, Loader2, X } from 'lucide-react'
+import { MoreVertical, Trash, MoveLeft, Zap, BookText, Pencil, Download } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +28,7 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
   const [files,setFiles] = useState<File[]>([])
   const [fetched, setFetched] = useState<boolean>(false)
   const [generatingFileUrl, setGeneratingFileUrl] = useState<string | null>(null)
+  const [generatingQuestionarioUrl, setGeneratingQuestionarioUrl] = useState<string | null>(null)
 
   const handleDelete = async (fileId : string, filePath : string) => {
       const fileRemoved = await deleteFileAction(fileId,filePath);
@@ -59,7 +60,7 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
   }
 
   const handleGenerateQuestionario = async (url : string) => {
-    setGeneratingFileUrl(url);
+    setGeneratingQuestionarioUrl(url);
     try {
       await createQuestionarioByAiAction(url, session?.user?.id!, session?.user?.subscriptionId!, materiaId);
       toast({
@@ -76,7 +77,7 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
       });
     }
     finally{
-      setGeneratingFileUrl(null);
+      setGeneratingQuestionarioUrl(null);
     }
   }
  
@@ -113,77 +114,91 @@ export default function FilesPagesContent({params} : {params : Promise<{materiaI
         )}
 
         <div className="space-y-2 h-96">
-          {files && files.map((file) => (
-            <div
-              key={file.id}
-              className="flex items-center justify-between p-4 bg-white rounded-lg border"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <FileIcon className='h-4 w-4'/>
-                </div>
-                <div>
-                  <div className="font-medium">
-                    {file.fileName}
+          {files && files.map((file) => {
+            const isGeneratingFlashcards = generatingFileUrl === file.url;
+            const isGeneratingQuestionario = generatingQuestionarioUrl === file.url;
+            const isGenerating = isGeneratingFlashcards || isGeneratingQuestionario;
+
+            return (
+              <div
+                key={file.id}
+                className={`flex items-center justify-between p-4 bg-white rounded-lg border ${isGenerating ? 'animate-pulse' : ''}`}
+              >
+                {isGenerating ? (
+                  // Skeleton loading
+                  <>
+                    <div className="flex items-center gap-4 flex-1">
+                      <div className="w-8 h-8 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div className="space-y-2">
+                        <div className="h-4 bg-gray-200 rounded w-32 animate-pulse"></div>
+                        <div className="h-3 bg-gray-200 rounded w-20 animate-pulse"></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 bg-gray-200 rounded w-40 animate-pulse hidden md:block"></div>
+                      <div className="h-8 bg-gray-200 rounded w-36 animate-pulse hidden md:block"></div>
+                      <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+                    </div>
+                  </>
+                ) : (
+                  // Normal content
+                  <>
+                    <div className="flex items-center gap-4">
+                      <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
+                          <FileIcon className='h-4 w-4'/>
+                      </div>
+                      <div>
+                        <div className="font-medium">
+                          {file.fileName}
+                        </div>
+                        <div className="text-sm text-gray-500"><a target="_blank" href={file.url}>Vizualizar</a></div>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+
+                    <Button onClick={() => handleGenerateQuestionario(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingQuestionarioUrl}>
+                        <BookText className="w-4 h-4" />
+                        Gerar Questionário
+                    </Button>
+
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                            <MoreVertical className="w-4 h-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Ações</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Pencil className="w-4 h-4" />
+                          Editar
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="cursor-pointer">
+                          <Download className="w-4 h-4" />
+                          Download
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleGenerateFlashcards(file.url)} disabled={!!generatingFileUrl} className="cursor-pointer">
+                          <Zap className="w-4 h-4" />
+                          Gerar Flashcards
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleGenerateQuestionario(file.url)} disabled={!!generatingQuestionarioUrl} className="cursor-pointer">
+                          <BookText className="w-4 h-4" />
+                          Gerar Questionário
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator className="flex md:hidden"/>
+                        <DropdownMenuItem onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} className="flex cursor-pointer">
+                          <Trash className="w-4 h-4" />
+                          Excluir
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
                   </div>
-                  <div className="text-sm text-gray-500"><a target="_blank" href={file.url}>Vizualizar</a></div>
-                </div>
+                  </>
+                )}
               </div>
-              <div className="flex items-center gap-2">
-              <Button onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} variant="destructive" size="sm" className="gap-2 hidden md:flex">
-                <Trash className="w-4 h-4" />
-                EXCLUIR
-              </Button>
-
-              <Button onClick={() => handleGenerateQuestionario(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingFileUrl}>
-                {generatingFileUrl === file.url ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    GERANDO...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4" />
-                    GERAR QUESTIONÁRIO
-                  </>
-                )}
-              </Button>
-
-              <Button onClick={() => handleGenerateFlashcards(file.url)} variant="outline" size="sm" className="gap-2 hidden md:flex" disabled={!!generatingFileUrl}>
-                {generatingFileUrl === file.url ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                    GERANDO...
-                  </>
-                ) : (
-                  <>
-                    <Zap className="w-4 h-4" />
-                    GERAR FLASHCARDS
-                  </>
-                )}
-              </Button>
-
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon">
-                      <MoreVertical className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Ações</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="cursor-pointer">Editar</DropdownMenuItem>
-                  <DropdownMenuItem className="cursor-pointer">Download</DropdownMenuItem>
-                  <DropdownMenuItem onClick={() => handleGenerateFlashcards(file.url)} disabled={!!generatingFileUrl} className="cursor-pointer">
-                    {generatingFileUrl === file.url ? 'Gerando...' : 'Gerar Flashcards'}
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator className="flex md:hidden"/>
-                  <DropdownMenuItem onClick={() => handleDelete(file.id, HelperFile.getFilePathFromUrl(file.url))} className="flex cursor-pointer md:hidden">Excluir</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-        </div>
-        ))}
+            );
+          })}
       </div>
     </div>
   )
