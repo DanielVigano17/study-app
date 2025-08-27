@@ -2,6 +2,7 @@ import { FlashCard } from "@/app/(app)/app/cards/[materiaId]/_components/FlashCa
 import { GerarFlashcardPDFDTO, GerarListaPerguntaDTO, GerarQuestionarioPDFDTO, GerarRespostaDTO, IAiReposository } from "../domain/interfaces/ai-interface";
 import Pergunta from "../domain/interfaces/pergunta";
 import { GoogleGenAI, Type } from "@google/genai";
+import { Questionario } from "@/domain/entities/Questionario";
 
 export default class GeminiRepository implements IAiReposository {
 
@@ -14,8 +15,68 @@ export default class GeminiRepository implements IAiReposository {
     async gerarRespostaFlashcard(data: GerarRespostaDTO): Promise<string> {
         throw new Error("Method not implemented.");
     }
-    async gerarPergunta(data: GerarListaPerguntaDTO): Promise<Pergunta[]> {
-        throw new Error("Method not implemented.");
+    async gerarPergunta(data: GerarListaPerguntaDTO): Promise<Questionario> {
+
+        const contents = [
+            { role: "system", 
+              text: `Você é um assistende de estudos que foca em gerar questionários de temas determinado pelos usuários. O questionários não pode ter alternativas iguais e
+                deve ter somente ${data.quantidade} perguntas. Além disso as perguntas devem ser ${data.dificuldade}` 
+            },
+            {
+                role: "user",
+                text: data.prompt,
+            }
+        ];    
+        
+        const response = await this.geminiClient.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: contents,
+            config : {
+                responseMimeType: "application/json",
+                responseSchema : {
+                    type: Type.OBJECT,
+                    properties :{
+                        nome : {
+                            type: Type.STRING,
+                        },
+                        questions : {
+                            type: Type.ARRAY,
+                            items : {
+                                type : Type.OBJECT,
+                                properties : {
+                                    id : {
+                                        type : Type.STRING,
+                                    },
+                                    pergunta : {
+                                        type : Type.STRING,
+                                    },
+                                    opcoes : {
+                                        type : Type.ARRAY,
+                                        items : {
+                                            type : Type.OBJECT,
+                                            properties : {
+                                                id : {
+                                                    type : Type.STRING,
+                                                },
+                                                texto : {
+                                                    type : Type.STRING,
+                                                },
+                                                isCorreta : {
+                                                    type : Type.BOOLEAN,
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        console.log(response.text);
+        return this.desserializarPerguntasQuestionario(response.text || '');
     }
     async gerarFlashcardPDF(data: GerarFlashcardPDFDTO): Promise<string> {
         
@@ -123,6 +184,22 @@ export default class GeminiRepository implements IAiReposository {
     }
 
     /////////////////////////// métodos privados /////////////////////////////////////
+
+    private async desserializarPerguntasQuestionario(response : string) : Promise<Questionario> {
+        const responseJson = JSON.parse(response);
+
+        const questionario : Questionario = {
+            id : "",
+            nome : responseJson.nome as string,
+            perguntas : responseJson.questions,
+            dtUltimaRevisao : new Date(),
+            materiaId : "",
+            createdAt : new Date(),
+            updatedAt : new Date()
+        }
+
+        return questionario;
+    }
 
     
 }

@@ -1,5 +1,3 @@
-import { CreateFlashcardDTO, IFlashcardRepository } from "@/domain/interfaces/flashcardInterface";
-import { Flashcard } from "@/domain/entities/Flashcard";
 import { CreateQuestionarioDTO, IQuestionarioRepository } from "@/domain/interfaces/questionarioInterface";
 import { Questionario } from "@/domain/entities/Questionario";
 

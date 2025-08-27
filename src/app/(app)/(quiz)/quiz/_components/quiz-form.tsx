@@ -7,26 +7,18 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { CheckCircle, Home } from "lucide-react"
+import { Opcao, Pergunta, Questionario } from "@/domain/entities/Questionario"
 
-interface Option {
-  id: string
-  text: string
-  correct?: boolean
-}
-
-interface Question {
-  id: string
-  question: string
-  options: Option[]
-}
 
 interface QuizFormProps {
   subjectId: string
   onBackToGenerator: () => void
-  questions: Question[]
+  questions: Pergunta[]
 }
 
 export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormProps) {
+  console.log(questions[0])
+  console.log(questions)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [answers, setAnswers] = useState<Record<string, string>>({})
   const [direction, setDirection] = useState(1) // 1 para avançar, -1 para voltar
@@ -70,7 +62,7 @@ export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormPr
   if (completed) {
     const correctAnswers = questions.filter((q) => {
       const userAnswer = answers[q.id]
-      const correctOption = q.options.find((opt: Option) => opt.correct)
+      const correctOption = q.opcoes.find((opt: Opcao) => opt.isCorreta)
       return userAnswer === correctOption?.id
     }).length
 
@@ -91,7 +83,7 @@ export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormPr
                 <div className="space-y-4 w-full">
                     {questions.map((q) => {
                     const userAnswer = answers[q.id]
-                    const correctOption = q.options.find((opt: Option) => opt.correct)
+                    const correctOption = q.opcoes.find((opt: Opcao) => opt.isCorreta)
                     const isCorrect = userAnswer === correctOption?.id
 
                     return (
@@ -101,11 +93,11 @@ export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormPr
                             isCorrect ? "bg-green-100 border-green-500" : "bg-red-100 border-red-500"
                         }`}
                         >
-                        <p className="font-medium">{q.question}</p>
+                        <p className="font-medium">{q.pergunta}</p>
                         <div className="mt-2">
-                            <p>Sua resposta: {q.options.find((opt: Option) => opt.id === userAnswer)?.text}</p>
+                            <p>Sua resposta: {q.opcoes.find((opt: Opcao) => opt.id === userAnswer)?.texto}</p>
                             {!isCorrect && (
-                            <p className="text-green-700 font-medium mt-1">Resposta correta: {correctOption?.text}</p>
+                            <p className="text-green-700 font-medium mt-1">Resposta correta: {correctOption?.texto}</p>
                             )}
                         </div>
                         <div className="mt-2 flex items-center">
@@ -188,9 +180,9 @@ export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormPr
             }}
             className="w-full"
           >
-            <h2 className="text-xl font-semibold mb-6">{currentQuestion.question}</h2>
+            <h2 className="text-xl font-semibold mb-6">{currentQuestion.pergunta}</h2>
             <RadioGroup value={answers[currentQuestion.id] || ""} onValueChange={handleAnswer} className="space-y-3">
-              {currentQuestion.options.map((option: Option) => (
+              {currentQuestion.opcoes.map((option: Opcao) => (
                 <div
                   key={option.id}
                   className={`flex items-center space-x-2 border p-4 rounded-lg transition-colors hover:bg-gray-50 ${
@@ -199,7 +191,7 @@ export function QuizForm({ subjectId, onBackToGenerator, questions }: QuizFormPr
                 >
                   <RadioGroupItem value={option.id} id={`option-${option.id}`} />
                   <Label htmlFor={`option-${option.id}`} className="flex-grow cursor-pointer">
-                    {option.text}
+                    {option.texto}
                   </Label>
                 </div>
               ))}

@@ -2,12 +2,11 @@
 
 import { Materia } from "@/domain/entities/Materia";
 import { revalidatePath, revalidateTag } from "next/cache";
-import { modules } from "@/domain";
 import { CreateFileDTO } from "@/domain/interfaces/fileInterface";
 import { File } from "@/domain/entities/File";
 import { CreateFlashcardDTO, UpdateFlashcardDTO } from "@/domain/interfaces/flashcardInterface";
 import { Flashcard } from "@/domain/entities/Flashcard";
-import { ListaPerguntas } from "@/services/ai-service";
+import { Questionario } from "@/domain/entities/Questionario";
 
 type novaMateriaData={
   titulo : string
@@ -230,7 +229,7 @@ export async function listFilesAction(materiaId : string) {
   return files;
 }
 
-export async function createPerguntasAction(prompt: string, materiaId: string, quntidadePerguntas: number, dificuldade: string, userId: string, subscriptionId: string): Promise<{ questions?: any[], error?: { message: string } }> {
+export async function createPerguntasAction(prompt: string, materiaId: string, quntidadePerguntas: number, dificuldade: string, userId: string, subscriptionId: string): Promise<{ questionario?: Questionario, error?: { message: string } }> {
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/ia/gerar-perguntas`, {
     method: 'POST',
     headers: {
@@ -254,9 +253,9 @@ export async function createPerguntasAction(prompt: string, materiaId: string, q
     throw new Error("Erro ao gerar perguntas");
   }
     
-  const {perguntas} = await response.json();
-  if(!perguntas) throw new Error("Erro ao gerar perguntas");
-  return { questions: perguntas.questions };
+  const {questionario} = await response.json();
+  if(!questionario) throw new Error("Erro ao gerar perguntas");
+  return { questionario };
 }
 
 export async function generateFlashcardAnswerAction(question: string) {

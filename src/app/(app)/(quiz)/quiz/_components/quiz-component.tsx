@@ -10,9 +10,10 @@ import { listMateriasAction } from "@/app/(app)/app/actions"
 import { ApplicationContext } from "@/app/_context/app.context"
 import { Materia } from "@/domain/entities/Materia"
 import { useSearchParams } from "next/navigation"
+import { Pergunta } from "@/domain/entities/Questionario"
 
 export function QuizApp() {
-  const [generatedQuestions, setGeneratedQuestions] = useState<any[] | null>(null)
+  const [generatedQuestions, setGeneratedQuestions] = useState<Pergunta[] | null>(null)
   const [isGenerating, setIsGenerating] = useState(false)
   const [materias, setMaterias] = useState<Materia[]>([]);
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
@@ -39,7 +40,7 @@ export function QuizApp() {
           const data = await response.json();
           
           if (data.status === 200 && data.questionario) {
-            setGeneratedQuestions(data.questionario.perguntas.questions);
+            setGeneratedQuestions(data.questionario.perguntas);
             setSelectedSubject(data.questionario.materiaId);
           }
         } catch (error) {
@@ -54,7 +55,7 @@ export function QuizApp() {
     loadQuestionario();
   }, [questionarioId]);
 
-  const handleQuestionsGenerated = (questions: any[], subjectId: string) => {
+  const handleQuestionsGenerated = (questions: Pergunta[], subjectId: string) => {
     setGeneratedQuestions(questions)
     setSelectedSubject(subjectId)
     setIsGenerating(false)

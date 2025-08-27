@@ -1,9 +1,7 @@
-import { ListaPerguntas } from "@/services/ai-service";
-import { Flashcard } from "../entities/Flashcard";
-import { Questionario } from "../entities/Questionario";
+import { Pergunta, Questionario } from "../entities/Questionario";
 
 export interface CreateQuestionarioDTO {
-    perguntas : ListaPerguntas
+    perguntas : Pergunta[]
     materiaId : string
 }
 
