@@ -13,7 +13,29 @@ export default class GeminiRepository implements IAiReposository {
     }
 
     async gerarRespostaFlashcard(data: GerarRespostaDTO): Promise<string> {
-        throw new Error("Method not implemented.");
+        const contents = [
+            { role: "system", 
+              text: `Você é um assistente especializado em criar respostas concisas e objetivas para flashcards. Mantenha as respostas curtas e diretas.` 
+            },
+            {
+                role: "user",
+                text: `Crie uma resposta objetiva para o seguinte flashcard: ${data.pergunta}`,
+            }
+        ];
+
+        const response = await this.geminiClient.models.generateContent({
+            model: "gemini-2.5-flash",
+            contents: contents,
+            config : {
+                responseMimeType: "application/json",
+                responseSchema : {
+                    type: Type.STRING,
+                }
+            }
+        });
+        
+        return response.text || '';
+
     }
     async gerarPergunta(data: GerarListaPerguntaDTO): Promise<Questionario> {
 

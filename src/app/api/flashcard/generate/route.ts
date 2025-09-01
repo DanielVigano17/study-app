@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server"
-import AiService from "@/services/ai-service"
+import { modules } from "@/domain"
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +12,8 @@ export async function POST(request: Request) {
       )
     }
 
-    const result = await AiService.gerarRespostaFlashcard({ question })
-    return NextResponse.json(result)
+    const result = await modules.useCase.ai.gerarRespostaFlashcard.execute({ pergunta: question })
+    return NextResponse.json({ answer: result });
   } catch (error) {
     console.error("Erro ao gerar resposta:", error)
     return NextResponse.json(
