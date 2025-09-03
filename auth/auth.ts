@@ -17,6 +17,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
     Resend({
       from: "noreply@smartstudy.me",
+      sendVerificationRequest({ identifier : email, url, provider: { from } }) {
+        //Método para enviar o link de verificação
+      }
     })
   ],
   session: {
