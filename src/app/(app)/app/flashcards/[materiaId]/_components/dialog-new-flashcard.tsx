@@ -223,7 +223,7 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
                     ) : (
                     <>
                         <Wand2 className="mr-2 h-4 w-4" />
-                        Gerar com IA
+                        Gerar resposta com IA
                     </>
                     )}
                 </Button>
