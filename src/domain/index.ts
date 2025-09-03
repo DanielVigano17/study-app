@@ -38,6 +38,9 @@ import { FindUserByIdUseCase } from "./useCases/user/find-user-by-id";
 import GeminiRepository from "@/repositories/gemini-repository";
 import { CreateFlashcardByPDF } from "./useCases/flashcard/create-flashcard-by-pdf";
 import { CreateManyFlashcardUseCase } from "./useCases/flashcard/create-many-flashcards";
+import { CreateQuestionarioByPDFUseCase } from "./useCases/questionario/create-questionario-by-pdf";
+import { CreatePerguntasQuestionarioUseCase } from "./useCases/questionario/gerar-perguntas";
+import { CreateResponseFlashcard } from "./useCases/flashcard/create-response-flashcard";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -95,6 +98,10 @@ export const modules = {
         },
         ai : {
             gerarFlashcardPDF : new CreateFlashcardByPDF(flashcardRepository,geminiRepository),
+            gerarQuestionarioPDF : new CreateQuestionarioByPDFUseCase(questionarioRepository,geminiRepository),
+            gerarPerguntasQuestionario : new CreatePerguntasQuestionarioUseCase(geminiRepository),
+            gerarRespostaFlashcard : new CreateResponseFlashcard(geminiRepository),
+
         }
     }
-}
+}   

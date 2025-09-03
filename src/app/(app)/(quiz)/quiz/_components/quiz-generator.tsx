@@ -10,12 +10,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Wand2, Loader2 } from "lucide-react"
 import { motion } from "framer-motion"
 import { Materia } from "@/domain/entities/Materia"
-import AiService from "@/services/ai-service"
 import { createPerguntasAction } from "@/app/(app)/app/actions"
 import { ApplicationContext } from "@/app/_context/app.context"
 import { useToast } from "@/hooks/use-toast"
+import { Pergunta } from "@/domain/entities/Questionario"
 
-// Função que simula a geração de perguntas com IA
+
 const generateQuestionsWithAI = async (
   description: string,
   materia: string,
@@ -52,7 +52,7 @@ const getDifficultyLabel = (value: number) => {
 }
 
 interface QuizGeneratorProps {
-  onQuestionsGenerated: (questions: any[], materiaId: string) => void
+  onQuestionsGenerated: (questions: Pergunta[], materiaId: string) => void
   isGenerating: boolean
   onStartGenerating: (value: boolean) => void
   materias: Materia[]
@@ -91,8 +91,9 @@ export function QuizGenerator({ onQuestionsGenerated, isGenerating, onStartGener
         return;
       }
 
-      if (result.questions) {
-        onQuestionsGenerated(result.questions, selectedMateria)
+      if (result.questionario) {
+        console.log(result.questionario)
+        onQuestionsGenerated(result.questionario.perguntas, selectedMateria)
       }
     } catch (error) {
       toast({
