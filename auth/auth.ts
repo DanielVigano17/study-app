@@ -7,6 +7,7 @@ import { CreateCustomer } from "../src/domain/useCases/biling/createCustomer"
 import { StripeRepository } from "../src/repositories/stripeRepository"
 import { UserRepository } from "../src/repositories/userRepository"
 import Google from "next-auth/providers/google"
+import { EmailService } from "../src/services/email-service"
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -16,9 +17,34 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       allowDangerousEmailAccountLinking: true,
     }),
     Resend({
-      from: "noreply@smartstudy.me",
-      sendVerificationRequest({ identifier : email, url, provider: { from } }) {
-        //Método para enviar o link de verificação
+      from: "SmartStudy <noreply@smartstudy.me>",
+      async sendVerificationRequest({ identifier: email, url, provider: { from } }) {
+        try {
+          console.log(`Enviando magic link para: ${email}`);
+          console.log(`URL do magic link: ${url}`);
+          
+          // Verifica se o serviço de email está configurado
+          if (!EmailService.isConfigured()) {
+            console.error('RESEND_API_KEY não está configurada');
+            throw new Error('Serviço de email não configurado');
+          }
+
+          // Envia o email personalizado usando nosso serviço
+          await EmailService.sendMagicLinkEmail({
+            to: email,
+            magicLink: url,
+            from: from || "SmartStudy <noreply@smartstudy.me>"
+          });
+
+          console.log(`Magic link enviado com sucesso para: ${email}`);
+        } catch (error) {
+          console.error('Erro ao enviar magic link:', error);
+          throw new Error(
+            error instanceof Error 
+              ? `Falha ao enviar email: ${error.message}`
+              : 'Erro desconhecido ao enviar email'
+          );
+        }
       }
     })
   ],
