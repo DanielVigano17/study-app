@@ -20,7 +20,8 @@ export async function POST(req : NextRequest){
 
         const questionarioCriado = await modules.useCase.questionario.create.execute({
             perguntas: questionarioGerado.perguntas,
-            materiaId: materiaId
+            materiaId: materiaId,
+            nome: questionarioGerado.nome
         });
 
         if (!questionarioCriado) {

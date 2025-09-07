@@ -1,6 +1,7 @@
 import { Pergunta, Questionario } from "../entities/Questionario";
 
 export interface CreateQuestionarioDTO {
+    nome : string
     perguntas : Pergunta[]
     materiaId : string
 }
