@@ -178,6 +178,7 @@ export class StripeRepository implements IPaymentGateway {
       mode: 'subscription',
       success_url: successUrl,
       line_items: lineItems,
+      allow_promotion_codes: true
     });
     return checkoutSession;
   }
@@ -194,7 +195,8 @@ export class StripeRepository implements IPaymentGateway {
       line_items: lineItems,
       subscription_data: {
         trial_period_days: 15
-      }
+      },
+      allow_promotion_codes: true
     });
     return checkoutSession;
   }
