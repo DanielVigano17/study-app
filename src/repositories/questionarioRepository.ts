@@ -1,16 +1,15 @@
-import { Questionario } from "@/domain/entities/Questionario";
+import { Questionario, Pergunta } from "@/domain/entities/Questionario";
 import { CreateQuestionarioDTO, IQuestionarioRepository } from "@/domain/interfaces/questionarioInterface";
 import { prisma } from "@/prisma";
-import { ListaPerguntas } from "@/services/ai-service";
 
 export class QuestionarioRepository implements IQuestionarioRepository{
     async createQuestionario(data: CreateQuestionarioDTO) : Promise<Questionario>{
         try {
             
             const questionarioData = {
-                perguntas: data.perguntas,
+                perguntas: data.perguntas as any,
                 materiaId: data.materiaId || "",
-                nome: data.perguntas.nome || ""
+                nome: data.nome || ""
             };
             const questionario = await prisma.questionario.create({
                 data: questionarioData
@@ -21,7 +20,7 @@ export class QuestionarioRepository implements IQuestionarioRepository{
                     createdAt : questionario.createdAt,
                     dtUltimaRevisao : questionario.dtUltimaRevisao,
                     id: questionario.id,
-                    nome: data.perguntas.nome,
+                    nome: data.nome,
                     perguntas : data.perguntas,
                     updatedAt : questionario.updatedAt,
                     materiaId : questionario.materiaId
@@ -49,7 +48,7 @@ export class QuestionarioRepository implements IQuestionarioRepository{
         return questionarios.map(questionario => ({
             id: questionario.id,
             nome: questionario.nome,
-            perguntas: questionario.perguntas as ListaPerguntas,
+            perguntas: questionario.perguntas as unknown as Pergunta[],
             dtUltimaRevisao: questionario.dtUltimaRevisao,
             createdAt: questionario.createdAt,
             updatedAt: questionario.updatedAt,
@@ -69,7 +68,7 @@ export class QuestionarioRepository implements IQuestionarioRepository{
         return {
             id: questionario.id,
             nome: questionario.nome,
-            perguntas: questionario.perguntas as ListaPerguntas,
+            perguntas: questionario.perguntas as unknown as Pergunta[],
             dtUltimaRevisao: questionario.dtUltimaRevisao,
             createdAt: questionario.createdAt,
             updatedAt: questionario.updatedAt,
@@ -90,7 +89,7 @@ export class QuestionarioRepository implements IQuestionarioRepository{
             return {
                 id: questionario.id,
                 nome: questionario.nome,
-                perguntas: questionario.perguntas as ListaPerguntas,
+                perguntas: questionario.perguntas as unknown as Pergunta[],
                 dtUltimaRevisao: questionario.dtUltimaRevisao,
                 createdAt: questionario.createdAt,
                 updatedAt: questionario.updatedAt,

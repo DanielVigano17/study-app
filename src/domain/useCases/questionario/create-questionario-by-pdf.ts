@@ -15,11 +15,10 @@ export class CreateQuestionarioByPDFUseCase {
             materiaId : data.materiaId
         });
 
-        console.log(questionario);
-
         const questionarioCriado = await this.questionarioRepository.createQuestionario({
             perguntas : questionario.perguntas,
-            materiaId : data.materiaId
+            materiaId : data.materiaId,
+            nome : questionario.nome
         });
         
         return questionarioCriado;
