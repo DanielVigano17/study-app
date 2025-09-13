@@ -60,7 +60,7 @@ export class StripeRepository implements IPaymentGateway {
                 price: 'price_1R04BRP3utzNziQ1oJ1T83CB',
               },
             ],
-            trial_period_days : 15,
+            trial_period_days : 7,
             metadata : {
               productId : priceDetails.product.toString()
             }
@@ -194,7 +194,7 @@ export class StripeRepository implements IPaymentGateway {
       success_url: successUrl,
       line_items: lineItems,
       subscription_data: {
-        trial_period_days: 15
+        trial_period_days: 7
       },
       allow_promotion_codes: true
     });
