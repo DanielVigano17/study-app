@@ -6,6 +6,8 @@
     "dev": "doppler run --config dev -- next dev --turbopack",
     "prisma-dev:studio": "doppler run --config dev -- npx prisma studio",
     "prisma-dev:migrate": "doppler run --config dev -- npx prisma migrate dev",
+    "prisma-prd:studio": "doppler run --config prd -- npx prisma studio",
+    "prisma-prd:migrate": "doppler run --config prd -- npx prisma migrate dev", 
     "build": "npx prisma migrate deploy && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",

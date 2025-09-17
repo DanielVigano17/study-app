@@ -46,8 +46,8 @@ export default async function RootLayout({
   return (
     <html lang="pt-br" suppressHydrationWarning className="scroll-smooth">
 
-      {/* <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_TAG_MENAGER_ID!} /> */}
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} />
+      <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_TAG_MENAGER_ID!} />
+      {/* <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID!} /> */}
 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider
