@@ -1,6 +1,6 @@
 'use client'
 import { usePathname } from 'next/navigation'
-import { HomeIcon, Settings, CreditCard, BookText, LogOut } from 'lucide-react'
+import { HomeIcon, Settings, CreditCard, BookText, LogOut, Route } from 'lucide-react'
 import { Sidebar, SidebarFooter, SidebarHeader, SidebarMain, SidebarNav, SidebarNavHeader, SidebarNavHeaderTitle, SidebarNavLink, SidebarNavMain } from '@/components/Sidebar/SidebarModel'
 import { BottomNavigation } from './bottom-navigation'
 import { useContext } from 'react'
@@ -59,6 +59,14 @@ export function MainSidebar() {
             >
               <BookText className="w-4 h-4 mr-3"/>
               Questionários
+            </SidebarNavLink>
+
+            <SidebarNavLink
+              href="/app/trilhas"
+              active={isActive('/app/trilhas')}
+            >
+              <Route className="w-4 h-4 mr-3"/>
+              Trilhas de Estudos
             </SidebarNavLink>
 
           </SidebarNavMain>

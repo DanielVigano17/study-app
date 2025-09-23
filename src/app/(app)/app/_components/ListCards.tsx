@@ -84,7 +84,7 @@ export default function ListCards({getMaterias} : {getMaterias : Promise<Materia
             <p className="text-gray-500 text-lg text-center">Nenhuma matéria encontrada. Adicione uma nova matéria clicando no botão acima.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 pb-24 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 pb-24 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
             {filteredCards.map((materia) => (
               <Card key={materia.id} className="overflow-hidden flex flex-col">
                 <CardHeader className="p-0">

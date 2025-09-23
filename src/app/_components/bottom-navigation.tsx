@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Home, Search, Heart, User, Settings, CreditCard, BookText, MoreHorizontal, LogOut } from "lucide-react"
+import { Home, Search, Heart, User, Settings, CreditCard, BookText, MoreHorizontal, LogOut, Route } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
@@ -15,8 +15,8 @@ import { useTheme } from "next-themes"
 
 const menuItems = [
   { icon: Home, label: "Home", url:"/app" },
+  { icon: Route, label: "Trilhas", url:"/app/trilhas" },
   { icon: BookText, label: "Questionários", url:"/quiz" },
-  { icon: CreditCard, label: "Assinatura", url:"/billing" },
 ]
 
 export function BottomNavigation() {
@@ -50,6 +50,12 @@ export function BottomNavigation() {
               </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="center" className="w-48 mr-4 mb-4">
+              <DropdownMenuItem asChild>
+                <Link href="/billing" className="flex items-center gap-2">
+                  <CreditCard className="h-4 w-4" />
+                  <span>Assinatura</span>
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href="/settings" className="flex items-center gap-2">
                   <Settings className="h-4 w-4" />

@@ -41,6 +41,7 @@ import { CreateManyFlashcardUseCase } from "./useCases/flashcard/create-many-fla
 import { CreateQuestionarioByPDFUseCase } from "./useCases/questionario/create-questionario-by-pdf";
 import { CreatePerguntasQuestionarioUseCase } from "./useCases/questionario/gerar-perguntas";
 import { CreateResponseFlashcard } from "./useCases/flashcard/create-response-flashcard";
+import { GerarTrilhaEstudosUseCase } from "./useCases/ai/gerar-trilha-estudos";
 
 const paymentGateway = new StripeRepository();
 const userRepository = new UserRepository();
@@ -101,6 +102,7 @@ export const modules = {
             gerarQuestionarioPDF : new CreateQuestionarioByPDFUseCase(questionarioRepository,geminiRepository),
             gerarPerguntasQuestionario : new CreatePerguntasQuestionarioUseCase(geminiRepository),
             gerarRespostaFlashcard : new CreateResponseFlashcard(geminiRepository),
+            gerarTrilhaEstudos : new GerarTrilhaEstudosUseCase(geminiRepository),
 
         }
     }
