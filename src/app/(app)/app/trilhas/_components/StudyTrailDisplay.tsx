@@ -44,6 +44,10 @@ interface StudyTrailDisplayProps {
 
 export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayProps) {
   const getLevelColor = (nivel: string) => {
+    if (!nivel) {
+      return 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+    }
+    
     switch (nivel.toLowerCase()) {
       case 'iniciante':
         return 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400'
@@ -64,10 +68,10 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            {trail.titulo}
+            {trail.titulo || 'Trilha de Estudos'}
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mt-1">
-            {trail.descricao}
+            {trail.descricao || 'Descrição não disponível'}
           </p>
         </div>
         <div className="flex gap-2">
@@ -92,21 +96,21 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
               <Clock className="w-4 h-4 text-blue-500" />
               <span className="text-sm font-medium">Duração:</span>
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                {trail.duracaoEstimada}
+                {trail.duracaoEstimada || 'Não definida'}
               </span>
             </div>
             <div className="flex items-center gap-2">
               <User className="w-4 h-4 text-green-500" />
               <span className="text-sm font-medium">Nível:</span>
               <Badge className={getLevelColor(trail.nivel)}>
-                {trail.nivel}
+                {trail.nivel || 'Não definido'}
               </Badge>
             </div>
             <div className="flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-purple-500" />
               <span className="text-sm font-medium">Módulos:</span>
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                {trail.modulos.length}
+                {trail.modulos?.length || 0}
               </span>
             </div>
           </div>
@@ -156,20 +160,20 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
           Módulos da Trilha
         </h3>
         
-        {trail.modulos.map((modulo, index) => (
+        {(trail.modulos || []).map((modulo, index) => (
           <Card key={modulo.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">
-                  Módulo {index + 1}: {modulo.titulo}
+                  Módulo {index + 1}: {modulo.titulo || 'Módulo sem título'}
                 </CardTitle>
                 <Badge variant="secondary">
                   <Clock className="w-3 h-3 mr-1" />
-                  {modulo.duracaoEstimada}
+                  {modulo.duracaoEstimada || 'Não definida'}
                 </Badge>
               </div>
               <p className="text-gray-600 dark:text-gray-400 text-sm">
-                {modulo.descricao}
+                {modulo.descricao || 'Descrição não disponível'}
               </p>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -181,7 +185,7 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
                     Tópicos
                   </h5>
                   <div className="flex flex-wrap gap-1">
-                    {modulo.topicos.map((topico, topicIndex) => (
+                    {(modulo.topicos || []).map((topico, topicIndex) => (
                       <Badge key={topicIndex} variant="outline" className="text-xs">
                         {topico}
                       </Badge>
@@ -201,7 +205,7 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
                       Recursos Recomendados
                     </h5>
                     <ul className="space-y-1">
-                      {modulo.recursos.map((recurso, recursoIndex) => (
+                      {(modulo.recursos || []).map((recurso, recursoIndex) => (
                         <li key={recursoIndex} className="text-sm text-gray-600 dark:text-gray-400">
                           • {recurso}
                         </li>
@@ -218,7 +222,7 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
                       Atividades Práticas
                     </h5>
                     <ul className="space-y-1">
-                      {modulo.atividades.map((atividade, atividadeIndex) => (
+                      {(modulo.atividades || []).map((atividade, atividadeIndex) => (
                         <li key={atividadeIndex} className="text-sm text-gray-600 dark:text-gray-400">
                           • {atividade}
                         </li>
@@ -244,7 +248,7 @@ export function StudyTrailDisplay({ trail, onGenerateNew }: StudyTrailDisplayPro
           <div className="space-y-2">
             <div className="flex justify-between text-sm">
               <span>Progresso</span>
-              <span>0 de {trail.modulos.length} módulos concluídos</span>
+              <span>0 de {trail.modulos?.length || 0} módulos concluídos</span>
             </div>
             <Progress value={0} className="w-full" />
           </div>
