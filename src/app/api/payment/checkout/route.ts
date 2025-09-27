@@ -12,13 +12,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
     }
 
+    const { priceId } = await request.json();
+
     if(!session.user.subscriptionId)
     {
-      successUrl = "/on-boarding";
+      successUrl = "/on-boarding?priceId=" + priceId;
       usuarioJaUtilizouFreeTrial = false;
     }
-
-    const { priceId } = await request.json();
 
     if (!priceId) {
       return NextResponse.json({ error: "priceId é obrigatório" }, { status: 400 });

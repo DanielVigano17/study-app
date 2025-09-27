@@ -1,4 +1,5 @@
 import { Subscription } from "../entities/Subscription"
+import Stripe from "stripe";
 
 export interface CreateCustomerDTO {
     email : string
@@ -21,4 +22,5 @@ export interface IPaymentGateway {
     findSubscription : (customerId : string) => Promise<Subscription>
     listInvoices : (customerId : string) => Promise<Invoice[]>
     createCheckoutSession : (customerId : string, successUrl: string, priceId?: string) => Promise<any>
+    getPrice : (priceId : string) => Promise<Stripe.Price>
 }
