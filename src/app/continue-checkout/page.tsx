@@ -5,7 +5,7 @@ import { modules } from "@/domain";
 export default async function ContinueCheckoutPage({ searchParams }: { searchParams: Promise<{ priceId?: string }> }) {
   const session = await auth();
   const priceId = (await searchParams)?.priceId;
-  const successUrl = "/on-boarding";
+  const successUrl = "/on-boarding?priceId=" + priceId;
   const usuarioJaUtilizouFreeTrial = false;
 
   if (!session?.user) {

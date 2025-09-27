@@ -117,6 +117,10 @@ export class StripeRepository implements IPaymentGateway {
     }));
   }
 
+  async getPrice(priceId: string) : Promise<Stripe.Price> {
+    return this.stripe.prices.retrieve(priceId);
+  }
+
   // Métodos públicos para produtos e preços
   async getProduct(productId: string) {
     return this.stripe.products.retrieve(productId);
@@ -128,10 +132,6 @@ export class StripeRepository implements IPaymentGateway {
 
   async updateProduct(productId: string, params: Stripe.ProductUpdateParams) {
     return this.stripe.products.update(productId, params);
-  }
-
-  async getPrice(priceId: string) {
-    return this.stripe.prices.retrieve(priceId);
   }
 
   async createPrice(params: Stripe.PriceCreateParams) {
