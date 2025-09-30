@@ -7,12 +7,20 @@ import { ArrowRight, Play, Star, CheckCircle, Shield, Sparkles, BookOpen, Target
 import Image from "next/image";
 import { ShineBorder } from "@/components/magicui/shine-border";
 import { AuroraText } from "@/components/magicui/aurora-text";
-import { DotPattern } from "@/components/magicui/dot-pattern";
 import { ReviewsLandingPage } from "./_components/reviews-landing-page";
 import { PricingSection } from "./_components/pricing-section";
 import ParallaxBackground from "@/components/backgrounds/parallax-background";
+import { getPriceId } from "@/config/stripe-products";
+import Link from "next/link";
 
 export default async function Home() {
+
+  const priceId : string = getPriceId("basic", "monthly");
+
+  const redirectTo = encodeURIComponent(`/continue-checkout?priceId=${priceId}`);
+  
+  const url = `/login?redirectTo=${redirectTo}`;
+
   return (
     <div className="relative h-fit">
       <ParallaxBackground dotColor="#d1d1d1" dotSize={2} dotCount={400} speed={0.15} />
@@ -48,10 +56,10 @@ export default async function Home() {
               className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 text-lg font-semibold rounded-sm shadow-lg hover:shadow-xl transition-all duration-300"
               asChild
             >
-              <a href="#pricing">
+              <Link href={url}>
                 Começar Gratuitamente
                 <ArrowRight className="ml-2 w-5 h-5" />
-              </a>
+              </Link>
             </Button>
             <Button 
               variant="outline" 
@@ -218,7 +226,7 @@ export default async function Home() {
             <p className="opacity-90 mb-8">Junte-se a milhares de alunos estudando melhor com IA.</p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-white text-blue-600 hover:bg-blue-50" asChild>
-                <a href="#app-print">Começar agora</a>
+                <Link href={url}>Começar agora</Link>
               </Button>
             </div>
           </div>

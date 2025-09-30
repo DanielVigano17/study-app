@@ -96,7 +96,7 @@ export function PricingSection() {
             const annualTotal = annual ? annual.unit_amount / 100 : undefined;
             const isLoadingThis = isLoading === product.id;
             const isHighlight = product.id === 'pro';
-            const cta = product.id === 'pro' ? 'Assinar Pro' : 'Começar';
+            const cta = "Teste grátis agora";
 
             return (
               <Card key={product.id} className={isHighlight ? "border-blue-500 shadow-lg" : undefined}>

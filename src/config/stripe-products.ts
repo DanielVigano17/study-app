@@ -51,7 +51,7 @@ const priceIds = {
 };
 
 // Função para obter o ID do preço baseado no ambiente
-const getPriceId = (plan: keyof typeof priceIds, interval: 'monthly' | 'yearly'): string => {
+export const getPriceId = (plan: keyof typeof priceIds, interval: 'monthly' | 'yearly'): string => {
   const environment = process.env.NODE_ENV === 'production' ? 'production' : 'development';
   return priceIds[plan][interval][environment];
 };
