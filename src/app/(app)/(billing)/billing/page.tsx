@@ -26,14 +26,13 @@ export default async function Page({ searchParams }: PageProps) {
   if (!session?.user?.subscriptionId) {
     return (
       <ApplicationPage pageKey="billing-page" authPage>
-        <ApplicationPageTitle>Gerenciamento de Assinatura</ApplicationPageTitle>
         {params.error && (
           <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
             <p className="text-red-700">{params.error}</p>
           </div>
         )}
         <div className="flex flex-col pb-24">
-          <PlansWrapper plans={plans} />
+          <PlansWrapper newUser={true} plans={plans} />
         </div>
       </ApplicationPage>
     );
@@ -66,7 +65,6 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <ApplicationPage pageKey="billing-page" authPage>
-      <ApplicationPageTitle>Gerenciamento de Assinatura</ApplicationPageTitle>
       {params.error && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
           <p className="text-red-700">{params.error}</p>
@@ -75,7 +73,7 @@ export default async function Page({ searchParams }: PageProps) {
 
       <div className="flex flex-col pb-24">
         {subscription?.status === "canceled" ? (
-          <PlansWrapper plans={plans} />
+          <PlansWrapper newUser={false} plans={plans} />
         ) : (
           <>
             <div className="flex flex-col lg:grid grid-cols-2 gap-4 mb-4">

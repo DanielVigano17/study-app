@@ -6,9 +6,10 @@ import { StripeProduct as Plan } from "@/config/stripe-products";
 
 interface PlansWrapperProps {
   plans: Plan[];
+  newUser: boolean;
 }
 
-export default function PlansWrapper({ plans }: PlansWrapperProps) {
+export default function PlansWrapper({ plans, newUser }: PlansWrapperProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSelectPlan = async (priceId: string) => {
@@ -42,6 +43,7 @@ export default function PlansWrapper({ plans }: PlansWrapperProps) {
     <PlansOverview 
       plans={plans} 
       onSelectPlan={handleSelectPlan}
+      newUser={newUser}
     />
   );
 } 
