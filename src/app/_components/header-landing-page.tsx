@@ -14,6 +14,7 @@ export function HeaderLandingPage()
                         <HeaderNavigationItem href="#app-print" label="Como funciona"></HeaderNavigationItem>
                         <HeaderNavigationItem href="#testimonials" label="Depoimentos"></HeaderNavigationItem>
                         <HeaderNavigationItem href="#pricing" label="Planos"></HeaderNavigationItem>
+                        <HeaderNavigationItem href="/blog" label="Blog"></HeaderNavigationItem>
                     </HeaderNavigation>
                 </HeaderTitle>
                 <HeaderActionsButton>

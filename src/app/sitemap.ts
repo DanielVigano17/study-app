@@ -1,9 +1,14 @@
 import type { MetadataRoute } from 'next'
+import { getAllPosts } from '@/lib/blog/utils'
  
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://smartstudy.me'
   
-  return [
+  // Obter todos os posts do blog
+  const posts = await getAllPosts()
+  
+  // URLs estáticas
+  const staticUrls: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: "2025-10-07T21:08:52.029Z",
@@ -16,5 +21,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'yearly',
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
   ]
+
+  // URLs dos posts do blog
+  const blogUrls: MetadataRoute.Sitemap = posts.map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date).toISOString(),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }))
+
+  return [...staticUrls, ...blogUrls]
 }
