@@ -12,16 +12,17 @@ import { sendGTMEvent } from "@next/third-parties/google";
 
 type MyComponentProps = {
     id : string | undefined
-    value : number
 };
 
-const UpdateUserForm = ({id, value} : MyComponentProps) => {
+const UpdateUserForm = ({id} : MyComponentProps) => {
     const form = useForm();
     const router = useRouter();
 
-    useEffect(() => {
-        if(value != 0) sendGTMEvent({ event: 'purchase_success', value: value, currency: "BRL"});
-    }, []);
+    // useEffect(() => {
+
+    //     if(value != 0) sendGTMEvent({ event: 'purchase_success', value: value, currency: "BRL"});
+
+    // }, []);
   
     const handleSubmit = form.handleSubmit(async (data) =>{
       const response = await actionSalvarNome(id, data.nome);

@@ -16,7 +16,7 @@ const OnBoardingPage = async ({ searchParams }: { searchParams: Promise<{ priceI
 
   return (
     <ApplicationPage pageKey="onboarding-page" authPage>
-      <UpdateUserForm id={session?.user?.id} value={price?.unit_amount ?? 0}/>
+      <UpdateUserForm id={session?.user?.id}/>
     </ApplicationPage>
   )
 }
