@@ -16,7 +16,10 @@ const OnBoardingPage = async ({ searchParams }: { searchParams: Promise<{ priceI
 
   return (
     <ApplicationPage pageKey="onboarding-page" authPage>
-      <OnboardingStepper userId={session?.user?.id}/>
+      <OnboardingStepper 
+        userId={session?.user?.id}
+        subscriptionId={session?.user?.subscriptionId}
+      />
     </ApplicationPage>
   )
 }
