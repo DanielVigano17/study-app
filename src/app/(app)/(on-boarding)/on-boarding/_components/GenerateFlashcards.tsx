@@ -137,14 +137,15 @@ const GenerateFlashcards = ({ materiaId, fileUrl, userId, subscriptionId, onNext
                     </CardHeader>
                     <CardContent>
                         <div 
-                            className={`relative w-full h-48 cursor-pointer transition-transform duration-500 transform-style-preserve-3d ${
-                                isFlipped ? 'rotate-y-180' : ''
-                            }`}
+                            className="relative w-full h-48 cursor-pointer transition-all duration-300"
                             onClick={handleFlip}
                         >
-                            <div className={`absolute inset-0 w-full h-full backface-hidden ${
-                                isFlipped ? 'rotate-y-180' : ''
-                            }`}>
+                            {/* Face da Pergunta */}
+                            <div 
+                                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+                                    isFlipped ? 'opacity-0' : 'opacity-100'
+                                }`}
+                            >
                                 <div className="bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-lg p-6 h-full flex items-center justify-center">
                                     <div className="text-center">
                                         <h4 className="text-lg font-semibold mb-2">Pergunta</h4>
@@ -153,13 +154,18 @@ const GenerateFlashcards = ({ materiaId, fileUrl, userId, subscriptionId, onNext
                                     </div>
                                 </div>
                             </div>
-                            <div className={`absolute inset-0 w-full h-full backface-hidden rotate-y-180 ${
-                                isFlipped ? 'rotate-y-0' : ''
-                            }`}>
+                            
+                            {/* Face da Resposta */}
+                            <div 
+                                className={`absolute inset-0 w-full h-full transition-opacity duration-300 ${
+                                    isFlipped ? 'opacity-100' : 'opacity-0'
+                                }`}
+                            >
                                 <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-6 h-full flex items-center justify-center">
                                     <div className="text-center">
                                         <h4 className="text-lg font-semibold mb-2">Resposta</h4>
                                         <p className="text-lg">{flashcards[currentCard]?.resposta}</p>
+                                        <p className="text-sm opacity-80 mt-2">Clique para ver a pergunta</p>
                                     </div>
                                 </div>
                             </div>

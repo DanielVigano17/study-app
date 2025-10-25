@@ -144,7 +144,7 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
 
   return (
     <div className="h-full">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-1 md:px-4 py-8">
         <Stepper
           steps={steps}
           currentStep={currentStep}
