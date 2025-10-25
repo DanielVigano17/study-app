@@ -5,7 +5,6 @@ import { ChevronLeft, ChevronRight, SkipForward } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
-import { StepIndicator } from "./step-indicator";
 import { StepContent } from "./step-content";
 import { StepperProps } from "./types";
 
@@ -28,6 +27,7 @@ export const Stepper: React.FC<StepperProps> = ({
 
   const handleNext = () => {
     if (isLastStep) {
+      console.log("onComplete");
       onComplete?.();
     } else {
       onNext?.();

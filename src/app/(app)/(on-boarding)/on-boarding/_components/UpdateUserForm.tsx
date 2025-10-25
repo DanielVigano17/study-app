@@ -11,10 +11,11 @@ import { useEffect } from "react";
 import { sendGTMEvent } from "@next/third-parties/google";
 
 type MyComponentProps = {
-    id : string | undefined
+    id : string | undefined;
+    onNext?: () => void;
 };
 
-const UpdateUserForm = ({id} : MyComponentProps) => {
+const UpdateUserForm = ({id, onNext} : MyComponentProps) => {
     const form = useForm();
     const router = useRouter();
 
@@ -28,7 +29,14 @@ const UpdateUserForm = ({id} : MyComponentProps) => {
       const response = await actionSalvarNome(id, data.nome);
 
       if(response.success) {
-        router.push("/app");
+        toast.success("Dados salvos com sucesso!");
+        // Se tem função onNext, avança para o próximo passo
+        if (onNext) {
+          onNext();
+        } else {
+          // Caso contrário, redireciona para /app (comportamento padrão)
+          router.push("/app");
+        }
       } else {
         toast.error(response.error);
       }

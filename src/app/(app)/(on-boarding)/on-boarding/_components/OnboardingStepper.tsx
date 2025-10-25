@@ -4,9 +4,8 @@ import React, { useState } from "react";
 import { Stepper, Step } from "@/components/ui/stepper";
 import { Sparkles, User } from "lucide-react";
 import UpdateUserForm from "./UpdateUserForm";
-import { Card, CardContent, CardTitle, CardDescription, CardHeader } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import ExampleForm from "./ExampleForm";
+import { useRouter } from "next/navigation";
 
 interface OnboardingStepperProps {
   userId: string | undefined;
@@ -14,8 +13,20 @@ interface OnboardingStepperProps {
 
 const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId }) => {
   const [currentStep, setCurrentStep] = useState(0);
+  const router = useRouter();
 
+  const handleOnComplete = () => {
+    router.push("/app");
+  };
 
+  const goToNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }else{
+      handleOnComplete();
+    }
+  };
+  
   const steps: Step[] = [
     {
       id: "welcome",
@@ -37,9 +48,16 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId }) => {
     },
     {
       id: "profile",
-      title: "",
-      description: "",
-      content: <UpdateUserForm id={userId} />,
+      title: "Informações Pessoais",
+      description: "Configure suas informações básicas",
+      content: <UpdateUserForm id={userId} onNext={goToNextStep} />,
+    },
+    // Exemplo de como adicionar mais passos com formulários:
+    {
+      id: "preferences",
+      title: "Preferências",
+      description: "Configure suas preferências de estudo",
+      content: <ExampleForm onNext={goToNextStep} />,
     },
   ];
 
@@ -50,6 +68,7 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId }) => {
           steps={steps}
           currentStep={currentStep}
           onStepChange={setCurrentStep}
+          onComplete={handleOnComplete}
           showNavigation={true}
           showProgress={true}
           allowSkip={false}
