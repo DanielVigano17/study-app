@@ -17,6 +17,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           '/api/*',
           '/app/*',
+          '/obrigado/*',
           '/billing/*',
           '/on-boarding/*',
           '/quiz/*',
