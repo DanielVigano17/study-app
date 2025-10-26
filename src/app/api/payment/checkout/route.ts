@@ -5,7 +5,7 @@ import { modules } from "@/domain";
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    let successUrl = `/app/`;
+    let successUrl = `/obrigado?success=true`;
     let usuarioJaUtilizouFreeTrial = true;
     
     if (!session?.user) {
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     if(!session.user.subscriptionId)
     {
-      successUrl = "/on-boarding?priceId=" + priceId;
+      successUrl = "/obrigado?success=true";
       usuarioJaUtilizouFreeTrial = false;
     }
 

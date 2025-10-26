@@ -60,7 +60,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   pages: {
     signIn: "/login",
-    verifyRequest: '/login'
+    verifyRequest: '/login',
+    newUser: '/on-boarding',
   },
   events: {
     createUser: async (event) => {

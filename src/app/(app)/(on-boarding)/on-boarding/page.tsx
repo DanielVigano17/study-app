@@ -1,6 +1,6 @@
 import { ApplicationPage } from "@/components/page-content/ApplicationPage";
 import { auth } from "../../../../../auth/auth";
-import UpdateUserForm from "./_components/UpdateUserForm";
+import OnboardingStepper from "./_components/OnboardingStepper";
 import { modules } from "@/domain";
 import Stripe from "stripe";
 
@@ -16,7 +16,9 @@ const OnBoardingPage = async ({ searchParams }: { searchParams: Promise<{ priceI
 
   return (
     <ApplicationPage pageKey="onboarding-page" authPage>
-      <UpdateUserForm id={session?.user?.id} value={price?.unit_amount ?? 0}/>
+      <OnboardingStepper 
+        userId={session?.user?.id}
+      />
     </ApplicationPage>
   )
 }
