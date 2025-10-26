@@ -16,6 +16,7 @@ model User {
   image         String?
   customerId    String?
   subscriptionId String?
+  phoneNumber   String?        @db.VarChar(20) 
   accounts      Account[]
   sessions      Session[]
   materias      Materia[]

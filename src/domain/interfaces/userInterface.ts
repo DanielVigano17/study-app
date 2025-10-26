@@ -2,6 +2,7 @@ import { User } from "../entities/User"
 
 export interface UpdateUserDTO {
     name?: string
+    phoneNumber?: string
     image?: string
     customerId? : string
     subscriptionId? : string

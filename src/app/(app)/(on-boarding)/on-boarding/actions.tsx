@@ -7,7 +7,7 @@ export type ActionResponse = {
   success?: boolean;
 }
 
-export default async function actionSalvarNome(id: string | undefined, name: string): Promise<ActionResponse> {
+export default async function actionSalvarNome(id: string | undefined, name: string, phoneNumber: string): Promise<ActionResponse> {
   try {
     if(!id) {
       return {
@@ -16,7 +16,7 @@ export default async function actionSalvarNome(id: string | undefined, name: str
       }
     }
     
-    await modules.useCase.user.updateUser.execute(id, {name});
+    await modules.useCase.user.updateUser.execute(id, {name, phoneNumber});
     return {
       success: true
     }
