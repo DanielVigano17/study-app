@@ -113,7 +113,7 @@ const UpdateUserForm = ({id, onNext} : MyComponentProps) => {
                   }
                 })} 
                 type="tel" 
-                placeholder="Digite seu telefone (ex: (11) 99999-9999)" 
+                placeholder="Ex: 11 99999-9999" 
               />
               {form.formState.errors.telefone && (
                 <p className="text-sm text-red-500">
@@ -129,7 +129,7 @@ const UpdateUserForm = ({id, onNext} : MyComponentProps) => {
               className="w-full"
             >
               {form.formState.isSubmitting && <Loader2 className="animate-spin mr-2 h-4 w-4" />}
-              {form.formState.isSubmitting ? "Salvando..." : "Continuar"}
+              {form.formState.isSubmitting ? "Salvando..." : "Salvar"}
             </Button>
           </CardFooter>
         </form>

@@ -200,7 +200,7 @@ const GenerateFlashcards = ({ materiaId, fileUrl, userId, onNext }: GenerateFlas
                                     isFlipped ? 'opacity-100' : 'opacity-0'
                                 }`}
                             >
-                                <div className="bg-gradient-to-br from-green-500 to-green-600 text-white rounded-lg p-6 h-full flex items-center justify-center">
+                                <div className="bg-gradient-to-br overflow-y-scroll from-green-500 to-green-600 text-white rounded-lg p-6 h-full flex items-center justify-center">
                                     <div className="text-center">
                                         <h4 className="text-lg font-semibold mb-2">Resposta</h4>
                                         <p className="text-lg">{flashcards[currentCard]?.resposta}</p>

@@ -352,7 +352,7 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, onNext }: GenerateQuizProps)
                 <div>
                     <h3 className="text-2xl font-bold text-gray-900">4. Gerar Questionário com IA</h3>
                     <p className="text-gray-600 mt-2">
-                        Nossa IA vai criar um questionário de 5 questões baseado no seu material, 
+                        Nossa IA vai criar um questionário de 10 questões baseado no seu material, 
                         testando sua compreensão dos conceitos mais importantes.
                     </p>
                 </div>
@@ -374,7 +374,7 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, onNext }: GenerateQuizProps)
                                 <ul className="text-blue-700 text-sm mt-1 space-y-1">
                                     <li>• A IA analisa todo o conteúdo do seu arquivo</li>
                                     <li>• Identifica os conceitos mais importantes</li>
-                                    <li>• Cria 5 perguntas de múltipla escolha</li>
+                                    <li>• Cria 10 perguntas de múltipla escolha</li>
                                     <li>• Gera alternativas realistas e uma resposta correta</li>
                                 </ul>
                             </div>
@@ -395,7 +395,7 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, onNext }: GenerateQuizProps)
                         ) : (
                             <>
                                 <BookOpen className="w-4 h-4 mr-2" />
-                                Gerar Questionário (5 questões)
+                                Gerar Questionário (10 questões)
                             </>
                         )}
                     </Button>

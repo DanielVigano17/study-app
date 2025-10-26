@@ -25,17 +25,37 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
     const [uploadComplete, setUploadComplete] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const onDrop = useCallback((acceptedFiles: File[]) => {
+    const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: any[]) => {
         setError(null);
         setUploadProgress(0);
         setUploadComplete(false);
         
+        // Verificar arquivos rejeitados
+        if (rejectedFiles.length > 0) {
+            const rejectedFile = rejectedFiles[0];
+            if (rejectedFile.errors[0]?.code === 'file-invalid-type') {
+                toast.error("Apenas arquivos PDF são permitidos!");
+                setError("Apenas arquivos PDF são permitidos.");
+                return;
+            }
+        }
+        
         if (acceptedFiles.length > 0) {
             const selectedFile = acceptedFiles[0];
+            
+            // Validação adicional do tipo de arquivo
+            if (selectedFile.type !== 'application/pdf') {
+                toast.error("Apenas arquivos PDF são permitidos!");
+                setError("Apenas arquivos PDF são permitidos.");
+                return;
+            }
+            
             if (selectedFile.size > MAX_FILE_SIZE) {
+                toast.error("O arquivo excede o limite de 50MB.");
                 setError("O arquivo excede o limite de 50MB.");
             } else {
                 setFile(selectedFile);
+                toast.success("Arquivo PDF selecionado com sucesso!");
             }
         }
     }, []);
@@ -43,7 +63,10 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
         onDrop,
         maxFiles: 1,
-        multiple: false
+        multiple: false,
+        accept: {
+            'application/pdf': ['.pdf']
+        }
     });
 
     const clearFile = () => {
@@ -121,7 +144,7 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                 <div>
                     <h3 className="text-2xl font-bold text-gray-900">2. Faça upload do seu material</h3>
                     <p className="text-gray-600 mt-2">
-                        Envie um PDF, documento ou texto que você quer estudar. 
+                        Envie um PDF que você quer estudar. 
                         Nossa IA vai analisar e extrair o conteúdo para você.
                     </p>
                 </div>
@@ -141,7 +164,7 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                     <Alert>
                         <AlertCircle className="h-4 w-4" />
                         <AlertDescription className='mt-1'>
-                            O arquivo deve ter menos de 50MB.
+                            Apenas arquivos PDF são aceitos. Tamanho máximo: 50MB.
                         </AlertDescription>
                     </Alert>
 
@@ -156,12 +179,12 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                                 <input {...getInputProps()} />
                                 <Upload className="mx-auto h-12 w-12 text-gray-400" />
                                 <p className="mt-2 text-sm text-gray-500">
-                                    Arraste e solte um arquivo aqui, ou clique para selecionar
+                                    Arraste e solte um arquivo PDF aqui, ou clique para selecionar
                                 </p>
                             </div>
                             
                             <Button onClick={() => document.querySelector('input')?.click()} className="w-full mt-4">
-                                Selecionar Arquivo
+                                Selecionar Arquivo PDF
                             </Button>
 
                             {file && (

@@ -162,7 +162,7 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId }) => {
                   <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
                     <CheckCircle className="w-3 h-3 text-green-600" />
                   </div>
-                  <span>Questionário de 5 questões</span>
+                  <span>Questionário de 10 questões</span>
                 </div>
               </div>
             </div>
