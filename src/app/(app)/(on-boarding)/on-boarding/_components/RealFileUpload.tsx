@@ -160,7 +160,7 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                                 </p>
                             </div>
                             
-                            <Button onClick={() => document.querySelector('input')?.click()} className="mt-4">
+                            <Button onClick={() => document.querySelector('input')?.click()} className="w-full mt-4">
                                 Selecionar Arquivo
                             </Button>
 

@@ -21,6 +21,48 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, subscriptionId, onNext }: Ge
     const [showResults, setShowResults] = useState(false);
     const [score, setScore] = useState(0);
 
+    // Verificar se o arquivo está disponível
+    if (!fileUrl || fileUrl.trim() === '') {
+        return (
+            <div className="max-w-2xl mx-auto space-y-6">
+                <div className="text-center space-y-4">
+                    <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                        <XCircle className="w-8 h-8 text-red-600" />
+                    </div>
+                    <div>
+                        <h3 className="text-2xl font-bold text-gray-900">Arquivo Necessário</h3>
+                        <p className="text-gray-600 mt-2">
+                            Para gerar questionários, você precisa fazer upload de um arquivo primeiro.
+                        </p>
+                    </div>
+                </div>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-red-600">Arquivo não encontrado</CardTitle>
+                        <CardDescription>
+                            Volte à etapa anterior e faça upload de um arquivo para continuar.
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="bg-red-50 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                                <XCircle className="w-5 h-5 text-red-600 mt-0.5" />
+                                <div>
+                                    <h4 className="font-medium text-red-900">Ação Necessária</h4>
+                                    <p className="text-red-700 text-sm mt-1">
+                                        Você precisa fazer upload de um arquivo (PDF, documento ou texto) 
+                                        na etapa anterior para que nossa IA possa gerar o questionário.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        );
+    }
+
     const handleGenerate = async () => {
         setIsGenerating(true);
         

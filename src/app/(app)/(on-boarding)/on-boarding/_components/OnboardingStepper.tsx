@@ -9,6 +9,7 @@ import RealFileUpload from "./RealFileUpload";
 import GenerateFlashcards from "./GenerateFlashcards";
 import GenerateQuiz from "./GenerateQuiz";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 interface OnboardingStepperProps {
   userId: string | undefined;
@@ -26,6 +27,17 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
   };
 
   const goToNextStep = () => {
+    // Verificar se está tentando avançar para etapas que dependem de arquivo
+    if (currentStep === 3 && (!fileUrl || fileUrl.trim() === '')) {
+      toast.error("Você precisa fazer upload de um arquivo antes de gerar flashcards!");
+      return;
+    }
+    
+    if (currentStep === 4 && (!fileUrl || fileUrl.trim() === '')) {
+      toast.error("Você precisa fazer upload de um arquivo antes de gerar questionários!");
+      return;
+    }
+
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
@@ -128,14 +140,36 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
               flashcards e questionários reais com IA!
             </p>
           </div>
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
-            <h4 className="font-semibold text-gray-900 mb-2">O que você criou:</h4>
-            <ul className="text-sm text-gray-700 space-y-1 text-left max-w-md mx-auto">
-              <li>✅ Uma matéria organizada</li>
-              <li>✅ Arquivo processado pela IA</li>
-              <li>✅ 3 flashcards automáticos</li>
-              <li>✅ Questionário de 5 questões</li>
-            </ul>
+          <div className="max-w-md mx-auto">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6 border border-blue-100">
+              <h4 className="font-semibold text-gray-900 mb-4 text-center">O que você criou:</h4>
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                  </div>
+                  <span>Uma matéria organizada</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                  </div>
+                  <span>Arquivo processado pela IA</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                  </div>
+                  <span>3 flashcards automáticos</span>
+                </div>
+                <div className="flex items-center gap-3 text-sm text-gray-700">
+                  <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <CheckCircle className="w-3 h-3 text-green-600" />
+                  </div>
+                  <span>Questionário de 5 questões</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ),
