@@ -11,7 +11,6 @@ import { useState } from "react";
 
 type CreateMateriaFormProps = {
     userId: string | undefined;
-    subscriptionId: string | undefined | null;
     onNext?: (materiaId: string) => void;
 };
 
@@ -19,7 +18,7 @@ type FormData = {
     titulo: string;
 };
 
-const CreateMateriaForm = ({ userId, subscriptionId, onNext }: CreateMateriaFormProps) => {
+const CreateMateriaForm = ({ userId, onNext }: CreateMateriaFormProps) => {
     const form = useForm<FormData>({
         defaultValues: {
             titulo: ""
@@ -27,37 +26,21 @@ const CreateMateriaForm = ({ userId, subscriptionId, onNext }: CreateMateriaForm
     });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
-    console.log("CreateMateriaForm rendered with:", { userId, subscriptionId });
+    console.log("CreateMateriaForm rendered with:", { userId });
 
     const handleSubmit = form.handleSubmit(async (data) => {
         console.log("Form submitted with data:", data);
         console.log("UserId:", userId);
-        console.log("SubscriptionId:", subscriptionId);
         
         if (!userId) {
             toast.error("ID do usuário não encontrado");
             return;
         }
 
-        if (!subscriptionId) {
-            toast.error("ID da assinatura não encontrado. Verifique se você tem uma assinatura ativa.");
-            console.error("SubscriptionId is null or undefined:", subscriptionId);
-            return;
-        }
-
         setIsSubmitting(true);
         
         try {
-            console.log("Calling novaMateriaAction...");
-            console.log("Action parameters:", {
-                titulo: data.titulo,
-                userId,
-                subscriptionId
-            });
-            
-            // Teste direto da API
-            console.log("Testing direct API call...");
-            const testResponse = await fetch('/api/materia/create', {
+            const response = await fetch('/api/materia/create/sem-assinatura', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -65,38 +48,23 @@ const CreateMateriaForm = ({ userId, subscriptionId, onNext }: CreateMateriaForm
                 body: JSON.stringify({
                     titulo: data.titulo,
                     userId,
-                    subscriptionId
                 }),
             });
             
-            console.log("Direct API response status:", testResponse.status);
-            const testData = await testResponse.json();
-            console.log("Direct API response data:", testData);
-            
-            const response = await novaMateriaAction(
-                { titulo: data.titulo }, 
-                userId, 
-                subscriptionId
-            );
-
-            console.log("Response from novaMateriaAction:", response);
-
-            if (response.error) {
-                console.error("Error in response:", response.error);
-                toast.error(response.error.message || "Erro ao criar matéria");
+            if (!response.ok) {
+                toast.error("Erro ao criar matéria");
                 return;
             }
 
-            if (response.materia) {
-                console.log("Matéria created successfully:", response.materia);
+            const { materia } = await response.json();
+
+            if (materia) {
                 toast.success("Matéria criada com sucesso!");
-                onNext?.(response.materia.id);
+                onNext?.(materia.id);
             } else {
-                console.log("No matéria in response");
                 toast.error("Erro inesperado ao criar matéria");
             }
         } catch (error) {
-            console.error("Error in handleSubmit:", error);
             toast.error("Erro ao criar matéria");
         } finally {
             setIsSubmitting(false);

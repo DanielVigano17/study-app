@@ -13,10 +13,9 @@ import { toast } from "sonner";
 
 interface OnboardingStepperProps {
   userId: string | undefined;
-  subscriptionId: string | null | undefined;
 }
 
-const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscriptionId }) => {
+const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [materiaId, setMateriaId] = useState<string>("");
   const [fileUrl, setFileUrl] = useState<string>("");
@@ -87,7 +86,6 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
       description: "Vamos começar criando uma matéria para organizar seus estudos",
       content: <CreateMateriaForm 
         userId={userId} 
-        subscriptionId={subscriptionId} 
         onNext={handleMateriaCreated} 
       />,
     },
@@ -108,7 +106,6 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
         materiaId={materiaId}
         fileUrl={fileUrl}
         userId={userId!}
-        subscriptionId={subscriptionId!}
         onNext={goToNextStep}
       />,
     },
@@ -120,7 +117,6 @@ const OnboardingStepper: React.FC<OnboardingStepperProps> = ({ userId, subscript
         materiaId={materiaId}
         fileUrl={fileUrl}
         userId={userId!}
-        subscriptionId={subscriptionId!}
         onNext={goToNextStep}
       />,
     },

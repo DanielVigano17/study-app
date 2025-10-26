@@ -211,9 +211,6 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                             <p className="text-green-600 font-medium">
                                 Arquivo enviado com sucesso!
                             </p>
-                            <p className="text-gray-500 text-sm mt-2">
-                                A IA está analisando o conteúdo...
-                            </p>
                         </div>
                     )}
                 </CardContent>

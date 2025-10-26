@@ -9,11 +9,10 @@ type GenerateQuizProps = {
     materiaId: string;
     fileUrl: string;
     userId: string;
-    subscriptionId: string;
     onNext?: () => void;
 };
 
-const GenerateQuiz = ({ materiaId, fileUrl, userId, subscriptionId, onNext }: GenerateQuizProps) => {
+const GenerateQuiz = ({ materiaId, fileUrl, userId, onNext }: GenerateQuizProps) => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [quiz, setQuiz] = useState<any>(null);
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -67,7 +66,7 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, subscriptionId, onNext }: Ge
         setIsGenerating(true);
         
         try {
-            const response = await fetch('/api/questionario/create-by-pdf', {
+            const response = await fetch('/api/questionario/create-by-pdf/sem-assinatura', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -75,8 +74,6 @@ const GenerateQuiz = ({ materiaId, fileUrl, userId, subscriptionId, onNext }: Ge
                 body: JSON.stringify({
                     urlPdf: fileUrl,
                     materiaId: materiaId,
-                    userId: userId,
-                    subscriptionId: subscriptionId
                 }),
             });
 

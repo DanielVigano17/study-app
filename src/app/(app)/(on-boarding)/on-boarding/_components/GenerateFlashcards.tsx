@@ -9,11 +9,10 @@ type GenerateFlashcardsProps = {
     materiaId: string;
     fileUrl: string;
     userId: string;
-    subscriptionId: string;
     onNext?: () => void;
 };
 
-const GenerateFlashcards = ({ materiaId, fileUrl, userId, subscriptionId, onNext }: GenerateFlashcardsProps) => {
+const GenerateFlashcards = ({ materiaId, fileUrl, userId, onNext }: GenerateFlashcardsProps) => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [flashcards, setFlashcards] = useState<any[]>([]);
     const [currentCard, setCurrentCard] = useState(0);
@@ -66,7 +65,7 @@ const GenerateFlashcards = ({ materiaId, fileUrl, userId, subscriptionId, onNext
         setIsGenerating(true);
         
         try {
-            const response = await fetch('/api/pergunta/createMany', {
+            const response = await fetch('/api/pergunta/createMany/sem-assinatura', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -74,8 +73,6 @@ const GenerateFlashcards = ({ materiaId, fileUrl, userId, subscriptionId, onNext
                 body: JSON.stringify({
                     urlPdf: fileUrl,
                     materiaId: materiaId,
-                    userId: userId,
-                    subscriptionId: subscriptionId
                 }),
             });
 
