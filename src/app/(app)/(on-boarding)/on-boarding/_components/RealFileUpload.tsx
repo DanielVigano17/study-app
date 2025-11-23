@@ -191,7 +191,7 @@ const RealFileUpload = ({ materiaId, onNext }: RealFileUploadProps) => {
                                 <div className="mt-4">
                                     <h4 className="text-sm font-medium">Arquivo Selecionado:</h4>
                                     <div className="mt-2 text-sm text-gray-500 flex items-center justify-between">
-                                        <span className="flex items-center">
+                                        <span className="flex items-center break-all">
                                             <FileIcon className="mr-2 h-4 w-4" />
                                             {file.name}
                                         </span>
