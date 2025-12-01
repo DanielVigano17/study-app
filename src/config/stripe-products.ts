@@ -30,22 +30,22 @@ export type StripeProduct = {
 const priceIds = {
   basic: {
     monthly: {
-      development: "price_1Rufn5P3utzNziQ1gxvLpj7A",
-      production: "price_1S4mOdP3utzNziQ11AYQbojg"
+      development: "price_1SZL9lP3utzNziQ1W7fvhXOO",
+      production: "price_1SZLkKP3utzNziQ1QF5hddKc"
     },
     yearly: {
-      development: "price_1Rufn6P3utzNziQ1U2x3iXjj", 
-      production: "price_1S4mOdP3utzNziQ1Yzn3ABRP"
+      development: "price_1SZLBKP3utzNziQ1vBBSG4eM", 
+      production: "price_1SZLkhP3utzNziQ1lQb3QRkb"
     }
   },
   pro: {
     monthly: {
-      development: "price_1Rufn7P3utzNziQ1qfbW5Ns3",
-      production: "price_1S4mOkP3utzNziQ1zFC12hHc"
+      development: "price_1SZLVUP3utzNziQ1laQEI0FR",
+      production: "price_1SZLioP3utzNziQ1IG6972v1"
     },
     yearly: {
-      development: "price_1Rufn7P3utzNziQ1KHo3q5BS",
-      production: "price_1S4mOjP3utzNziQ10W5Ibjy1"
+      development: "price_1SZLWqP3utzNziQ1BIOUTW0g",
+      production: "price_1SZLjIP3utzNziQ1wiPFUmbX"
     }
   }
 };
@@ -67,8 +67,8 @@ const stripeProducts: StripeProduct[] = [
       { lookup_key: "materias", name: "Materias", feature_presentation: "15 materias", value: "15" }
     ],
     prices: [
-      { id: getPriceId('basic', 'monthly'), type: "recurring", recurring: { interval: "month" }, currency: "brl", unit_amount: 2190 },
-      { id: getPriceId('basic', 'yearly'), type: "recurring", recurring: { interval: "year" }, currency: "brl", unit_amount: 19800 }
+      { id: getPriceId('basic', 'monthly'), type: "recurring", recurring: { interval: "month" }, currency: "brl", unit_amount: 950 },
+      { id: getPriceId('basic', 'yearly'), type: "recurring", recurring: { interval: "year" }, currency: "brl", unit_amount: 8550 }
     ]
   },
   {
@@ -81,8 +81,8 @@ const stripeProducts: StripeProduct[] = [
       { lookup_key: "materias", name: "Materias", feature_presentation: "30 materias", value: "30" }
     ],
     prices: [
-      { id: getPriceId('pro', 'monthly'), type: "recurring", recurring: { interval: "month" }, currency: "brl", unit_amount: 3990 },
-      { id: getPriceId('pro', 'yearly'), type: "recurring", recurring: { interval: "year" }, currency: "brl", unit_amount: 35900 }
+      { id: getPriceId('pro', 'monthly'), type: "recurring", recurring: { interval: "month" }, currency: "brl", unit_amount: 1799 },
+      { id: getPriceId('pro', 'yearly'), type: "recurring", recurring: { interval: "year" }, currency: "brl", unit_amount: 16199 }
     ]
   }
 ];
