@@ -177,7 +177,6 @@ export async function createManyFlashcardAction(urlPdf : string, userId: string,
 }
 
 export async function updatePerguntaAction(data : UpdateFlashcardDTO, id : string) : Promise<Flashcard> {
-
   const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/update`, {
     method: 'POST',
     headers: {
@@ -317,4 +316,29 @@ export async function createQuestionarioByAiAction(url : string, userId : string
     console.log(error);
     throw new Error("Erro ao gerar questionário");
   }
+}
+
+export async function getFlashcardsParaRevisaoAction(materiaId : string) : Promise<Flashcard[]> {
+  try 
+  {
+      const response = await fetch(process.env.NEXT_PUBLIC_APP_URL+`/api/pergunta/get-flashcards-para-revisao`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({materiaId : materiaId}),
+      });
+
+      const {flashcardsParaRevisar} = await response.json();
+
+      if(!flashcardsParaRevisar) 
+        return [];
+
+      return flashcardsParaRevisar;
+  } catch (error) 
+  {
+      console.log(error);
+      return [];
+  }
+  
 }

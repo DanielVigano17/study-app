@@ -13,7 +13,7 @@ export async function checkFeatureLimits(
     if (!userId) {
       return new NextResponse('Unauthorized', { status: 401 });
     }
-
+    
     const subscription = await modules.useCase.billing.findSubscription.execute(subscriptionId);
     const product = await modules.useCase.billing.retriveProduct.execute(subscription?.metadata.productId);
     const usage = await modules.useCase.user.calculateFeatureUsage.execute(userId);
