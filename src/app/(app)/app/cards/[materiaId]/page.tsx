@@ -19,7 +19,7 @@ export default async function PageFlashCards({params} : {params : Promise<{mater
                     <Link href={`/app/flashcards/${materiaId}`}><MoveLeft className="w-5 h-5"/></Link >
                     {materia && <h1 className="text-2xl font-semibold">{materia.titulo}</h1>}
                 </div>
-                {flashcards && <FlashCardDeck cards={flashcards} />}
+                {flashcards && <FlashCardDeck cards={flashcards} materiaId={materiaId} />}
                 {!flashcards && <p className="text-center mt-24">Nenhum flashcard para ser revisado</p>}
             </Suspense>
         </ApplicationPage>
