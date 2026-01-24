@@ -7,7 +7,6 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Edit, Trash2, Eye, EyeOff } from 'lucide-react'
@@ -25,18 +24,27 @@ import {
 import { Flashcard } from '@/domain/entities/Flashcard'
 import { deletePerguntaAction, findManyPerguntasAction } from '../../actions'
 import { diferencaDias } from '@/lib/utils'
+import { ContentLoader } from '@/components/loading'
 
-export function FlashcardList({materiaId} : {materiaId : string}) {
+type FlashcardListProps = {
+  materiaId: string
+  refreshTrigger?: number
+}
+
+export function FlashcardList({materiaId, refreshTrigger = 0} : FlashcardListProps) {
   const [visibleAnswers, setVisibleAnswers] = useState<{ [key: string]: boolean }>({})
   const [flashCards, setFlashCards] = useState<Flashcard[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(()=>{
     async function getFlashCards(){
-      const lista = await findManyPerguntasAction(materiaId);
-      setFlashCards(lista);
+      setIsLoading(true)
+      const lista = await findManyPerguntasAction(materiaId)
+      setFlashCards(lista)
+      setIsLoading(false)
     }
-    getFlashCards();
-  },[])
+    getFlashCards()
+  },[materiaId, refreshTrigger])
 
   const getStatus = (flashcard : Flashcard) : "pendente" | "revisado" => {
     const dataUltimaRevisao = flashcard.dtUltimaRevisao ? new Date(flashcard.dtUltimaRevisao) : null;
@@ -89,9 +97,12 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
 
   return (
     <div>
-      {flashCards.length <= 0 && <p className="text-center mt-24">Nenhum flashcard cadastrado</p>}
-      <div className="grid gap-4 pb-24 md:grid-cols-2 md:pb-2 lg:grid-cols-3">
-      {flashCards.map((flashcard) => (
+      <ContentLoader isLoading={isLoading} variant="cards">
+        {flashCards.length <= 0 ? (
+          <p className="text-center mt-24">Nenhum flashcard cadastrado</p>
+        ) : (
+          <div className="grid gap-4 pb-24 md:grid-cols-2 md:pb-2 lg:grid-cols-3">
+          {flashCards.map((flashcard) => (
           <Card className='min-w-0' key={flashcard.id}>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -159,8 +170,10 @@ export function FlashcardList({materiaId} : {materiaId : string}) {
               </div>
             </CardContent>
           </Card>
-        ))}
-      </div>
+          ))}
+          </div>
+        )}
+      </ContentLoader>
     </div>
   )
 }

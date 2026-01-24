@@ -30,7 +30,12 @@ type FormValues = {
   badge: string
 }
 
-export function FlashcardDialog({materiaId} : {materiaId : string}) {
+type NewFlashcardDialogProps = {
+  materiaId: string
+  onSuccess?: () => void
+}
+
+export function NewFlashcardDialog({materiaId, onSuccess} : NewFlashcardDialogProps) {
   const [badges, setBadges] = useState<string[]>([])
   const [open, setOpen] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
@@ -70,6 +75,7 @@ export function FlashcardDialog({materiaId} : {materiaId : string}) {
       form.reset();
       setBadges([]);
       setError(null);
+      onSuccess?.();
       toast({
         variant: "default",
         title: "Sucesso",
