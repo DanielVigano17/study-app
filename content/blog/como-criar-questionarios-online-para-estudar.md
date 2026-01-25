@@ -1,7 +1,7 @@
 ---
-title: "Como Criar Questionários Adaptativos Eficientes Usando IA"
+title: "Como Criar Questionário Online para Estudar Usando IA"
 description: "Aprenda a montar questionários adaptativos corrigindo erros comuns e garantindo avaliações que acompanham o ritmo do estudante."
-date: "2024-01-20"
+date: "2026-01-25"
 author: "SmartStudy Team"
 tags: ["questionários", "memorização", "tecnologia", "estudo"]
 featured: false
@@ -9,7 +9,7 @@ published: true
 image: "/questionarios-adaptativos-como-criar.webp"
 ---
 
-# Como Criar Questionários Adaptativos Eficientes Usando IA
+# Como Criar Questionário Online para Estudar
 
 Na minha trajetória estudando métodos de aprendizagem e experimentando ferramentas como a **SmartStudy**, percebi que **questionários adaptativos** mudam realmente a forma como assimilamos grandes volumes de conteúdo.
 
