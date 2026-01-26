@@ -21,6 +21,22 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Plataforma de estudos com IA | SmartStudy",
   description: "A SmartStudy é uma plataforma de estudos online com questionários inteligentes, revisões automáticas e acompanhamento de desempenho para estudantes.",
+  openGraph: {
+    title: "Plataforma de estudos com IA | SmartStudy",
+    description: "A SmartStudy é uma plataforma de estudos online com questionários inteligentes, revisões automáticas e acompanhamento de desempenho para estudantes.",
+    type: "website",
+    url: "https://smartstudy.me",
+    siteName: "SmartStudy",
+    locale: "pt-BR",
+    images: [
+      {
+        url: "/preview-compartilhamento-link.png",
+        width: 1200,
+        height: 630,
+        alt: "Plataforma de estudos com IA | SmartStudy",
+      }
+    ],
+  },
   icons: {
     icon: [
       {
