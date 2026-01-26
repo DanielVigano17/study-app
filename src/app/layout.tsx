@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "SmartStudy",
-  description: "Aprenda com a melhor plataforma de estudos assistida por IA",
+  title: "Plataforma de estudos com IA | SmartStudy",
+  description: "A SmartStudy é uma plataforma de estudos online com questionários inteligentes, revisões automáticas e acompanhamento de desempenho para estudantes.",
   icons: {
     icon: [
       {
