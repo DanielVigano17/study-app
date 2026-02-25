@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "doppler run --config dev -- next dev --turbopack",
+    "dev": "next dev --turbopack",
     "prisma-dev:studio": "doppler run --config dev -- npx prisma studio",
     "prisma-dev:migrate": "doppler run --config dev -- npx prisma migrate dev",
     "prisma-prd:studio": "doppler run --config prd -- npx prisma studio",

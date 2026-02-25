@@ -86,7 +86,7 @@ export function PricingSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {products.map((product) => {
             const monthly = product.prices.find(p => p.recurring.interval === "month");
             const annual = product.prices.find(p => p.recurring.interval === "year");
@@ -99,7 +99,7 @@ export function PricingSection() {
             const cta = "Teste grátis agora";
 
             return (
-              <Card key={product.id} className={isHighlight ? "border-blue-500 shadow-lg" : undefined}>
+              <Card key={product.id} className={"flex flex-col justify-between" + isHighlight ? "border-blue-500 shadow-lg" : undefined}>
                 <CardHeader>
                   <CardTitle className="flex items-baseline justify-between">
                     <span>{product.name}</span>
