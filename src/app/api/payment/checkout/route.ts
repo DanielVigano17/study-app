@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth/auth";
 import { modules } from "@/domain";
+import { EnumTipoCheckout } from "@/domain/enums/enum-tipo-checkout";
 
 export async function POST(request: NextRequest) {
   try {
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "priceId é obrigatório" }, { status: 400 });
     }
 
-    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(successUrl, usuarioJaUtilizouFreeTrial, priceId);
+    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(successUrl, EnumTipoCheckout.FREE_TRIAL , priceId);
 
     if (!checkoutUrl) {
       return NextResponse.json({ error: "Erro ao criar sessão de checkout" }, { status: 500 });

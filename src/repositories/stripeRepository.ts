@@ -68,6 +68,7 @@ export class StripeRepository implements IPaymentGateway {
 
           return subscription.id;
     };
+    
     async createBillingPortal(customerId: string) : Promise<Stripe.BillingPortal.Session>{
 
       //Os produtos que estão disponíveis para o cliente são adicionados no Site da Stripe
@@ -197,6 +198,21 @@ export class StripeRepository implements IPaymentGateway {
         trial_period_days: 7
       },
       allow_promotion_codes: true
+    });
+    return checkoutSession;
+  }
+
+  async createChckoutSessioFremium(customerId: string, successUrl: string, priceId?: string) : Promise<Stripe.Checkout.Session> {
+    const lineItems = priceId 
+    ? [{ price: priceId, quantity: 1 }]
+    : [{ price: 'price_1T52vPP3utzNziQ1wKFvdwvY', quantity: 1,}];
+
+    const checkoutSession = await this.stripe.checkout.sessions.create({
+      customer: customerId,
+      mode: 'subscription',
+      success_url: successUrl,
+      line_items: lineItems,
+      payment_method_collection: 'if_required',
     });
     return checkoutSession;
   }

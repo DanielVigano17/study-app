@@ -53,7 +53,7 @@ const stripeProducts: StripeProduct[] = [
         id:
           process.env.NODE_ENV === "production"
             ? "price_FREE_MONTHLY_PROD"
-            : "price_FREE_MONTHLY_DEV",
+            : "price_1T52vPP3utzNziQ1wKFvdwvY",
         type: "recurring",
         recurring: { interval: "month" },
         currency: "brl",
@@ -63,7 +63,7 @@ const stripeProducts: StripeProduct[] = [
         id:
           process.env.NODE_ENV === "production"
             ? "price_FREE_YEARLY_PROD"
-            : "price_FREE_YEARLY_DEV",
+            : "price_1T53ACP3utzNziQ1as3eRVPV",
         type: "recurring",
         recurring: { interval: "year" },
         currency: "brl",
