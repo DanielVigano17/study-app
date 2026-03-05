@@ -1,35 +1,27 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth/auth";
 import { modules } from "@/domain";
-import { EnumTipoCheckout } from "@/domain/enums/enum-tipo-checkout";
+import { getTipoCheckout } from "@/lib/billing";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
-    let successUrl = `/obrigado?success=true`;
-    let usuarioJaUtilizouFreeTrial = true;
-    
-    if (!session?.user) {
+    const successUrl = `/obrigado?success=true`;
+
+    if (!session?.user)
       return NextResponse.json({ error: "Não autorizado" }, { status: 401 });
-    }
 
     const { priceId } = await request.json();
 
-    if(!session.user.subscriptionId)
-    {
-      successUrl = "/obrigado?success=true";
-      usuarioJaUtilizouFreeTrial = false;
-    }
-
-    if (!priceId) {
+    if (!priceId)
       return NextResponse.json({ error: "priceId é obrigatório" }, { status: 400 });
-    }
 
-    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(successUrl, EnumTipoCheckout.FREE_TRIAL , priceId);
+    const tipoCheckout = getTipoCheckout(priceId, session.user.subscriptionId);
 
-    if (!checkoutUrl) {
+    const checkoutUrl = await modules.useCase.billing.createCheckoutSession.execute(successUrl, tipoCheckout, priceId);
+
+    if (!checkoutUrl) 
       return NextResponse.json({ error: "Erro ao criar sessão de checkout" }, { status: 500 });
-    }
 
     return NextResponse.json({ url: checkoutUrl });
   } catch (error) {
