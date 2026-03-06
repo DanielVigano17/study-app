@@ -11,6 +11,8 @@
     "build": "npx prisma migrate deploy && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "dotenv -e .env.test -- vitest run",
+    "test:watch": "dotenv -e .env.test -- vitest",
     "postinstall": "npx prisma generate"
   },
   "dependencies": {
@@ -86,14 +88,19 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@vitejs/plugin-react": "^5.1.4",
     "dotenv-cli": "^8.0.0",
+    "jsdom": "^28.1.0",
     "postcss": "^8",
     "prisma": "^6.0.1",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=20"
