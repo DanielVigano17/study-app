@@ -47,7 +47,7 @@ export default async function ObrigadoPage({
               </h1>
               <p className="text-xl text-gray-600 max-w-2xl mx-auto">
                 Bem-vindo ao SmartStudy! Sua conta foi ativada com sucesso e você já pode 
-                aproveitar todos os recursos premium da nossa plataforma.
+                aproveitar os recursos da nossa plataforma.
               </p>
               <Button asChild>
                 <Link href="/app">

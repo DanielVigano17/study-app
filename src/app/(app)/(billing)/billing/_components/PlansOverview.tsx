@@ -149,7 +149,7 @@ function NewUserPlansOverview({ plans, onSelectPlan }: PlansOverviewProps) {
                           Processando...
                         </>
                       ) : (
-                        `Teste gratuitamente ${plan.name}`
+                        plan.id === 'free' ? `Teste com o ${plan.name}` : `Teste gratuitamente ${plan.name}`
                       )}
                     </Button>
                   )}
