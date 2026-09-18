@@ -23,7 +23,7 @@ export function FileList({files} : { files : File [] | null }) {
               <div className="font-medium">
                 {file.fileName}
               </div>
-              <div className="text-sm text-gray-500"><Link href={file.url}>Vizualizar</Link></div>
+              <div className="text-sm text-gray-500"><Link href={file.url}>Visualizar</Link></div>
             </div>
           </div>
           <div className="flex items-center gap-2">

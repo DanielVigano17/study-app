@@ -104,75 +104,123 @@ export default function FileUploadDialog({materiaId, fileList, setFiles} : {mate
   }
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button className="gap-2">
-            <Upload className="w-4 h-4" />
-            Upload de Arquivo
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="">
-        <DialogHeader>
-          <DialogTitle>Upload de Arquivo</DialogTitle>
-        </DialogHeader>
-        <Alert>
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription className='mt-1'>
-            O arquivo deve ter menos de 50MB.
-          </AlertDescription>
-        </Alert>
-        <div
-          {...getRootProps()}
-          className={`p-10 border-2 border-dashed rounded-lg text-center cursor-pointer ${
-            isDragActive ? 'border-primary bg-primary/10' : 'border-gray-300'
-          }`}
-        >
-          <input {...getInputProps()} />
-          <Upload className="mx-auto h-12 w-12 text-gray-400" />
-          <p className="mt-2 text-sm text-gray-500">
-            Arraste e solte um arquivo aqui, ou clique para selecionar
-          </p>
+<Dialog open={isOpen} onOpenChange={setIsOpen}>
+  <DialogTrigger asChild>
+    <Button className="gap-2">
+      <Upload className="h-4 w-4" />
+      Upload de Arquivo
+    </Button>
+  </DialogTrigger>
+
+  <DialogContent className="w-full max-w-[620px] min-w-0 overflow-hidden">
+    <DialogHeader>
+      <DialogTitle>Upload de Arquivo</DialogTitle>
+    </DialogHeader>
+
+    {/* Aviso */}
+    <Alert className="w-full min-w-0">
+      <AlertCircle className="h-4 w-4 shrink-0" />
+      <AlertDescription className="mt-1 min-w-0">
+        O arquivo deve ter menos de 50MB.
+      </AlertDescription>
+    </Alert>
+
+    {/* Área de upload */}
+    <div
+      {...getRootProps()}
+      className={`w-full min-w-0 p-10 border-2 border-dashed rounded-lg text-center cursor-pointer ${
+        isDragActive
+          ? "border-primary bg-primary/10"
+          : "border-gray-300"
+      }`}
+    >
+      <input {...getInputProps()} />
+
+      <Upload className="mx-auto h-12 w-12 text-gray-400" />
+
+      <p className="mt-2 text-sm text-gray-500">
+        Arraste e solte um arquivo aqui, ou clique para selecionar
+      </p>
+    </div>
+
+    {/* Selecionar arquivo */}
+    <Button
+      onClick={() => document.querySelector("input")?.click()}
+      className="mt-4 w-full"
+    >
+      Selecionar Arquivo
+    </Button>
+
+    {/* Arquivo selecionado */}
+    {file && (
+      <div className="mt-4 w-full min-w-0">
+        <h4 className="text-sm font-medium">
+          Arquivo Selecionado:
+        </h4>
+
+        <div className="mt-2 flex w-full min-w-0 items-center gap-2 text-sm text-gray-500">
+          {/* Ícone */}
+          <FileIcon className="h-4 w-4 shrink-0" />
+
+          {/* Nome do arquivo */}
+          <span className="min-w-0 flex-1 truncate">
+            {file.name}
+          </span>
+
+          {/* Botão */}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="shrink-0"
+            onClick={clearFile}
+          >
+            Remover
+          </Button>
         </div>
-        <Button onClick={() => document.querySelector('input')?.click()} className="mt-4">
-          Selecionar Arquivo
-        </Button>
-        {file && (
-          <div className="mt-4">
-            <h4 className="text-sm font-medium">Arquivo Selecionado:</h4>
-            <div className="mt-2 text-sm text-gray-500 flex items-center justify-between">
-              <span className="flex items-center">
-                <FileIcon className="mr-2 h-4 w-4" />
-                {file.name}
-              </span>
-              <Button variant="ghost" size="sm" onClick={clearFile}>
-                Remover
-              </Button>
-            </div>
-          </div>
-        )}
-        {error && (
-          <Alert variant="destructive" className="mt-4">
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription className='mt-1'>{error}</AlertDescription>
-          </Alert>
-        )}
-        {isUploading && (
-          <div className="mt-4">
-            <Progress value={uploadProgress} className="w-full" />
-            <p className="text-sm text-gray-500 mt-2">Uploading: {uploadProgress.toFixed(0)}%</p>
-          </div>
-        )}
-        <Button 
-          onClick={uploadFile} 
-          className="mt-4 w-full" 
-          variant="outline"
-          disabled={!file || isUploading}
-        >
-          <CircleCheckBig className='w-4 h-4'/>
-          {isUploading ? 'Uploading...' : 'Fazer Upload'}
-        </Button>
-      </DialogContent>
-    </Dialog>
+      </div>
+    )}
+
+    {/* Erro */}
+    {error && (
+      <Alert
+        variant="destructive"
+        className="mt-4 w-full min-w-0"
+      >
+        <AlertCircle className="h-4 w-4 shrink-0" />
+
+        <AlertDescription className="mt-1 min-w-0">
+          {error}
+        </AlertDescription>
+      </Alert>
+    )}
+
+    {/* Progresso */}
+    {isUploading && (
+      <div className="mt-4 w-full min-w-0">
+        <Progress
+          value={uploadProgress}
+          className="w-full"
+        />
+
+        <p className="mt-2 text-sm text-gray-500">
+          Uploading: {uploadProgress.toFixed(0)}%
+        </p>
+      </div>
+    )}
+
+    {/* Fazer upload */}
+    <Button
+      onClick={uploadFile}
+      className="mt-4 w-full"
+      variant="outline"
+      disabled={!file || isUploading}
+    >
+      <CircleCheckBig className="h-4 w-4" />
+
+      {isUploading ? "Uploading..." : "Fazer Upload"}
+    </Button>
+  </DialogContent>
+</Dialog>
   )
 }
 

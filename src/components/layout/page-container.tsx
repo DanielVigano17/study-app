@@ -19,7 +19,7 @@ export function PageContainer({
   return (
     <div className={cn(
       "w-screen min-h-screen",
-      showSidebar && "md:grid md:grid-cols-[18.2rem_1fr]",
+      showSidebar && "md:grid md:grid-cols-[318px_minmax(0,1fr)]",
       className
     )}>
       {showSidebar && <MainSidebar />}
